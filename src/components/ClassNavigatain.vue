@@ -61,6 +61,19 @@
                         </li>
                     </ul>
                 </li>
+                <li>
+                    <div class="liimg" style="background-color: #f8c91f"/>
+                    <header>浏览 专著</header>
+                    <ul>
+                        <li v-for="mongo in mongoArry" :key="mongo">
+                            <router-link :to="{path:'/brores/journals',query:{mongofix:mongo.toLowerCase}}"
+                                         class="router-link-text"
+                            >
+                                {{mongo}}
+                            </router-link>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </el-main>
     </el-container>
@@ -74,6 +87,7 @@
         data: function () {
             return {
                 seriesArry: ["CoRR", "LNCS", "CEUR-WS", "LNEE", "IFIP", "LNI", "EPTCS", "LIPICS", "other"],
+                mongoArry:["books & theses","reference works","edited collections"],
             }
         },
 
@@ -91,7 +105,7 @@
     .browtable {
         background-color: #ebebeb;
         width: 650px;
-        height: 210px;
+        height: 250px;
         margin-left: 20px;
         padding: 1ex 1em 1ex 35px
     }
