@@ -1,19 +1,23 @@
 <template>
 <!--    <el-container>-->
+<!--    所有页面的路由导航菜单-->
         <el-main style="display: inline">
             <el-menu mode="horizontal"
                      class="menuStyle"
+                     router
                      background-color="#959595"
                      default-active="$route.path"
                      text-color="#fff">
                 <el-submenu index="homeMenue" >
                     <template slot="title">主页</template>
-                    <el-menu-item index="home" style="width: 50px">首页</el-menu-item>
+                    <el-menu-item index="/" style="width: 50px">首页</el-menu-item>
                     <el-menu-item index="homeStatistics">统计</el-menu-item>
                 </el-submenu>
                 <el-submenu index="brores">
                     <template slot="title">浏览</template>
-                    <el-menu-item index="browsePerson">作者</el-menu-item>
+                    <el-menu-item
+                            route="/brores/per"
+                            index="browsePerson">作者</el-menu-item>
                     <el-menu-item index="browseConferences">会议</el-menu-item>
                     <el-menu-item index="browseJournals">期刊</el-menu-item>
                     <el-menu-item index="browseSeries">系列</el-menu-item>

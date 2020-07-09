@@ -7,7 +7,7 @@
                     <header>浏览 作者 | 出版人</header>
                     <ul>
                         <li v-for="n in 26" :key="n">
-                            <router-link :to="{path:'/brores/pre',query:{prefix:getPrefix(n)}}"
+                            <router-link :to="{path:'/brores/per',query:{prefix:getPrefix(n)}}"
                                          class="router-link-text"
                             >
                                 {{getPrefix(n)}}

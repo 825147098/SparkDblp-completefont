@@ -24,15 +24,41 @@ const routes = [
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/BrowseResult.vue'),
+        component: () => import(/* webpackChunkName: "about" */ '../views/browse/BrowseResult.vue'),
 
-        children:[
+        children: [
             {
-                path:'/brores/per',
-                name:'BroResPer',
-                component: () => import('../views/BrowseResultPerson'),
+                path: '/brores/per',
+                name: 'BroResPer',
+                component: () => import('../views/browse/BrowseResultPerson'),
+
             }
         ]
+    },
+    {
+        path: '/search',
+        name: 'Search',
+        component: () => import('../views/search/search'),
+        children: [
+            //默认页面
+            {
+                path: '/',
+                redirect: '/search/rules'
+            }, {
+                path: '/search/rules',
+                name: 'rule',
+                component: () => import('../views/search/searchRule')
+            },{
+                path: '/search/author',
+                name: 'author',
+                component: () => import('../views/search/searchAuthor')
+            }
+        ]
+    },
+    {
+        path: '/resAut',
+        name:'resaut',
+        component: () => import('../views/Result/resultAuthor')
     }
 ]
 

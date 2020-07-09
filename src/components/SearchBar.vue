@@ -23,8 +23,12 @@
                         <div>
                             <el-radio :label="0" style="color: white" >组合搜素</el-radio>
                         </div>
-                        <div>
-                            <el-radio :label="1" style="color: white">作者搜索</el-radio>
+                        <div @click="changeRadioToAut">
+                            <el-radio :label="1" style="color: white" >
+                                <router-link :to="{path:'/search/author'}"  >
+                                    作者搜索
+                                </router-link>
+                            </el-radio>
                         </div>
                         <div>
                             <el-radio :label="2" style="color: white">会议搜索</el-radio>
@@ -63,6 +67,19 @@
                 this.$store.commit("increment",{newInput:this.inputData,newLabel:this.radio});
             },
 
+            putRadioData(){
+                this.$store.commit("incrementRadio",{newLabel:this.radio})
+            },
+
+            changeRadioToAut(){
+              this.radio = 1;
+              this.putRadioData()
+            }
+
+        },
+
+        mounted() {
+            this.radio = this.$store.state.radioLabel;
         }
     }
 </script>
@@ -71,7 +88,7 @@
     .searchBarMain {
         background-color: #959595;
         margin: auto;
-        width: 80%;
+        /*width: 80%;*/
         min-width: 1000px;
         padding: 0;
         /*height: 120px;*/
@@ -104,4 +121,5 @@
         width: 300px;
         line-height: 90px;
     }
+
 </style>

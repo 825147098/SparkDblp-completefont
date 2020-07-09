@@ -1,14 +1,14 @@
 <template>
-    <el-container>
+    <el-container style="width: 80%;margin: auto">
         <el-header height="auto" >
             <SearchBar></SearchBar>
         </el-header>
-            <router-view style="width: 80%;margin: auto"></router-view>
+            <router-view ></router-view>
     </el-container>
 </template>
 
 <script>
-    import SearchBar from "../components/SearchBar";
+    import SearchBar from "../../components/SearchBar";
 
     export default {
         name: "BrowseResult",

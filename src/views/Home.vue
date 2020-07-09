@@ -1,19 +1,17 @@
 <template>
     <el-main>
-        <BrowseResult></BrowseResult>
+        <JournalItem></JournalItem>
     </el-main>
 </template>
 
 <script>
     // @ is an alias to /src
 
-
-    import BrowseResult from "./BrowseResult";
+    import JournalItem from "../components/bookTypeItem/JournalItem";
     export default {
         name: 'Home',
         components: {
-            BrowseResult
-
+            JournalItem
 
         },
 

@@ -12,7 +12,11 @@ export default new Vuex.Store({
     increment(state, payload){
       state.inputData = payload.newInput;
       state.radioLabel = payload.newLabel;
+    },
+    incrementRadio(state,payload){
+      state.radioLabel = payload.newLabel;
     }
+
   },
   actions: {
   },
