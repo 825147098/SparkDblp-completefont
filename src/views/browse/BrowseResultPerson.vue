@@ -144,7 +144,7 @@
                 if (query !== '') {
                     this.loading = true;
                     this.loading = false;
-                    axios.get("http://192.168.3.5:8080/authorses/search/findBy_VALUEStartingWith", {
+                    axios.get(this.$store.state.host + "/authorses/search/findBy_VALUEStartingWith", {
                         params: {
                             prefix: query,
                             size: 10
@@ -163,7 +163,7 @@
             },
             //获取作者列表
             getAuthorData() {
-                axios.get("http://192.168.3.5:8080/authorses/search/findAllBy_VALUEContainingIgnoreCase", {
+                axios.get(this.$store.state.host + "/authorses/search/findAllBy_VALUEContainingIgnoreCase", {
                     params: {
                         author: this.namePrefix,
                         page: this.nowPage,

@@ -18,7 +18,7 @@
 
         methods:{
           getAuthorDeatil(){
-            axios.get('http://192.168.3.5:8080/articles/search/findAllByAuthorContainingAccurate',{
+            axios.get(this.$store.state.host +'/articles/search/findAllByAuthorContainingAccurate',{
                 params:{
                     author:this.authorName
                 }

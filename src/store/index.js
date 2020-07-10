@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     inputData:"",
     radioLabel:0,
+    host:"http://192.168.3.5:8080",
   },
   mutations: {
     increment(state, payload){

@@ -1,13 +1,30 @@
 <template>
     <el-container class="con">
         <div class="box">
-            <div></div>
+            <el-tooltip class="item"
+                        effect="dark"
+                        content="Journal Articles"
+                        placement="bottom-end">
+                <div></div>
+            </el-tooltip>
         </div>
         <div class="articelButton">
-            <el-link :href=jourData.ee[0]._VALUE style="padding-right: 20px" :underline="false"
-                     v-if="jourData.ee != null">
-                <el-button circle icon="el-icon-document" size="mini"></el-button>
-            </el-link>
+            <el-dropdown style="padding: 0 10px" :underline="false"
+                         v-if="jourData.ee != null">
+                    <span>
+                       <el-button circle icon="el-icon-document" size="mini"></el-button>
+                    </span>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item v-for="(item,index) in jourData.ee" :key="item._VALUE">
+                        <el-link
+                                target="_blank"
+                                :href="item._VALUE">
+                            <i class="el-icon-link"></i>
+                            链接{{index + 1}}
+                        </el-link>
+                    </el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
             <el-tooltip v-else content="sorry,无链接" placement="bottom-end">
                 <el-button circle icon="el-icon-document" size="mini" disabled
                            style="margin-right: 20px"></el-button>
@@ -131,11 +148,6 @@
 </script>
 
 <style scoped>
-    .con {
-        /*width: 850px;*/
-        /*border: solid 2px #42b983;*/
-    }
-
     .box {
         display: table-cell;
         padding: 0px 2px;
