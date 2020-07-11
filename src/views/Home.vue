@@ -1,32 +1,30 @@
 <template>
     <el-main>
-        <JournalItem></JournalItem>
-        <BookAndTheseItem></BookAndTheseItem>
-        <ConfAndWorkItem></ConfAndWorkItem>
-        <EditorShipItem></EditorShipItem>
-        <InformalPubItem></InformalPubItem>
-        <PartInBookOrColl></PartInBookOrColl>
+        <RefineByAuthor name="协作者"></RefineByAuthor>
+        <RefineByType></RefineByType>
+        <RefineByVenue></RefineByVenue>
+        <RefineByYear></RefineByYear>
+        <RefineByTypeInDetail></RefineByTypeInDetail>
     </el-main>
 </template>
 
 <script>
     // @ is an alias to /src
 
-    import JournalItem from "../components/bookTypeItem/JournalItem";
-    import BookAndTheseItem from "../components/bookTypeItem/BookAndTheseItem";
-    import ConfAndWorkItem from "../components/bookTypeItem/ConfAndWorkItem";
-    import EditorShipItem from "../components/bookTypeItem/EditorShipItem";
-    import InformalPubItem from "../components/bookTypeItem/InformalPubItem";
-    import PartInBookOrColl from "../components/bookTypeItem/PartInBookOrCollItem";
+    import RefineByAuthor from "../components/refineListItem/RefineByAuthor";
+    import RefineByType from "../components/refineListItem/RefineByType";
+    import RefineByVenue from "../components/refineListItem/RefineByVenue";
+    import RefineByYear from "../components/refineListItem/RefineByYear";
+    import RefineByTypeInDetail from "../components/refineListItem/RefineByTypeInDetail";
+
     export default {
         name: 'Home',
         components: {
-            PartInBookOrColl,
-            InformalPubItem,
-            EditorShipItem,
-            ConfAndWorkItem,
-            BookAndTheseItem,
-            JournalItem
+            RefineByTypeInDetail,
+            RefineByYear,
+            RefineByVenue,
+            RefineByType,
+            RefineByAuthor
 
         },
 

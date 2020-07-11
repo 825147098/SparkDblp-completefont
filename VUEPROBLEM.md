@@ -2,13 +2,13 @@
 统计图依赖：https://github.com/ecomfe/vue-echarts/blob/master/README.zh_CN.md
 	
 ##Vue 错误发现及解决方案
- 1.	无法输出连续26个字母
+无法输出连续26个字母
 
     解决方法 String.fromCharCode(64 + n); //65为A，97为a
- 2.	图片无法加载
+图片无法加载
 
     解决方法 将imageUrls引入响应的vue文件中，解析引用
- 3.  vuex如何用watch监听this.$store数据的变化
+vuex如何用watch监听this.$store数据的变化
 
     ```
     watch: {
@@ -17,4 +17,6 @@
         }
       },
     ```
- 4.  
+prop传值
+     
+    动态传值需要v-bind:attribute="" 静态直接attribute=""

@@ -7,6 +7,10 @@ export default new Vuex.Store({
   state: {
     inputData:"",
     radioLabel:0,
+    year:'',
+    venue:'',
+    type:'',
+    authors:[],
     host:"http://192.168.3.5:8080",
   },
   mutations: {
@@ -16,6 +20,30 @@ export default new Vuex.Store({
     },
     incrementRadio(state,payload){
       state.radioLabel = payload.newLabel;
+    },
+    incrementType(state,payload){
+      state.type = payload.newType;
+    },
+    incrementCleanType(state){
+      state.type = '';
+    },
+    incrementVenue(state,payload){
+      state.venue = payload.newVenue;
+    },
+    incrementCleanVenue(state){
+      state.venue = '';
+    },
+    incrementYear(state,payload){
+      state.year = payload.newYear;
+    },
+    incrementCleanYear(state){
+      state.year = '';
+    },
+    incrementAuthor(state, payload){
+      state.authors.push(payload.newAuthor);
+    },
+    incrementCleanAuthor(state, payload){
+      state.authors.splice(state.authors.indexOf(payload.moveAuthor),1);
     }
 
   },
