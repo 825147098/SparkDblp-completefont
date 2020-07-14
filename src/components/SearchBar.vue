@@ -21,7 +21,11 @@
                     <el-radio-group v-model="radio"
                                     style="margin-left: 10px">
                         <div>
-                            <el-radio :label="0" style="color: white" >组合搜素</el-radio>
+                            <el-radio :label="0" style="color: white" >
+                                <router-link :to="{path:'/search/author'}"  >
+                                    组合搜素
+                                </router-link>
+                            </el-radio>
                         </div>
                         <div @click="changeRadioToAut">
                             <el-radio :label="1" style="color: white" >

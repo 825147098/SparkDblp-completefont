@@ -61,7 +61,7 @@
 
 <script>
     export default {
-        name: "PartInBookOrColl",
+        name: "PartInBookOrCollItem",
 
         data:function () {
             return{

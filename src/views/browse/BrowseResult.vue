@@ -1,5 +1,5 @@
 <template>
-    <el-container style="width: 80%;margin: auto">
+    <el-container style="width: 80%;margin: auto ;max-width: 1150px">
         <el-header height="auto" >
             <SearchBar></SearchBar>
         </el-header>

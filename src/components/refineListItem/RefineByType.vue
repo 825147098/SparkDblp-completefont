@@ -20,7 +20,9 @@
             </ul>
             <ul v-show="loadFlag">
                 <li>
-                    <el-icon class="el-icon-loading"></el-icon>
+                    <el-icon class="el-icon-loading"
+                             style="font-size: 20px "
+                    ></el-icon>
                 </li>
             </ul>
         </div>
@@ -155,6 +157,8 @@
         padding: 0 4px 0 0;
         margin: 0;
         text-decoration: none;
+        word-wrap: break-word;
+        word-break: break-all;
     }
 
     .authorButton {

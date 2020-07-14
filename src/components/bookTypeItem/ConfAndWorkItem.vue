@@ -98,14 +98,6 @@
                     "crossref": "conf/igarss/2016",
                     "editor": null,
                     "pages": "302-305",
-                    "_links": {
-                        "self": {
-                            "href": "http://localhost:8080/inProceedings/5f074235ee6f4e42228c6d98"
-                        },
-                        "inProceeding": {
-                            "href": "http://localhost:8080/inProceedings/5f074235ee6f4e42228c6d98"
-                        }
-                    }
                 },
             }
         },

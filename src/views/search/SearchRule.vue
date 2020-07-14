@@ -100,6 +100,7 @@
         font-weight: 600;
         text-align: left;
         padding: 4px 24px;
+        margin: auto;
     }
 
     .header {

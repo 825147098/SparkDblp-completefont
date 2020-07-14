@@ -5,10 +5,12 @@
                 按照类型细化
             </b></p>
             <ul v-show="!loadFlag">
-                <el-checkbox-group v-model="typeList" @change="con">
+                <el-checkbox-group v-model="typeList">
                     <li v-for="item in typeNameList"
                         :key="item.type">
-                        <el-checkbox :label="item.type" class="authorButton">
+                        <el-checkbox :label="item.label"
+                                     size="mini"
+                                     class="authorButton">
                             {{item.type}}
                         </el-checkbox>
                     </li>
@@ -33,7 +35,9 @@
             </ul>
             <ul v-show="loadFlag">
                 <li>
-                    <el-icon class="el-icon-loading"></el-icon>
+                    <el-icon class="el-icon-loading"
+                             style="font-size: 20px "
+                    ></el-icon>
                 </li>
             </ul>
         </div>
@@ -55,21 +59,27 @@
                 typeNameList: [
                     {
                         "type": "Conference and Workshop Papers",
+                        label:0,
                     },
                     {
                         "type": "Journal Articles",
+                        label:1,
                     },
                     {
                         "type": "Informal Publications",
+                        label:2,
                     },
                     {
                         "type": "Books and Theses",
+                        label:3,
                     },
                     {
                         "type": "Parts in Books or Collections",
+                        label:4,
                     },
                     {
                         "type": "Editorship",
+                        label:5,
                     },
                 ],
 
@@ -84,17 +94,27 @@
 
             handleCheckAllChange() {
                 this.typeList = this.typeNameList.map(function (item) {
-                    return item.type;
+                    return item.label;
                 })
-                this.con()
+                // this.setTypeArray()
             },
 
             handleDeleteAllChange(){
                 this.typeList = [];
+                // this.setTypeArray()
+            },
+
+            setTypeArray(){
+                this.$store.commit("incrementTypeArray",{newTypeArray:this.typeList})
             }
         },
 
-        watch: {},
+        watch: {
+            typeList:function () {
+                this.setTypeArray()
+                console.log(this.$store.state.typeArry)
+            }
+        },
 
         created() {
             this.handleCheckAllChange()

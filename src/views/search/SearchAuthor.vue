@@ -63,7 +63,7 @@
 
 <script>
     import axios from "axios";
-    import SearchRule from "./searchRule";
+    import SearchRule from "./SearchRule";
 
     export default {
         name: "author",
@@ -214,6 +214,7 @@
         font-weight: 600;
         text-align: left;
         padding: 4px 24px;
+        margin: auto;
     }
 
     .header {

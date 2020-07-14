@@ -143,7 +143,18 @@
             }
         },
 
-        methods: {},
+        methods: {
+            mapData(){
+                let data={};
+                for(let item in this.bookData){
+                    if(this.bookData[item] != null){
+                     data[item] = this.bookData[item];
+                    }
+                }
+                console.log(data)
+                this.bookData = data
+            }
+        },
 
         props: [
             'innerData',
@@ -156,6 +167,7 @@
         mounted() {
             if (this.innerData != null)
                 this.bookData = this.innerData;
+            // this.mapData()
         }
     }
 </script>

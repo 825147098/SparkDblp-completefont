@@ -38,7 +38,7 @@ const routes = [
     {
         path: '/search',
         name: 'Search',
-        component: () => import('../views/search/search'),
+        component: () => import('../views/search/Search'),
         children: [
             //默认页面
             {
@@ -47,19 +47,23 @@ const routes = [
             }, {
                 path: '/search/rules',
                 name: 'rule',
-                component: () => import('../views/search/searchRule')
+                component: () => import('../views/search/SearchRule')
             },{
                 path: '/search/author',
                 name: 'author',
-                component: () => import('../views/search/searchAuthor')
+                component: () => import('../views/search/SearchAuthor')
+            },{
+                path: '/search/complete',
+                name:'complete',
+                component: () => import('../views/search/SearchComplete')
             }
         ]
     },
     {
         path: '/resAut',
         name:'resaut',
-        component: () => import('../views/Result/resultAuthor')
-    }
+        component: () => import('../views/Result/ResultAuthor')
+    },
 ]
 
 const router = new VueRouter({

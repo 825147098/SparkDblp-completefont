@@ -20,7 +20,9 @@
             </ul>
             <ul v-show="loadFlag">
                 <li>
-                    <el-icon class="el-icon-loading"></el-icon>
+                    <el-icon class="el-icon-loading"
+                             style="font-size: 20px "
+                    ></el-icon>
                 </li>
             </ul>
             <ul v-show="!loadFlag">
@@ -186,7 +188,6 @@
         margin: 0 0 2ex;
         font-size: smaller;
         text-align: left;
-        width: 245px;
     }
 
     .refine-by > p {

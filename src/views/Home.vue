@@ -1,31 +1,17 @@
 <template>
-    <el-main>
-        <RefineByAuthor name="协作者"></RefineByAuthor>
-        <RefineByType></RefineByType>
-        <RefineByVenue></RefineByVenue>
-        <RefineByYear></RefineByYear>
-        <RefineByTypeInDetail></RefineByTypeInDetail>
-    </el-main>
+    <el-container>
+        <CompleteResult></CompleteResult>
+    </el-container>
 </template>
 
 <script>
     // @ is an alias to /src
 
-    import RefineByAuthor from "../components/refineListItem/RefineByAuthor";
-    import RefineByType from "../components/refineListItem/RefineByType";
-    import RefineByVenue from "../components/refineListItem/RefineByVenue";
-    import RefineByYear from "../components/refineListItem/RefineByYear";
-    import RefineByTypeInDetail from "../components/refineListItem/RefineByTypeInDetail";
-
+    import CompleteResult from "../components/CompleteResult";
     export default {
         name: 'Home',
         components: {
-            RefineByTypeInDetail,
-            RefineByYear,
-            RefineByVenue,
-            RefineByType,
-            RefineByAuthor
-
+            CompleteResult,
         },
 
     }

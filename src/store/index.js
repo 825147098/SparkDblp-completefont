@@ -12,6 +12,9 @@ export default new Vuex.Store({
     type:'',
     authors:[],
     host:"http://192.168.3.5:8080",
+
+    refineData:'',
+    typeArry:[],
   },
   mutations: {
     increment(state, payload){
@@ -44,7 +47,13 @@ export default new Vuex.Store({
     },
     incrementCleanAuthor(state, payload){
       state.authors.splice(state.authors.indexOf(payload.moveAuthor),1);
-    }
+    },
+    incrementRefineData(state, payload){
+      state.refineData.push(payload.newFilter);
+    },
+    incrementTypeArray(state, payload){
+      state.typeArry = payload.newTypeArray;
+    },
 
   },
   actions: {
