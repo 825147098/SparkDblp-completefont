@@ -57,18 +57,6 @@ export default new Vuex.Store({
     incrementRefineData(state, payload){
       state.refineData.push(payload.newFilter);
     },
-    // incrementAuthor(state, payload){
-    //   state.filterOb.authors.push(payload.newAuthor);
-    // },
-    // incrementCleanAuthor(state, payload){
-    //   state.filterOb.authors.splice(state.authors.indexOf(payload.moveAuthor),1);
-    // },
-    // incrementFliterVenue(state,payload){
-    //   state.filterOb.venue = payload.newVenue;
-    // },
-    // incrementFliterCleanVenue(state){
-    //   state.filterOb.venue = '';
-    // },
 
 
   },

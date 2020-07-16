@@ -68,6 +68,7 @@
     import EditorShipItem from "./bookTypeItem/EditorShipItem";
     import InformalPubItem from "./bookTypeItem/InformalPubItem";
     import JournalItem from "./bookTypeItem/JournalItem";
+    import testData from "../testData";
     // import PartInBookOrCollItem from "./bookTypeItem/PartInBookOrCollItem";
     export default {
         name: "CompleteResult",
@@ -95,21 +96,22 @@
 
         methods: {
             getPubData() {
-                axios.get(this.$store.state.host + "/onlyDocs/search/findAllByTitleMatches", {
-                    params: {
-                        title: this.title,
-                        page: this.page
-                    }
-                }).then(res => {
-                    this.waitList = res.data._embedded.onlyDocs;
-                    this.pageDetail = res.data.page;
+                // axios.get(this.$store.state.host + "/onlyDocs/search/findAllByTitleMatches", {
+                //     params: {
+                //         title: this.title,
+                //         page: this.page
+                //     }
+                // }).then(res => {
+                //     this.waitList = res.data._embedded.onlyDocs;
+                //     this.pageDetail = res.data.page;
+                    this.waitList = testData.data().test
                     this.loadFlag = false;
                     this.dataFlag = true;
                     this.pubSort()
                     console.log(this.waitList);
-                }).catch(error => {
-                    console.log(error);
-                })
+                // }).catch(error => {
+                //     console.log(error);
+                // })
             },
 
             changeFalg() {

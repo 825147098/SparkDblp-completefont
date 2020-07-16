@@ -6,7 +6,9 @@
             </b></p>
             <ul v-show="!loadFlag">
                 <li v-for="(item,index) in venueList" :key="item._VALUE">
-                    <i :class=item.img v-show="item.show"></i>
+                    <i :class=item.img
+                       class="icon"
+                       v-show="item.show"></i>
                     <el-button type="text"
                                size="small"
                                @mouseenter.native="mouseEnter(index)"
@@ -151,7 +153,7 @@
                 if (this.venueList[index].img === "el-icon-circle-plus") {
                     this.venueList[index].show = true;
                     this.venueList[index].img = "el-icon-remove";
-                    this.$store.commit("incrementFliterVenue",{newVenue:this.venueList[index]._VALUE});
+                    this.$store.commit("incrementFliterVenue", {newVenue: this.venueList[index]._VALUE});
 
                     let temp = this.venueList[index];
                     this.venueList = []
@@ -162,7 +164,7 @@
                     this.$store.commit("incrementFliterCleanVenue")
                     this.getVenueData()
                 }
-                 console.log(this.$store.state.filterOb.venue)
+                console.log(this.$store.state.filterOb.venue)
             },
 
             toThousands(num) {
@@ -178,25 +180,27 @@
                 return result;
             },
 
-            c(){
+            c() {
                 let data = testData.data().test;
                 let arr = []
                 for (let i = 0; i < data.length; i++) {
+                    if (data[i].journal != null) {
                         arr.push({_VALUE: data[i].journal});
+                    } else {
+                        arr.push({_VALUE: data[i].booktitle});
+                    }
                 }
                 let sort = testData.group_signal(arr, "_VALUE");
-                let arrlist=[];
+                let arrlist = [];
 
-                for(let item in sort ){
-                    arrlist.push({venue:item, num: sort[item].length})
+                for (let item in sort) {
+                    arrlist.push({venue: item, num: sort[item].length})
                 }
                 return arrlist
             }
         },
 
-        watch: {
-
-        },
+        watch: {},
 
         created() {
             this.testList = this.c()
@@ -225,9 +229,14 @@
 
     .refine-by > ul > li {
         display: block;
-        padding: 0 4px 0 0;
+        padding: 2px 4px 0 0;
         margin: 0;
         text-decoration: none;
+    }
+
+    .refine-by > ul > li > .icon {
+        position: absolute;
+        margin: 3px -15px;
     }
 
     .authorButton {
@@ -244,8 +253,11 @@
         background-color: transparent;
         margin: 0;
         padding: 0;
+        white-space: pre-line;
+
     }
-    .buttonSelect{
+
+    .buttonSelect {
         font-weight: 700;
         font-style: italic;
         padding-right: 4px

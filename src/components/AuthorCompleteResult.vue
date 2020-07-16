@@ -438,8 +438,14 @@
                 let data = this.filterList;
                 let arr = []
                 for (let i = 0; i < data.length; i++) {
-                    for (let j = 0; j < data[i].author.length; j++) {
-                        arr.push({_VALUE: data[i].author[j]._VALUE});
+                    if(data[i].author != null){
+                        for (let j = 0; j < data[i].author.length; j++) {
+                            arr.push({_VALUE: data[i].author[j]._VALUE});
+                        }
+                    } else {
+                        for (let j = 0; j < data[i].editor.length; j++) {
+                            arr.push({_VALUE: data[i].editor[j]._VALUE});
+                        }
                     }
                 }
                 let sort = testData.group_signal(arr, "_VALUE");
@@ -700,7 +706,12 @@
                         for(let j = 0; j < venArr[i].author.length ; j++){
                             // console.log(this.filterObj.authors + venArr[i].author[j]._VALUE)
                             if(this.filterObj.authors.indexOf(venArr[i].author[j]._VALUE) != -1){
-                                console.log(this.filterObj.authors.indexOf(venArr[i].author[j]._VALUE))
+                                // console.log(this.filterObj.authors.indexOf(venArr[i].author[j]._VALUE))
+                                autArr.push(venArr[i]);
+                                break;
+                            }
+                            if(this.filterObj.authors.indexOf(venArr[i].editor[j]._VALUE) != -1){
+                                // console.log(this.filterObj.authors.indexOf(venArr[i].author[j]._VALUE))
                                 autArr.push(venArr[i]);
                                 break;
                             }

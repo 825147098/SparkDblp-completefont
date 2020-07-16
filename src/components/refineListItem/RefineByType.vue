@@ -6,7 +6,9 @@
             </b></p>
             <ul v-show="!loadFlag">
                 <li v-for="(item,index) in typeList" :key="item._VALUE">
-                    <i :class=item.img v-show="item.show"></i>
+                    <i :class=item.img
+                       class="icon"
+                       v-show="item.show"></i>
                     <el-button type="text"
                                size="small"
                                @mouseenter.native="mouseEnter(index)"
@@ -154,11 +156,16 @@
 
     .refine-by > ul > li {
         display: block;
-        padding: 0 4px 0 0;
+        padding: 2px 4px 0 0;
         margin: 0;
         text-decoration: none;
         word-wrap: break-word;
         word-break: break-all;
+    }
+
+    .refine-by > ul > li > .icon {
+        position: absolute;
+        margin: 3px -15px;
     }
 
     .authorButton {
@@ -175,6 +182,7 @@
         background-color: transparent;
         margin: 0px;
         padding: 0px;
+        white-space: pre-line;
     }
     .buttonSelect{
         font-weight: 700;
