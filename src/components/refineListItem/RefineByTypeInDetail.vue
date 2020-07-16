@@ -11,7 +11,7 @@
                         <el-checkbox :label="item.label"
                                      size="mini"
                                      class="authorButton">
-                            {{item.type}}
+                            {{item.type}}(only)
                         </el-checkbox>
                     </li>
                 </el-checkbox-group >
@@ -45,6 +45,9 @@
 </template>
 
 <script>
+    import testData from "../../testData";
+    // import axios from 'axios' ;
+
     export default {
         name: "RefineByTypeInDetail",
 
@@ -54,7 +57,6 @@
 
                 loadFlag: false,
 
-                sqlSize: 300,
 
                 typeNameList: [
                     {
@@ -88,9 +90,22 @@
         },
 
         methods: {
-            con(){
-                console.log(this.typeList)
-            },
+            // con(){
+            //     // axios.get(this.$store.state.host + "/onlyDocReactive/test")
+            //     //     .then(res => {
+            //     //         for(var key in res.data){
+            //     //             console.log(res.data[key])
+            //     //         }
+            //     //     }).catch(error => {
+            //     //         console.log(error)
+            //     // })
+            //     let es = new EventSource(this.$store.state.host + '/onlyDocReactive/test');
+            //     es.addEventListener('message', event => {
+            //         let data = JSON.parse(event.data);
+            //         // this.typeList.push(data)
+            //         console.log(data)
+            //     }, false);
+            // },
 
             handleCheckAllChange() {
                 this.typeList = this.typeNameList.map(function (item) {
@@ -104,20 +119,34 @@
                 // this.setTypeArray()
             },
 
-            setTypeArray(){
-                this.$store.commit("incrementTypeArray",{newTypeArray:this.typeList})
+            c(){
+                let data = testData.data().test;
+                let arr = []
+                for (let i = 0; i < data.length; i++) {
+
+                        arr.push({_VALUE: data[i].type});
+
+                }
+                let sort = testData.group_signal(arr, "_VALUE");
+                let arrlist=[];
+
+                for(let item in sort ){
+                    arrlist.push({type:item, label: item})
+                }
+                return arrlist
             }
         },
 
         watch: {
             typeList:function () {
-                this.setTypeArray()
-                console.log(this.$store.state.typeArry)
+                console.log(this.typeList)
             }
         },
 
         created() {
+            this.typeNameList = this.c()
             this.handleCheckAllChange()
+            // this.con()
         }
     }
 </script>

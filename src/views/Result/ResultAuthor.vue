@@ -7,51 +7,35 @@
            </h3>
        </el-header>
         <el-container>
-            <AuthorCompleteResult></AuthorCompleteResult>
-            <AuthorRefienList class="refineList"></AuthorRefienList>
-
+            <AuthorCompleteResult :name=authorName></AuthorCompleteResult>
         </el-container>
     </el-container>
 </template>
 
 <script>
-    import axios from 'axios';
     import SearchBar from "../../components/SearchBar";
-    import AuthorRefienList from "../../components/refineList/AuthorRefienList";
     import AuthorCompleteResult from "../../components/AuthorCompleteResult";
     export default {
         name: "resultAuthor",
-        components: {AuthorCompleteResult, AuthorRefienList, SearchBar},
+        components: {AuthorCompleteResult, SearchBar},
         data: function () {
             return{
                 da:[]  ,
-                authorName:'Xi Zheng ',
+                authorName:'',
             }
         },
 
         methods:{
-          getAuthorDeatil(){
-            axios.get(this.$store.state.host +'/articles/search/findAllByAuthorContainingAccurate',{
-                params:{
-                    author:this.authorName
-                }
-            }).then(res =>{
-                this.da = res.data;
-                console.log(res.data)
-            }).catch(error =>{
-                console.log(error);
-            })
-          }
+
         },
 
         mounted() {
-            // this.getAuthorDeatil();
+
         },
 
         created() {
             if (this.$route.query.autName != null) {
                 this.authorName = this.$route.query.autName;
-                console.log(this.authorName)
             }
         }
     }

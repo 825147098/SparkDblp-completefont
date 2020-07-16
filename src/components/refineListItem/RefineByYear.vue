@@ -14,8 +14,8 @@
                                @click="addAuthorToInput(index)"
                                :class="['authorButton' ,item.show ? 'buttonSelect' : '']">
                         {{item._VALUE}}({{toThousands(item.num)}})
+                        <span v-show="item.show">✔</span>
                     </el-button>
-                    <span v-show="item.show">✔</span>
                 </li>
             </ul>
             <ul v-show="loadFlag">

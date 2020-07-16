@@ -1,26 +1,35 @@
 <template>
     <el-container>
-        <el-header class="header" >
+        <el-header class="header" v-show="activeShow">
             <h1 class="headline">搜索 Spark Dblp</h1>
         </el-header>
         <el-container v-if="activeShow">
             <CompleteResult></CompleteResult>
             <ComRefineList></ComRefineList>
         </el-container>
-        <SearchRule v-else ></SearchRule>
+        <SearchRule v-else></SearchRule>
     </el-container>
 </template>
 
 <script>
     import CompleteResult from "../../components/CompleteResult";
     import ComRefineList from "../../components/refineList/ComRefineList";
+    import SearchRule from "./SearchRule";
     export default {
-        name: "ResultComplete",
-        components: {ComRefineList, CompleteResult},
+        name: "SearchComplete",
+        components: {SearchRule, ComRefineList, CompleteResult},
 
         data:function () {
             return{
                 activeShow:true,
+            }
+        },
+
+        watch:{
+            '$store.state.inputData': function () {
+                if(this.$store.state.radioLabel === 0 & this.$store.state.inputData != ''){
+                    this.activeShow = true;
+                }
             }
         }
     }

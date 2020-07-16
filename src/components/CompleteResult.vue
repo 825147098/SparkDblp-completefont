@@ -21,6 +21,9 @@
                         <ConfAndWorkItem v-else-if="item.type == 'conference and workshop'"
                                          :inner-data="item"
                         ></ConfAndWorkItem>
+                        <ConfAndWorkItem v-else-if="item.type == 'inproceedings'"
+                                         :inner-data="item"
+                        ></ConfAndWorkItem>
                         <EditorShipItem v-else-if="item.type == 'series'"
                                         :inner-data="item"
                         ></EditorShipItem>
@@ -48,7 +51,7 @@
                     class="putList">
                     <li>
                         <el-button type="text" @click="load">
-                            更多
+                            点击获取更多
                             <img src="https://dblp.uni-trier.de/img/waiting.anim.gif" alt="">
                         </el-button>
                     </li>
@@ -92,7 +95,7 @@
 
         methods: {
             getPubData() {
-                axios.get(this.$store.state.host + "/onlyDocs/search/findAllByTitleContainingIgnoreCase", {
+                axios.get(this.$store.state.host + "/onlyDocs/search/findAllByTitleMatches", {
                     params: {
                         title: this.title,
                         page: this.page

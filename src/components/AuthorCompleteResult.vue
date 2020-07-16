@@ -1,58 +1,234 @@
 <template>
-    <el-main style="padding-top: 0; max-width: 850px">
-        <el-collapse v-model="activeName" accordion @change="changeFalg">
-            <el-collapse-item name="1">
-                <template slot="title">
-                    [{{flag}}] 搜索结果
-                </template>
-                <p v-show="dataFlag"
-                   class="infoMatch"
-                >
-                    匹配到{{this.pageDetail.totalElements}}条结果</p>
-                <ul v-show="dataFlag"
-                    class="putList"
-                    v-for="year in yearList" :key="year"
-                >
-                    <li class="year">{{year}}</li>
-                    <li v-for="item in pubList[year]" :key="item.title">
-                        <BookAndTheseItem v-if="item.type == 'book and thesis'"
-                                          :inner-data="item"
-                        ></BookAndTheseItem>
-                        <ConfAndWorkItem v-else-if="item.type == 'conference and workshop'"
-                                         :inner-data="item"
-                        ></ConfAndWorkItem>
-                        <EditorShipItem v-else-if="item.type == 'series'"
-                                        :inner-data="item"
-                        ></EditorShipItem>
-                        <InformalPubItem v-else-if="item.type == 'informal'"
-                                         :inner-data="item"
-                        ></InformalPubItem>
-                        <PartInBookOrCollItem v-else-if="item.type == 'incollection'"
+    <el-container>
+        <el-main style="padding-top: 0; max-width: 850px">
+            <el-collapse v-model="activeName" accordion @change="changeFalg">
+                <el-collapse-item name="1">
+                    <template slot="title">
+                        [{{flag}}] 搜索结果
+                    </template>
+                    <ul v-show="dataFlag"
+                        class="putList"
+                        v-for="year in yearList" :key="year"
+                    >
+                        <li class="year">{{year}}</li>
+                        <li v-for="item in pubList[year]" :key="item.title">
+                            <BookAndTheseItem v-if="item.type == 'Book and Theses'"
                                               :inner-data="item"
-                        ></PartInBookOrCollItem>
-                        <JournalItem v-else-if="item.type == 'journals article'"
-                                     :inner-data="item"
-                        ></JournalItem>
-                    </li>
-                </ul>
-                <ul v-show="loadFlag"
-                    class="putList">
-                    <li style="color: #409EFF">
-                        Loading
-                        <el-icon class="el-icon-loading"
-                                 style="font-size: 20px "
-                        ></el-icon>
-                    </li>
-                </ul>
-                <ul v-show="pubList.length > 0"
-                    class="putList">
-                    <li>
-                        结果为空
-                    </li>
-                </ul>
-            </el-collapse-item>
-        </el-collapse>
-    </el-main>
+                            ></BookAndTheseItem>
+                            <ConfAndWorkItem v-else-if="item.type == 'Conference and Workshop Papers'"
+                                             :inner-data="item"
+                            ></ConfAndWorkItem>
+                            <EditorShipItem v-else-if="item.type == 'Editorshop'"
+                                            :inner-data="item"
+                            ></EditorShipItem>
+                            <InformalPubItem v-else-if="item.type == 'Informal Publications'"
+                                             :inner-data="item"
+                            ></InformalPubItem>
+                            <PartInBookOrCollItem v-else-if="item.type == 'Parts in Books or Collections'"
+                                                  :inner-data="item"
+                            ></PartInBookOrCollItem>
+                            <JournalItem v-else-if="item.type == 'Journals Article'"
+                                         :inner-data="item"
+                            ></JournalItem>
+                        </li>
+                    </ul>
+                    <ul v-show="loadFlag"
+                        class="putList">
+                        <li style="color: #409EFF">
+                            Loading
+                            <el-icon class="el-icon-loading"
+                                     style="font-size: 20px "
+                            ></el-icon>
+                        </li>
+                    </ul>
+                    <ul v-show="yearList.length == 0 && !loadFlag && dataFlag"
+                        class="putList">
+                        <li>
+                            结果为空
+                        </li>
+                    </ul>
+                </el-collapse-item>
+            </el-collapse>
+        </el-main>
+        <el-aside class="asideCon">
+            <el-collapse v-model="refineActiveName" accordion @change="changeRefineFalg">
+                <el-collapse-item name="1">
+                    <template slot="title">
+                        [{{flagRefine}}] 搜索优化列表
+                    </template>
+                    <div class="refine-by"
+                         v-show="!loadFlag && dataFlag">
+                        <em>
+                            <span v-if="filterObj.size == 0 || filterObj.size == waitList.length">显示所有{{waitList.length}}条记录</span>
+                            <span v-else>放大&nbsp;{{waitList.length}}&nbsp;条记录中的&nbsp;{{filterObj.size}}&nbsp;条</span>
+                        </em>
+                    </div>
+                    <!--                    输入栏-->
+                    <div class="refine-by">
+                        <p><b>按搜索词优化</b></p>
+                        <el-input size="mini"
+                                  v-model="refineInput"
+                                  style="width: 180px">
+                        </el-input>
+                    </div>
+                    <!--                    类型-->
+                    <el-main style="padding: 0">
+                        <div class="refine-by" style="padding: 0">
+                            <p><b>
+                                按照类型细化
+                            </b></p>
+                            <ul v-show="!typeLoadFlag">
+                                <el-checkbox-group v-model="typeList">
+                                    <li v-for="item in typeNameList"
+                                        :key="item.type">
+                                        <el-checkbox :label="item.label"
+                                                     size="mini"
+                                                     class="authorButton">
+                                            <span class="checkBox">
+                                                {{item.type}}(only)
+                                            </span>
+                                        </el-checkbox>
+                                    </li>
+                                </el-checkbox-group>
+                            </ul>
+                            <ul v-show="!typeLoadFlag">
+                                <li>
+                                    <el-button size="mini"
+                                               class="authorButton"
+                                               @click="handleCheckAllChange"
+                                               type="text">
+                                        全选
+                                    </el-button>
+                                    <el-divider direction="vertical"></el-divider>
+                                    <el-button size="mini"
+                                               @click="handleDeleteAllChange"
+                                               class="authorButton"
+                                               type="text">
+                                        取消
+                                    </el-button>
+                                </li>
+                            </ul>
+                            <ul v-show="typeLoadFlag">
+                                <li>
+                                    <el-icon class="el-icon-loading"
+                                             style="font-size: 20px "
+                                    ></el-icon>
+                                </li>
+                            </ul>
+                            <ul v-show="typeNameList.length == 0 && !typeLoadFlag"
+                                class="putList">
+                                <li>
+                                    结果为空
+                                </li>
+                            </ul>
+                        </div>
+                    </el-main>
+                    <!--                    作者-->
+                    <el-main style="padding: 0">
+                        <div class="refine-by">
+                            <p><b>
+                                按照协作者细化
+                            </b></p>
+                            <ul v-show="!autLoadFlag">
+                                <li v-for="(item,index) in authorList" :key="item._VALUE">
+                                    <i :class=item.img
+                                       class="icon"
+                                       v-show="item.show"></i>
+                                    <el-button type="text"
+                                               size="small"
+                                               @mouseenter.native="mouseAutEnter(index)"
+                                               @mouseleave.native="mouseAutLeave(index)"
+                                               @click="addAuthorToInput(index)"
+                                               :class="['authorButton' ,item.show ? 'buttonSelect' : '']">
+                                        {{item._VALUE}}({{toThousands(item.num)}})
+                                        <span v-show="item.show">✔</span>
+                                    </el-button>
+
+                                </li>
+                            </ul>
+                            <ul v-show="autLoadFlag">
+                                <li>
+                                    <el-icon class="el-icon-loading"
+                                             style="font-size: 20px "
+                                    ></el-icon>
+                                </li>
+                            </ul>
+                            <ul v-show="!autLoadFlag && autSqlSize - authorList > 0">
+                                <li>
+                                    <el-button
+                                            type="text"
+                                            @click="getMoreAutData"
+                                            class="authorButton"
+                                            size="samll">
+                                        <em>
+                                            {{autSqlSize - authorList.length}}更多可选项
+                                        </em>
+                                    </el-button>
+                                </li>
+                            </ul>
+                            <ul v-show="authorList.length == 0 && !autLoadFlag"
+                                class="putList">
+                                <li>
+                                    结果为空
+                                </li>
+                            </ul>
+                        </div>
+                    </el-main>
+                    <el-main style="padding: 0">
+                        <div class="refine-by">
+                            <p><b>
+                                按照会议细化
+                            </b></p>
+                            <ul v-show="!venLoadFlag">
+                                <li v-for="(item,index) in venueList" :key="item._VALUE">
+                                    <i :class=item.img
+                                       class="icon"
+                                       v-show="item.show"></i>
+                                    <el-button type="text"
+                                               size="small"
+                                               @mouseenter.native="mouseVenEnter(index)"
+                                               @mouseleave.native="mouseVenLeave(index)"
+                                               @click="addVenToInput(index)"
+                                               :class="['authorButton' ,item.show ? 'buttonSelect' : '']">
+                                        {{item._VALUE}}({{toThousands(item.num)}})
+                                        <span v-show="item.show">✔</span>
+                                    </el-button>
+                                </li>
+                            </ul>
+                            <ul v-show="venLoadFlag">
+                                <li>
+                                    <el-icon class="el-icon-loading"
+                                             style="font-size: 20px "
+                                    ></el-icon>
+                                </li>
+                            </ul>
+                            <ul v-show="!venLoadFlag && filterObj.venue === ''
+                            && venSqlSize - venueList.length > 0">
+                                <li>
+                                    <el-button
+                                            type="text"
+                                            @click="getMoreVenData"
+                                            class="authorButton"
+                                            size="samll">
+                                        <em>
+                                            {{venSqlSize - venueList.length}}更多可选项
+                                        </em>
+                                    </el-button>
+                                </li>
+                            </ul>
+                            <ul v-show="venueList.length == 0 && !venLoadFlag"
+                                class="putList">
+                                <li>
+                                    结果为空
+                                </li>
+                            </ul>
+                        </div>
+                    </el-main>
+                </el-collapse-item>
+            </el-collapse>
+
+        </el-aside>
+    </el-container>
 </template>
 
 <script>
@@ -62,78 +238,103 @@
     import EditorShipItem from "./bookTypeItem/EditorShipItem";
     import InformalPubItem from "./bookTypeItem/InformalPubItem";
     import JournalItem from "./bookTypeItem/JournalItem";
-    // import PartInBookOrCollItem from "./bookTypeItem/PartInBookOrCollItem";
+    import testData from "../testData";
+    import PartInBookOrCollItem from "./bookTypeItem/PartInBookOrCollItem";
+
     export default {
         name: "AuthorCompleteResult",
         components: {
+            PartInBookOrCollItem,
             // PartInBookOrCollItem,
             JournalItem, InformalPubItem, EditorShipItem, ConfAndWorkItem, BookAndTheseItem
         },
         data: function () {
             return {
-                title: 'Time',
+                //搜索参数
+                author: '',
                 page: 0,
                 size: '',
                 pageDetail: '',
-
+                //折叠面板标记
+                flagRefine: '-',
+                refineActiveName: '1',
                 flag: '-',
                 activeName: '1',
+                //书籍标记
                 loadFlag: true,
                 dataFlag: false,
-
+                //书籍信息
                 pubList: [],
                 waitList: [],
+                //过滤结果列表
+                filterList: [],
                 yearList: [],
+                //输入栏数据
+                refineInput: '',
+                //类型信息
+                typeList: [],
+                typeNameList: [],
+                //类型标记
+                typeLoadFlag: true,
+                typeDataFlag: false,
+                //作者数据
+                authorList: [],
+                autTestList: [],
+                //作者标记
+                autLoadFlag: true,
+                autDataFlag: false,
+                autSqlSize: '',
+                authorNumCount: 0,
+                autArrCount: 0,
+
+                //会议数据
+                venueList: [],
+                venTestList: [],
+
+                venNumCount: 0,
+                venLoadFlag: true,
+                venSqlSize: 0,
+                venArrCount: 0,
+
+                //筛选条件
+                filterObj: {
+                    venue: '',
+                    authors: [],
+                    search: '',
+                    'Book and Theses': false,
+                    "Editorshop": false,
+                    'Informal Publications': false,
+                    'Parts in Books or Collections': false,
+                    'Journals Article': false,
+                    'Conference and Workshop Papers': false,
+                    size: 0,
+                    flag:false
+                }
+
             }
         },
 
         methods: {
+            //数据处理函数
             getPubData() {
-                axios.get(this.$store.state.host + "/onlyDocs/search/findAllByTitleContainingIgnoreCase", {
+                axios.get(this.$store.state.host + "/onlyDocs/search/findAllByAuthor__VALUE", {
                     params: {
-                        title: this.title,
-                        page: this.page
+                        author: this.author,
+                        size:300
                     }
                 }).then(res => {
                     this.waitList = res.data._embedded.onlyDocs;
+                    this.filterList = this.waitList;
                     this.pageDetail = res.data.page;
-                    this.loadFlag = false;
-                    this.dataFlag = true;
-                    this.pubSort()
-                    console.log(this.waitList);
+                    console.log(this.waitList)
+
+                    this.changeType();
+                    this.getData()
+                    this.handleCheckAllChange()
                 }).catch(error => {
                     console.log(error);
                 })
             },
-
-            changeFalg() {
-                if (this.flag === '-')
-                    this.flag = '+';
-                else
-                    this.flag = '-';
-            },
-
-            // load() {
-            //     if (this.dataFlag) {
-            //         this.loadFlag = true;
-            //         setTimeout(() => {
-            //             this.page++;
-            //             axios.get(this.$store.state.host + "/onlyDocs/search/findAllByTitleContainingIgnoreCase", {
-            //                 params: {
-            //                     title: this.title,
-            //                     page: this.page
-            //                 }
-            //             }).then(res => {
-            //                 this.waitList = this.waitList.concat(res.data._embedded.onlyDocs);
-            //                 this.pubSort();
-            //                 this.loadFlag = false;
-            //                 // console.log(this.waitList);
-            //             }).catch(error => {
-            //                 console.log(error);
-            //             })
-            //         }, 2000)
-            //     }
-            // },
 
             group_signal(data, key) {
                 return data.reduce(function (prev, cur) {
@@ -146,7 +347,7 @@
                 if (this.pubList.length > 0) {
                     this.pubList.splice(0, this.pubList);
                 }
-                this.pubList = this.group_signal(this.waitList, "year");
+                this.pubList = this.group_signal(this.filterList, "year");
                 // console.log(this.pubList)
             },
 
@@ -155,11 +356,11 @@
                     this.yearList.splice(0, this.yearList.length);
                 }
                 let yearArr = [];
-                let length = this.waitList.length;
+                let length = this.filterList.length;
                 for (let i = 0; i < length; i++) {
                     // console.log(this.waitList[i].type)
-                    if (yearArr.indexOf(this.waitList[i].year) == -1) {
-                        yearArr.push(this.waitList[i].year);
+                    if (yearArr.indexOf(this.filterList[i].year) == -1) {
+                        yearArr.push(this.filterList[i].year);
                     }
                 }
                 yearArr = yearArr.sort(function (a, b) {
@@ -172,13 +373,428 @@
             pubSort() {
                 this.groupBy();
                 this.sortYear();
+                this.dataFlag = true
+                this.loadFlag = false
+            },
+            //修改折叠面板标记
+            changeFalg() {
+                if (this.flag === '-')
+                    this.flag = '+';
+                else
+                    this.flag = '-';
+            },
+
+            changeRefineFalg() {
+                if (this.flagRefine === '-')
+                    this.flagRefine = '+';
+                else
+                    this.flagRefine = '-';
+            },
+
+            //type列表处理函数
+            handleCheckAllChange() {
+                this.typeList = (this.typeNameList || []).map(function (item) {
+                    return item.label;
+                })
+                // this.setTypeArray()
+            },
+
+            handleDeleteAllChange() {
+                this.typeList = [];
+                // this.setTypeArray()
+            },
+
+            getTypeData() {
+                let data = this.waitList;
+                let arr = []
+                for (let i = 0; i < data.length; i++) {
+
+                    arr.push({_VALUE: data[i].type});
+
+                }
+                let sort = this.group_signal(arr, "_VALUE");
+                let arrlist = [];
+
+                for (let item in sort) {
+                    arrlist.push({type: item})
+                }
+
+                this.typeNameList = arrlist.map(function (item) {
+                    return {
+                        "type": item.type,
+                        "label": item.type
+                    };
+                })
+
+                this.typeLoadFlag = false;
+            },
+
+            //作者方法
+            getAuthorData() {
+                this.autLoadFlag = true;
+                let cont = 0;
+                this.autArrCount = 0;
+
+                let data = this.filterList;
+                let arr = []
+                for (let i = 0; i < data.length; i++) {
+                    for (let j = 0; j < data[i].author.length; j++) {
+                        arr.push({_VALUE: data[i].author[j]._VALUE});
+                    }
+                }
+                let sort = testData.group_signal(arr, "_VALUE");
+                let arrlist = [];
+
+                for (let item in sort) {
+                    arrlist.push({_VALUE: item, num: sort[item].length})
+                }
+                this.autTestList = arrlist.map(function (item) {
+
+                    return {
+                        "_VALUE": item._VALUE,
+                        "img": "el-icon-circle-plus",
+                        "index": cont++,
+                        "show": false,
+                        "num": item.num,
+                    };
+                });
+
+                for(let i = 0; i < this.autTestList.length; i++){
+                    if(this.filterObj.authors.length == 0)
+                        break;
+                    else {
+                        if(this.filterObj.authors.indexOf(this.autTestList[i]._VALUE) != -1){
+                            this.autTestList[i].show = true;
+                            this.autTestList[i].img = "el-icon-remove";
+                        }
+                    }
+                }
+
+                if (this.autArrCount + 10 < this.autTestList.length) {
+                    this.authorList = this.autTestList.slice(this.autArrCount, this.autArrCount + 10);
+                    this.autArrCount += 10;
+                } else {
+                    this.authorList = this.autTestList.slice(this.autArrCount);
+                    this.autArrCount += this.autTestList.length;
+                }
+
+                this.autSqlSize = this.autTestList.length;
+
+                this.authorNumCount = cont;
+                this.autLoadFlag = false;
+            },
+
+            getMoreAutData() {
+                this.autLoadFlag = true;
+
+                if (this.autArrCount + 10 < this.autTestList.length) {
+                    this.authorList = this.authorList.concat(this.autTestList.slice(this.autArrCount, this.autArrCount + 10));
+                    this.autArrCount += 10;
+                } else {
+                    this.authorList = this.autTestList;
+                    this.autArrCount += this.autTestList.length;
+                }
+
+                this.autLoadFlag = false;
+            },
+
+            mouseAutEnter(index) {
+                if (this.authorList[index].img === "el-icon-circle-plus")
+                    this.authorList[index].show = true;
+            },
+
+            mouseAutLeave(index) {
+                if (this.authorList[index].img === "el-icon-circle-plus")
+                    this.authorList[index].show = false;
+            },
+
+            addAuthorToInput(index) {
+                if (this.authorList[index].img === "el-icon-circle-plus") {
+                    this.authorList[index].show = true;
+                    this.authorList[index].img = "el-icon-remove";
+
+                    this.filterObj.authors.push(this.authorList[index]._VALUE)
+
+
+                } else {
+                    this.authorList[index].show = false;
+                    this.authorList[index].img = "el-icon-circle-plus";
+
+                    this.filterObj.authors.splice(this.filterObj.authors.indexOf(this.authorList[index]._VALUE), 1)
+
+                }
+
+                this.filterObj.flag = true;
+            },
+
+
+            //会议方法
+            getVenueData() {
+                this.venLoadFlag = true;
+                let cont = 0;
+                this.venArrCount = 0;
+
+                let data = this.filterList;
+                let arr = []
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].journal != null) {
+                        arr.push({_VALUE: data[i].journal});
+                    } else {
+                        arr.push({_VALUE: data[i].booktitle});
+                    }
+                }
+                let sort = testData.group_signal(arr, "_VALUE");
+                let arrlist = [];
+
+                for (let item in sort) {
+                    arrlist.push({venue: item, num: sort[item].length})
+                }
+
+                this.venTestList = arrlist.map(function (item) {
+                    return {
+                        "_VALUE": item.venue,
+                        "img": "el-icon-circle-plus",
+                        "index": cont++,
+                        "show": false,
+                        "num": item.num
+                    };
+                })
+
+                for(let i = 0; i < this.venueList.length; i++){
+                    if(this.filterObj.venue == '')
+                        break;
+                    else {
+                        if(this.filterObj.venue == this.venTestList[i]._VALUE){
+                            this.venTestList[i].show = true;
+                            this.venTestList[i].img = "el-icon-remove";
+                        }
+                    }
+                }
+
+                if (this.venArrCount + 10 <= this.venTestList.length) {
+                    this.venueList = this.venTestList.slice(this.venArrCount, this.venArrCount + 10);
+                    this.autArrCount += 10;
+                } else {
+                    this.venueList = this.venTestList.slice(this.venArrCount);
+                    this.venArrCount += this.venTestList.length;
+                }
+
+                this.venSqlSize = this.venTestList.length;
+
+
+                this.venNumCount = cont
+                this.venLoadFlag = false;
+            },
+
+            getMoreVenData() {
+                this.venLoadFlag = true;
+
+                if (this.venArrCount + 10 > this.venTestList.length) {
+                    this.venueList = this.venueList.concat(this.venTestList.slice(this.venArrCount, this.venArrCount + 10));
+                    this.venArrCount += 10;
+                } else {
+                    this.venueList = this.venTestList;
+                    this.venArrCount += this.venTestList.length;
+                }
+
+                this.venLoadFlag = false;
+            },
+
+            mouseVenEnter(index) {
+                if (this.venueList[index].img === "el-icon-circle-plus")
+                    this.venueList[index].show = true;
+            },
+
+            mouseVenLeave(index) {
+                if (this.venueList[index].img === "el-icon-circle-plus")
+                    this.venueList[index].show = false;
+            },
+
+            addVenToInput(index) {
+                if (this.venueList[index].img === "el-icon-circle-plus") {
+                    this.venueList[index].show = true;
+                    this.venueList[index].img = "el-icon-remove";
+
+                    let temp = this.venueList[index];
+                    this.filterObj.venue = temp._VALUE
+                    this.venueList = []
+                    this.venueList.push(temp)
+
+                } else {
+                    this.venueList[index].show = false;
+                    this.venueList[index].img = "el-icon-circle-plus";
+
+                    this.filterObj.venue = '';
+                    this.venNumCount = 0;
+                    this.venArrCount = 0;
+                    this.getVenueData()
+                }
+
+                this.filterObj.flag = true;
+            },
+
+            toThousands(num) {
+                num = (num || 0).toString();
+                let result = '';
+                while (num.length > 3) {
+                    result = ',' + num.slice(-3) + result;
+                    num = num.slice(0, num.length - 3);
+                }
+                if (num) {
+                    result = num + result;
+                }
+                return result;
+            },
+
+
+            //类型转换处理
+            changeType() {
+                let len = this.waitList.length;
+                for (let i = 0; i < len; i++) {
+                    switch (this.waitList[i].type) {
+                        case "inproceedings":
+                            this.waitList[i].type = 'Conference and Workshop Papers';
+                            break;
+                        case "book and thesis":
+                            this.waitList[i].type = 'Book and Theses';
+                            break;
+                        case 'series':
+                            this.waitList[i].type = 'Editorshop';
+                            break;
+                        case "informal":
+                            this.waitList[i].type = 'Informal Publications';
+                            break;
+                        case "incollection":
+                            this.waitList[i].type = 'Parts in Books or Collections';
+                            break;
+                        case "journals article":
+                            this.waitList[i].type = 'Journals Article';
+                            break;
+                    }
+                }
+            },
+            //过滤函数
+            listFilter() {
+                let venArr = [];
+                let ven = this.filterObj.venue;
+                let len = this.waitList.length
+                for(let i = 0; i < len; i++){
+                    if(ven === ''){
+                        venArr = this.waitList;
+                        break;
+                    } else {
+                        if(ven == this.waitList[i].journal || ven == this.waitList[i].booktitle){
+                            console.log(this.waitList[i].booktitle)
+                            venArr.push(this.waitList[i])
+                        }
+                    }
+                }
+
+                len = venArr.length;
+                let autArr = [];
+                for(let i = 0; i < len; i++){
+                    if(this.filterObj.authors.length == 0){
+                        autArr = venArr;
+                        break;
+                    } else {
+                        for(let j = 0; j < venArr[i].author.length ; j++){
+                            // console.log(this.filterObj.authors + venArr[i].author[j]._VALUE)
+                            if(this.filterObj.authors.indexOf(venArr[i].author[j]._VALUE) != -1){
+                                console.log(this.filterObj.authors.indexOf(venArr[i].author[j]._VALUE))
+                                autArr.push(venArr[i]);
+                                break;
+                            }
+                        }
+                    }
+                }
+                // console.log(autArr)
+
+                let typeArr = [];
+                len = autArr.length;
+                for(let i = 0; i < len; i++){
+                    if(this.filterObj[autArr[i].type]){
+                        typeArr.push(autArr[i]);
+                    }
+                }
+
+                let searchArr= [];
+                len = typeArr.length;
+                for(let i = 0; i < len; i++){
+                    if(this.refineInput == ''){
+                        searchArr = typeArr;
+                        break;
+                    } else {
+                        let str = JSON.stringify(typeArr[i])
+                        if(str.indexOf(this.refineInput) != -1){
+                            searchArr.push(typeArr[i]);
+                        }
+                    }
+                }
+
+                this.filterList = searchArr;
+                this.filterObj.size = searchArr.length
+
+                // console.log(this.filterList)
+            },
+
+
+            //初始化数据
+            getData(){
+                this.dataFlag = false;
+                this.loadFlag = true;
+
+                this.pubSort()
+
+                this.getTypeData()
+
+                this.getAuthorData();
+
+                this.getVenueData();
             }
+
+
+        },
+
+        watch: {
+            typeList: function () {
+                this.filterObj["Book and Theses"] = this.filterObj.Editorshop = this.filterObj["Conference and Workshop Papers"] =
+                    this.filterObj["Informal Publications"] = this.filterObj["Journals Article"] =
+                        this.filterObj["Parts in Books or Collections"] = false;
+
+                let len = this.typeList.length;
+                for(let i = 0; i < len; i ++){
+                    this.filterObj[this.typeList[i]] = true;
+                }
+
+                this.filterObj.flag = true
+            },
+
+            refineInput: function () {
+                this.filterObj.search = this.refineInput;
+                this.filterObj.flag = true
+            },
+
+            'filterObj.flag': function () {
+                if(this.filterObj.flag){
+                    this.listFilter();
+                    this.filterObj.flag = false
+                    this.getData()
+
+                }
+
+            }
+
         },
 
         computed: {},
 
+        props:['name'],
+
         mounted() {
-            this.getPubData();
+            // this.getPubData();
+            this.author = this.name;
+            this.getPubData()
+
         }
     }
 </script>
@@ -205,5 +821,67 @@
     putList > li.year {
         font-size: small;
         font-weight: 800;
+    }
+
+    .asideCon {
+        float: right;
+        display: inline;
+        background: #ffffff;
+        margin: 0 20px 0 0;
+    }
+
+    .refine-by {
+        margin: 0 0 2ex;
+        font-size: smaller;
+        text-align: left;
+    }
+
+    .refine-by > p {
+        margin: 0;
+        padding: 0;
+    }
+
+    .refine-by > ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    .refine-by > ul > li {
+        display: block;
+        padding: 2px 4px 0 0;
+        margin: 0;
+        text-decoration: none;
+        max-width: 250px;
+    }
+
+    .refine-by > ul > li > .icon {
+        position: absolute;
+        margin: 3px -15px;
+    }
+
+    .authorButton {
+        display: inline;
+        overflow: visible;
+        text-align: left;
+        color: #7d848a;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 400;
+        background-color: transparent;
+        margin: 0;
+        padding: 0;
+        white-space: pre-line;
+    }
+
+    .buttonSelect {
+        font-weight: 700;
+        font-style: italic;
+        padding-right: 4px;
+    }
+
+    .checkBox {
+        font-size: smaller;
     }
 </style>

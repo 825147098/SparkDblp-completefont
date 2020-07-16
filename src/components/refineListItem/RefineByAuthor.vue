@@ -14,8 +14,8 @@
                                @click="addAuthorToInput(index)"
                                :class="['authorButton' ,item.show ? 'buttonSelect' : '']">
                         {{item._VALUE}}({{item.num}})
+                        <span v-show="item.show">✔</span>
                     </el-button>
-                    <span v-show="item.show">✔</span>
                 </li>
             </ul>
             <ul v-show="loadFlag">
@@ -23,7 +23,7 @@
                     <el-icon class="el-icon-loading"></el-icon>
                 </li>
             </ul>
-            <ul v-show="!loadFlag">
+            <ul v-show="!loadFlag && sqlSize - authorList > 0">
                 <li>
                     <el-button
                             type="text"
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+
     export default {
         name: "RefineByAuthor",
 
@@ -50,140 +51,9 @@
 
                 loadFlag: true,
 
-                sqlSize: 300,
+                sqlSize: '',
 
-                testList: [
-                    {
-                        "_VALUE": "A. A. C. de Souza",
-                        "_orcid": null,
-                        "_aux": null,
-                        "_links": {
-                            "self": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2cc"
-                            },
-                            "authors": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2cc"
-                            }
-                        }
-                    },
-                    {
-                        "_VALUE": "A. A. Davydov",
-                        "_orcid": null,
-                        "_aux": null,
-                        "_links": {
-                            "self": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2cd"
-                            },
-                            "authors": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2cd"
-                            }
-                        }
-                    },
-                    {
-                        "_VALUE": "A. A. Kabanov",
-                        "_orcid": null,
-                        "_aux": null,
-                        "_links": {
-                            "self": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2ce"
-                            },
-                            "authors": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2ce"
-                            }
-                        }
-                    },
-                    {
-                        "_VALUE": "A. A. McKenzie",
-                        "_orcid": null,
-                        "_aux": null,
-                        "_links": {
-                            "self": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2cf"
-                            },
-                            "authors": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2cf"
-                            }
-                        }
-                    },
-                    {
-                        "_VALUE": "A. A. Perevalov",
-                        "_orcid": null,
-                        "_aux": null,
-                        "_links": {
-                            "self": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2d0"
-                            },
-                            "authors": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2d0"
-                            }
-                        }
-                    },
-                    {
-                        "_VALUE": "A. A. S. Zaghrout",
-                        "_orcid": null,
-                        "_aux": null,
-                        "_links": {
-                            "self": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2d1"
-                            },
-                            "authors": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2d1"
-                            }
-                        }
-                    },
-                    {
-                        "_VALUE": "A. A. Sawant",
-                        "_orcid": null,
-                        "_aux": null,
-                        "_links": {
-                            "self": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2d2"
-                            },
-                            "authors": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2d2"
-                            }
-                        }
-                    },
-                    {
-                        "_VALUE": "A. A. Smirnov",
-                        "_orcid": null,
-                        "_aux": null,
-                        "_links": {
-                            "self": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2d3"
-                            },
-                            "authors": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2d3"
-                            }
-                        }
-                    },
-                    {
-                        "_VALUE": "A. A. Sulaiman",
-                        "_orcid": null,
-                        "_aux": null,
-                        "_links": {
-                            "self": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2d4"
-                            },
-                            "authors": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2d4"
-                            }
-                        }
-                    },
-                    {
-                        "_VALUE": "A. Allam",
-                        "_orcid": null,
-                        "_aux": null,
-                        "_links": {
-                            "self": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2d5"
-                            },
-                            "authors": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2d5"
-                            }
-                        }
-                    }
-                ],
+                testList: [],
 
                 numCount: 0,
             }
@@ -200,7 +70,7 @@
                         "img": "el-icon-circle-plus",
                         "index": cont++,
                         "show": false,
-                        "num":10
+                        "num":item.num,
                     };
                 });
                 this.numCount = cont;
@@ -238,13 +108,15 @@
                             "_VALUE": item._VALUE,
                             "img": "el-icon-circle-plus",
                             "index": cont++,
-                            "show": false
+                            "show": false,
+                            "num":10,
                         };
                     })
                 );
                 this.numCount = cont;
                 this.loadFlag = false;
-            }
+            },
+
 
         },
 
@@ -254,6 +126,9 @@
         watch: {},
 
         created() {
+            this.testList = this.c()
+            this.sqlSize = this.testList.length
+            console.log(this.testList)
             this.getAuthorData();
         }
     }

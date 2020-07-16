@@ -11,11 +11,11 @@
                                size="small"
                                @mouseenter.native="mouseEnter(index)"
                                @mouseleave.native="mouseLeave(index)"
-                               @click="addAuthorToInput(index)"
+                               @click="addVenToInput(index)"
                                :class="['authorButton' ,item.show ? 'buttonSelect' : '']">
                         {{item._VALUE}}({{toThousands(item.num)}})
+                        <span v-show="item.show">✔</span>
                     </el-button>
-                    <span v-show="item.show">✔</span>
                 </li>
             </ul>
             <ul v-show="loadFlag">
@@ -25,7 +25,7 @@
                     ></el-icon>
                 </li>
             </ul>
-            <ul v-show="!loadFlag">
+            <ul v-show="!loadFlag && sqlSize - venueList.length > 0">
                 <li>
                     <el-button
                             type="text"
@@ -43,6 +43,8 @@
 </template>
 
 <script>
+    import testData from "../../testData";
+
     export default {
         name: "RefineByVenue",
 
@@ -52,7 +54,7 @@
 
                 loadFlag: true,
 
-                sqlSize: 300,
+                sqlSize: 0,
 
                 testList: [
                     {
@@ -145,17 +147,22 @@
                     this.venueList[index].show = false;
             },
 
-            addAuthorToInput(index) {
+            addVenToInput(index) {
                 if (this.venueList[index].img === "el-icon-circle-plus") {
                     this.venueList[index].show = true;
                     this.venueList[index].img = "el-icon-remove";
-                    this.$store.commit("incrementVenue",{newVenue:this.venueList[index]._VALUE});
+                    this.$store.commit("incrementFliterVenue",{newVenue:this.venueList[index]._VALUE});
+
+                    let temp = this.venueList[index];
+                    this.venueList = []
+                    this.venueList.push(temp)
                 } else {
                     this.venueList[index].show = false;
                     this.venueList[index].img = "el-icon-circle-plus";
-                    this.$store.commit("incrementCleanVenue")
+                    this.$store.commit("incrementFliterCleanVenue")
+                    this.getVenueData()
                 }
-                console.log(this.$store.state.venue)
+                 console.log(this.$store.state.filterOb.venue)
             },
 
             toThousands(num) {
@@ -169,8 +176,22 @@
                     result = num + result;
                 }
                 return result;
-            }
+            },
 
+            c(){
+                let data = testData.data().test;
+                let arr = []
+                for (let i = 0; i < data.length; i++) {
+                        arr.push({_VALUE: data[i].journal});
+                }
+                let sort = testData.group_signal(arr, "_VALUE");
+                let arrlist=[];
+
+                for(let item in sort ){
+                    arrlist.push({venue:item, num: sort[item].length})
+                }
+                return arrlist
+            }
         },
 
         watch: {
@@ -178,6 +199,8 @@
         },
 
         created() {
+            this.testList = this.c()
+            // console.log(this.testList)
             this.getVenueData();
         }
     }

@@ -20,9 +20,9 @@
                     </template>
                     <el-radio-group v-model="radio"
                                     style="margin-left: 10px">
-                        <div>
+                        <div @click="changeRadioToCom">
                             <el-radio :label="0" style="color: white" >
-                                <router-link :to="{path:'/search/author'}"  >
+                                <router-link :to="{path:'/search/complete'}"  >
                                     组合搜素
                                 </router-link>
                             </el-radio>
@@ -78,6 +78,11 @@
             changeRadioToAut(){
               this.radio = 1;
               this.putRadioData()
+            },
+
+            changeRadioToCom(){
+                this.radio = 0;
+                this.putRadioData()
             }
 
         },

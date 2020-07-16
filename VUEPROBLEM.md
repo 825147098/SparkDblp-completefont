@@ -20,3 +20,11 @@ vuex如何用watch监听this.$store数据的变化
 prop传值
      
     动态传值需要v-bind:attribute="" 静态直接attribute=""
+JS 对象转换字符串
+
+    1. 对象转为字符串
+    JSON.stringify(obj)
+    
+    2. json字符串转为对象
+    JSON.parse(str)
+

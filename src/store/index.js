@@ -14,7 +14,19 @@ export default new Vuex.Store({
     host:"http://192.168.3.5:8080",
 
     refineData:'',
-    typeArry:[],
+    // filterOb:{
+    //   venue:'',
+    //   authors:[],
+    //   search:'',
+    //   'book and thesis':'',
+    //   'conference and workshop':'',
+    //   'series':'',
+    //   'informal':'',
+    //   'incollection':'',
+    //   'journals article':''
+    // },
+
+
   },
   mutations: {
     increment(state, payload){
@@ -42,18 +54,22 @@ export default new Vuex.Store({
     incrementCleanYear(state){
       state.year = '';
     },
-    incrementAuthor(state, payload){
-      state.authors.push(payload.newAuthor);
-    },
-    incrementCleanAuthor(state, payload){
-      state.authors.splice(state.authors.indexOf(payload.moveAuthor),1);
-    },
     incrementRefineData(state, payload){
       state.refineData.push(payload.newFilter);
     },
-    incrementTypeArray(state, payload){
-      state.typeArry = payload.newTypeArray;
-    },
+    // incrementAuthor(state, payload){
+    //   state.filterOb.authors.push(payload.newAuthor);
+    // },
+    // incrementCleanAuthor(state, payload){
+    //   state.filterOb.authors.splice(state.authors.indexOf(payload.moveAuthor),1);
+    // },
+    // incrementFliterVenue(state,payload){
+    //   state.filterOb.venue = payload.newVenue;
+    // },
+    // incrementFliterCleanVenue(state){
+    //   state.filterOb.venue = '';
+    // },
+
 
   },
   actions: {

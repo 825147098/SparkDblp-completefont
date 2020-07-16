@@ -8,11 +8,11 @@
                      background-color="#959595"
                      default-active="$route.path"
                      text-color="#fff">
-                <el-submenu index="homeMenue" >
-                    <template slot="title">主页</template>
-                    <el-menu-item index="/" style="width: 50px">首页</el-menu-item>
-                    <el-menu-item index="homeStatistics">统计</el-menu-item>
-                </el-submenu>
+<!--                <el-submenu index="homeMenue" >-->
+<!--                    <template slot="title">主页</template>-->
+                    <el-menu-item index="/" >首页</el-menu-item>
+<!--                    <el-menu-item index="homeStatistics">统计</el-menu-item>-->
+<!--                </el-submenu>-->
                 <el-submenu index="brores">
                     <template slot="title">浏览</template>
                     <el-menu-item
