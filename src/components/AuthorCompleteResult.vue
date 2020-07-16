@@ -128,6 +128,12 @@
                         <div class="refine-by">
                             <p><b>
                                 按照协作者细化
+                                <el-button
+                                        class="dialogButton"
+                                        @click="openDialog"
+                                        type="text">
+                                    关系图
+                                </el-button>
                             </b></p>
                             <ul v-show="!autLoadFlag">
                                 <li v-for="(item,index) in authorList" :key="item._VALUE">
@@ -226,8 +232,14 @@
                     </el-main>
                 </el-collapse-item>
             </el-collapse>
-
         </el-aside>
+        <el-dialog
+                :visible.sync="dialogVisible"
+                width="40%"
+                center
+        >
+            <div id="autGraph" style="height:400px;margin: auto;width: 600px"></div>
+        </el-dialog>
     </el-container>
 </template>
 
@@ -245,7 +257,6 @@
         name: "AuthorCompleteResult",
         components: {
             PartInBookOrCollItem,
-            // PartInBookOrCollItem,
             JournalItem, InformalPubItem, EditorShipItem, ConfAndWorkItem, BookAndTheseItem
         },
         data: function () {
@@ -308,8 +319,12 @@
                     'Journals Article': false,
                     'Conference and Workshop Papers': false,
                     size: 0,
-                    flag:false
-                }
+                    flag: false
+                },
+
+                nodeList: [],
+                linkList: [],
+                dialogVisible: false,
 
             }
         },
@@ -324,13 +339,14 @@
                     }
                 }).then(res => {
                     this.waitList = res.data._embedded.onlyDocs;
-                    this.filterList = this.waitList;
-                    this.pageDetail = res.data.page;
-                    console.log(this.waitList)
+                // this.waitList = testData.data().test
+                this.filterList = this.waitList;
+                this.pageDetail = res.data.page;
+                console.log(this.waitList)
 
-                    this.changeType();
-                    this.getData()
-                    this.handleCheckAllChange()
+                this.changeType();
+                this.getData()
+                this.handleCheckAllChange()
                 }).catch(error => {
                     console.log(error);
                 })
@@ -438,7 +454,7 @@
                 let data = this.filterList;
                 let arr = []
                 for (let i = 0; i < data.length; i++) {
-                    if(data[i].author != null){
+                    if (data[i].author != null) {
                         for (let j = 0; j < data[i].author.length; j++) {
                             arr.push({_VALUE: data[i].author[j]._VALUE});
                         }
@@ -465,11 +481,11 @@
                     };
                 });
 
-                for(let i = 0; i < this.autTestList.length; i++){
-                    if(this.filterObj.authors.length == 0)
+                for (let i = 0; i < this.autTestList.length; i++) {
+                    if (this.filterObj.authors.length == 0)
                         break;
                     else {
-                        if(this.filterObj.authors.indexOf(this.autTestList[i]._VALUE) != -1){
+                        if (this.filterObj.authors.indexOf(this.autTestList[i]._VALUE) != -1) {
                             this.autTestList[i].show = true;
                             this.autTestList[i].img = "el-icon-remove";
                         }
@@ -566,11 +582,11 @@
                     };
                 })
 
-                for(let i = 0; i < this.venueList.length; i++){
-                    if(this.filterObj.venue == '')
+                for (let i = 0; i < this.venueList.length; i++) {
+                    if (this.filterObj.venue == '')
                         break;
                     else {
-                        if(this.filterObj.venue == this.venTestList[i]._VALUE){
+                        if (this.filterObj.venue == this.venTestList[i]._VALUE) {
                             this.venTestList[i].show = true;
                             this.venTestList[i].img = "el-icon-remove";
                         }
@@ -684,12 +700,12 @@
                 let venArr = [];
                 let ven = this.filterObj.venue;
                 let len = this.waitList.length
-                for(let i = 0; i < len; i++){
-                    if(ven === ''){
+                for (let i = 0; i < len; i++) {
+                    if (ven === '') {
                         venArr = this.waitList;
                         break;
                     } else {
-                        if(ven == this.waitList[i].journal || ven == this.waitList[i].booktitle){
+                        if (ven == this.waitList[i].journal || ven == this.waitList[i].booktitle) {
                             console.log(this.waitList[i].booktitle)
                             venArr.push(this.waitList[i])
                         }
@@ -698,22 +714,28 @@
 
                 len = venArr.length;
                 let autArr = [];
-                for(let i = 0; i < len; i++){
-                    if(this.filterObj.authors.length == 0){
+                for (let i = 0; i < len; i++) {
+                    if (this.filterObj.authors.length == 0) {
                         autArr = venArr;
                         break;
                     } else {
-                        for(let j = 0; j < venArr[i].author.length ; j++){
-                            // console.log(this.filterObj.authors + venArr[i].author[j]._VALUE)
-                            if(this.filterObj.authors.indexOf(venArr[i].author[j]._VALUE) != -1){
-                                // console.log(this.filterObj.authors.indexOf(venArr[i].author[j]._VALUE))
-                                autArr.push(venArr[i]);
-                                break;
+                        // console.log(this.filterObj.authors + venArr[i].author[j]._VALUE)
+                        if (venArr[i].author != null) {
+                            for (let j = 0; j < venArr[i].author.length; j++) {
+                                if (this.filterObj.authors.indexOf(venArr[i].author[j]._VALUE) != -1) {
+                                    // console.log(this.filterObj.authors.indexOf(venArr[i].author[j]._VALUE))
+                                    autArr.push(venArr[i]);
+                                    break;
+                                }
                             }
-                            if(this.filterObj.authors.indexOf(venArr[i].editor[j]._VALUE) != -1){
-                                // console.log(this.filterObj.authors.indexOf(venArr[i].author[j]._VALUE))
-                                autArr.push(venArr[i]);
-                                break;
+                        }
+                        if (venArr[i].editor != null) {
+                            for (let j = 0; j < venArr[i].editor.length; j++) {
+                                if (this.filterObj.authors.indexOf(venArr[i].editor[j]._VALUE) != -1) {
+                                    // console.log(this.filterObj.authors.indexOf(venArr[i].author[j]._VALUE))
+                                    autArr.push(venArr[i]);
+                                    break;
+                                }
                             }
                         }
                     }
@@ -722,21 +744,21 @@
 
                 let typeArr = [];
                 len = autArr.length;
-                for(let i = 0; i < len; i++){
-                    if(this.filterObj[autArr[i].type]){
+                for (let i = 0; i < len; i++) {
+                    if (this.filterObj[autArr[i].type]) {
                         typeArr.push(autArr[i]);
                     }
                 }
 
-                let searchArr= [];
+                let searchArr = [];
                 len = typeArr.length;
-                for(let i = 0; i < len; i++){
-                    if(this.refineInput == ''){
+                for (let i = 0; i < len; i++) {
+                    if (this.refineInput == '') {
                         searchArr = typeArr;
                         break;
                     } else {
                         let str = JSON.stringify(typeArr[i])
-                        if(str.indexOf(this.refineInput) != -1){
+                        if (str.indexOf(this.refineInput) != -1) {
                             searchArr.push(typeArr[i]);
                         }
                     }
@@ -750,7 +772,7 @@
 
 
             //初始化数据
-            getData(){
+            getData() {
                 this.dataFlag = false;
                 this.loadFlag = true;
 
@@ -761,6 +783,91 @@
                 this.getAuthorData();
 
                 this.getVenueData();
+            },
+
+            //关系图
+            setEchartsOption() {
+                var myChart = this.$echarts.init(document.getElementById('autGraph'),
+                    "walden"
+                )
+
+                this.getNode();
+                this.getLink();
+
+                var option = {
+                    title: {
+                        text: "协作者关系"
+                    },
+                    tooltip: {},
+                    animationDurationUpdate: 1500,
+                    animationEasingUpdate: 'quinticInOut',
+                    series: [
+                        {
+                            type: 'graph',
+                            layout: 'none',
+                            symbolSize: 50,
+                            roam: true,
+                            label: {
+                                show: true
+                            },
+                            edgeSymbol: ['circle', 'arrow'],
+                            edgeSymbolSize: [4, 10],
+                            edgeLabel: {
+                                fontSize: 12
+                            },
+                            data: this.nodeList,
+                            // links: [],
+                            links: this.linkList,
+                            lineStyle: {
+                                opacity: 0.9,
+                                width: 2,
+                                curveness: 0
+                            }
+                        }
+                    ]
+                }
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+            },
+
+            getNode() {
+                this.nodeList = this.autTestList.map(function (item) {
+                    return {
+                        name: item._VALUE,
+                        x: Math.random() * 500,
+                        y: Math.random() * 300,
+                    }
+                })
+            },
+
+            getLink() {
+                let data = this.filterList;
+                let arr = []
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].author != null) {
+                        for (let j = 0; j < data[i].author.length; j++) {
+                            for (let k = j + 1; k < data[i].author.length; k++) {
+                                arr.push({source: data[i].author[j]._VALUE, target: data[i].author[k]._VALUE});
+                            }
+                        }
+                    } else {
+                        for (let j = 0; j < data[i].editor.length; j++) {
+                            for (let k = j + 1; k < data[i].editor.length; k++) {
+                                arr.push({source: data[i].editor[j]._VALUE, target: data[i].editor[k]._VALUE});
+                            }
+                        }
+                    }
+                }
+                this.linkList = arr;
+            },
+
+            openDialog() {
+
+                this.dialogVisible = true;
+
+                setTimeout(() => {
+                    this.setEchartsOption();
+                }, 300)
             }
 
 
@@ -773,7 +880,7 @@
                         this.filterObj["Parts in Books or Collections"] = false;
 
                 let len = this.typeList.length;
-                for(let i = 0; i < len; i ++){
+                for (let i = 0; i < len; i++) {
                     this.filterObj[this.typeList[i]] = true;
                 }
 
@@ -786,26 +893,31 @@
             },
 
             'filterObj.flag': function () {
-                if(this.filterObj.flag){
+                if (this.filterObj.flag) {
                     this.listFilter();
                     this.filterObj.flag = false
                     this.getData()
 
                 }
+            },
 
-            }
+            // dialogVisible:function () {
+            //     if(this.dialogVisible){
+            //         this.setEchartsOption()
+            //     }
+            // }
 
         },
 
         computed: {},
 
-        props:['name'],
+        props: ['name'],
 
         mounted() {
             // this.getPubData();
             this.author = this.name;
             this.getPubData()
-
+            // this.setEchartsOption();
         }
     }
 </script>
@@ -894,5 +1006,11 @@
 
     .checkBox {
         font-size: smaller;
+    }
+
+    .dialogButton {
+        font-size: smaller;
+        text-align: left;
+        padding: 0 20px;
     }
 </style>

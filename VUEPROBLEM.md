@@ -27,4 +27,12 @@ JS 对象转换字符串
     
     2. json字符串转为对象
     JSON.parse(str)
-
+当Element UI里面el_dialog嵌套echart组件，打开el_dialog时报echarts.init Error: Initialize failed: invalid dom
+    使用setTimeout定时间器
+    
+    handleEdit(){
+        this.dialogCreate = true;
+        setTimeout(() => {
+            this.setEchartsOption();
+        },300)
+     },
