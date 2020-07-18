@@ -31,13 +31,19 @@
                 <li>
                     <el-button
                             type="text"
-                            @click="getMoreData"
+                            @click="getMoreVenData"
                             class="authorButton"
-                            size="samll">
+                            size="small">
                         <em>
                             {{sqlSize - venueList.length}}更多可选项
                         </em>
                     </el-button>
+                </li>
+            </ul>
+            <ul v-show="venueList.length == 0 && !loadFlag"
+                class="putList">
+                <li>
+                    结果为空
                 </li>
             </ul>
         </div>
@@ -45,7 +51,7 @@
 </template>
 
 <script>
-    import testData from "../../testData";
+    import axios from 'axios';
 
     export default {
         name: "RefineByVenue",
@@ -58,84 +64,81 @@
 
                 sqlSize: 0,
 
-                testList: [
-                    {
-                        "venue": "ICASSP",
-                        "num": 93292,
-                    },
-                    {
-                        "venue": "CDC",
-                        "num": 78105,
-                    },
-                    {
-                        "venue": "ISCAS",
-                        "num": 9701,
-                    },
-                    {
-                        "venue": "ACC",
-                        "num": 2159,
-                    },
-                    {
-                        "venue": "ICC",
-                        "num": 868,
-                    },
-                    {
-                        "venue": "IGRASS",
-                        "num": 425,
-                    },
-                    {
-                        "venue": "IORS",
-                        "num": 425,
-                    },
-                    {
-                        "venue": "TESS",
-                        "num": 425,
-                    },
-                    {
-                        "venue": "GLOBECOM",
-                        "num": 425,
-                    },
-                    {
-                        "venue": "ICPC",
-                        "num": 425,
-                    },
+                venTestList: [
+
                 ],
 
-                numCount: 0,
+                venArrCount: 0,
+                venNumCount:0,
+
+                paramsObj:{
+                }
             }
         },
 
         methods: {
             getVenueData() {
                 this.loadFlag = true;
-                let cont = this.numCount;
-                this.venueList = this.testList.map(function (item) {
-                    // item.num = this.toThousands(item.num);
-                    return {
-                        "_VALUE": item.venue,
-                        "img": "el-icon-circle-plus",
-                        "index": cont++,
-                        "show": false,
-                        "num": item.num
-                    };
-                });
-                this.loadFlag = false;
-            },
+                let cont = 0;
+                this.venArrCount = 0;
+                this.setParams()
 
-            getMoreData() {
-                this.loadFlag = true;
-                let cont = this.numCount;
-                this.venueList = this.venueList.concat(this.testList.map(function (item) {
+                axios.get(this.$store.state.host + "/onlyDoc/findAllByTitleMatchesTextPrefix2RefineList", {
+                    params: this.paramsObj
+                }).then(res => {
+                    this.venTestList = res.data.map(function (item) {
                         return {
-                            "_VALUE": item.venue,
+                            "_VALUE": item.property,
                             "img": "el-icon-circle-plus",
                             "index": cont++,
                             "show": false,
-                            "num": item.num
+                            "venue":item.group,
+                            "num": item.count
                         };
                     })
-                );
-                this.numCount = cont;
+
+                    for (let i = 0; i < this.venTestList.length; i++) {
+                        if (this.$store.state.serchObj.venue === '')
+                            break;
+                        else {
+                            if (this.$store.state.serchObj.venue == this.venTestList[i].venue) {
+                                this.venTestList[i].show = true;
+                                this.venTestList[i].img = "el-icon-remove";
+                            }
+                        }
+                    }
+
+                    if (this.venArrCount + 10 <= this.venTestList.length) {
+                        this.venueList = this.venTestList.slice(this.venArrCount, this.venArrCount + 10);
+                        this.venArrCount += 10;
+                    } else {
+                        this.venueList = this.venTestList.slice(this.venArrCount);
+                        this.venArrCount += this.venTestList.length;
+                    }
+
+                    this.sqlSize = this.venTestList.length;
+
+                    this.venNumCount = cont
+                    this.loadFlag = false;
+                    this.$store.commit("incrementCleanFlag",{flag:"venflag"})
+                    this.$store.commit("incrementCleanInputFlag");
+                }).catch(error => {
+                    console.log(error)
+                })
+
+            },
+
+            getMoreVenData() {
+                this.loadFlag = true;
+
+                if (this.venArrCount + 10 < this.venTestList.length) {
+                    this.venueList = this.venueList.concat(this.venTestList.slice(this.venArrCount, this.venArrCount + 10));
+                    this.venArrCount += 10;
+                } else {
+                    this.venueList = this.venTestList;
+                    this.venArrCount += this.venTestList.length;
+                }
+
                 this.loadFlag = false;
             },
 
@@ -153,18 +156,17 @@
                 if (this.venueList[index].img === "el-icon-circle-plus") {
                     this.venueList[index].show = true;
                     this.venueList[index].img = "el-icon-remove";
-                    this.$store.commit("incrementFliterVenue", {newVenue: this.venueList[index]._VALUE});
+                    this.$store.commit("incrementVenue", {newVenue: this.venueList[index].venue});
 
                     let temp = this.venueList[index];
-                    this.venueList = []
+                    // this.venueList = []
                     this.venueList.push(temp)
                 } else {
                     this.venueList[index].show = false;
                     this.venueList[index].img = "el-icon-circle-plus";
-                    this.$store.commit("incrementFliterCleanVenue")
-                    this.getVenueData()
+                    this.$store.commit("incrementCleanVenue")
+                    // this.getVenueData()
                 }
-                console.log(this.$store.state.filterOb.venue)
             },
 
             toThousands(num) {
@@ -180,31 +182,42 @@
                 return result;
             },
 
-            c() {
-                let data = testData.data().test;
-                let arr = []
-                for (let i = 0; i < data.length; i++) {
-                    if (data[i].journal != null) {
-                        arr.push({_VALUE: data[i].journal});
-                    } else {
-                        arr.push({_VALUE: data[i].booktitle});
+            setParams(){
+                if(this.$store.state.serchObj.title != ''){
+                    this.paramsObj["title"] = this.$store.state.serchObj.title;
+                }
+                if(this.$store.state.serchObj.year != ''){
+                    this.paramsObj["year"] = this.$store.state.serchObj.year;
+                }
+                if(this.$store.state.serchObj.venue != ''){
+                    this.paramsObj["venue"] = this.$store.state.serchObj.venue;
+                }
+                if(this.$store.state.serchObj.authors .length > 0){
+                    let len = this.$store.state.serchObj.authors.length;
+                    let author = this.$store.state.serchObj.authors[0];
+                    for(let i = 1; i < len; i++){
+                        author += ',' + this.$store.state.serchObj.authors[i];
                     }
+                    this.paramsObj["author"] = author;
                 }
-                let sort = testData.group_signal(arr, "_VALUE");
-                let arrlist = [];
+                // if(this.$store.state.serchObj.type != ''){
+                //     this.paramsObj["type"] = this.$store.state.serchObj.type;
+                // }
+                // this.$store.commit("incrementCleanFlag")
+            }
 
-                for (let item in sort) {
-                    arrlist.push({venue: item, num: sort[item].length})
+        },
+
+        watch: {
+            '$store.state.serchObj.venflag':function () {
+                if (this.$store.state.serchObj.venflag){
+                    this.getVenueData();
+                //     this.$store.commit("incrementCleanFlag")
                 }
-                return arrlist
             }
         },
 
-        watch: {},
-
         created() {
-            this.testList = this.c()
-            // console.log(this.testList)
             this.getVenueData();
         }
     }

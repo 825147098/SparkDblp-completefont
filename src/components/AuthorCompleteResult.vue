@@ -582,7 +582,7 @@
                     };
                 })
 
-                for (let i = 0; i < this.venueList.length; i++) {
+                for (let i = 0; i < this.venTestList.length; i++) {
                     if (this.filterObj.venue == '')
                         break;
                     else {
@@ -611,7 +611,7 @@
             getMoreVenData() {
                 this.venLoadFlag = true;
 
-                if (this.venArrCount + 10 > this.venTestList.length) {
+                if (this.venArrCount + 10 < this.venTestList.length) {
                     this.venueList = this.venueList.concat(this.venTestList.slice(this.venArrCount, this.venArrCount + 10));
                     this.venArrCount += 10;
                 } else {
@@ -628,6 +628,7 @@
             },
 
             mouseVenLeave(index) {
+
                 if (this.venueList[index].img === "el-icon-circle-plus")
                     this.venueList[index].show = false;
             },

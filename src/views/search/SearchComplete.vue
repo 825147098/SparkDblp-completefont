@@ -21,16 +21,25 @@
 
         data:function () {
             return{
-                activeShow:true,
+                activeShow:false,
             }
         },
 
         watch:{
-            '$store.state.inputData': function () {
-                if(this.$store.state.radioLabel === 0 & this.$store.state.inputData != ''){
-                    this.activeShow = true;
-                }
+            '$store.state.inputfalg': {
+                handler() {
+                    // console.log(this.$store.state)
+                    if(this.$store.state.inputfalg && this.$store.state.radioLabel === 0){
+                        this.activeShow = true;
+                        // console.log(this.$store.state)
+                    }
+                },
+                deep:true
             }
+        },
+
+        created() {
+            this.activeShow = this.$store.state.inputfalg
         }
     }
 </script>

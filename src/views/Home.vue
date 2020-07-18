@@ -1,6 +1,6 @@
 <template>
     <el-container>
-
+    <SearchBar></SearchBar>
     </el-container>
 </template>
 
@@ -8,9 +8,14 @@
     // @ is an alias to /src
 
 
+
+
+
+    import SearchBar from "../components/SearchBar";
     export default {
         name: 'Home',
         components: {
+            SearchBar
 
         },
 

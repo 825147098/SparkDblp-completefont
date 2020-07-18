@@ -9,6 +9,7 @@
                     <i :class=item.img v-show="item.show"></i>
                     <el-button type="text"
                                size="small"
+
                                @mouseenter.native="mouseEnter(index)"
                                @mouseleave.native="mouseLeave(index)"
                                @click="addAuthorToInput(index)"
@@ -25,17 +26,23 @@
                     ></el-icon>
                 </li>
             </ul>
-            <ul v-show="!loadFlag">
+            <ul v-show="!loadFlag && sqlSize - yearList.length > 0">
                 <li>
                     <el-button
                             type="text"
                             @click="getMoreData"
                             class="authorButton"
-                            size="samll">
+                            size="small">
                         <em>
                             {{sqlSize - yearList.length}}更多可选项
                         </em>
                     </el-button>
+                </li>
+            </ul>
+            <ul v-show="yearList.length == 0 && !loadFlag"
+                class="putList">
+                <li>
+                    结果为空
                 </li>
             </ul>
         </div>
@@ -43,6 +50,7 @@
 </template>
 
 <script>
+    import axios from 'axios';
     export default {
         name: "RefineByYear",
 
@@ -52,86 +60,84 @@
 
                 loadFlag: true,
 
-                sqlSize: 300,
+                sqlSize: 0,
 
-                testList: [
-                    {
-                        "venue": "2020",
-                        "num": 93292,
-                    },
-                    {
-                        "venue": "2019",
-                        "num": 78105,
-                    },
-                    {
-                        "venue": "2018",
-                        "num": 9701,
-                    },
-                    {
-                        "venue": "2016",
-                        "num": 2159,
-                    },
-                    {
-                        "venue": "2010",
-                        "num": 868,
-                    },
-                    {
-                        "venue": "2008",
-                        "num": 425,
-                    },
-                    {
-                        "venue": "2005",
-                        "num": 425,
-                    },
-                    {
-                        "venue": "2004",
-                        "num": 425,
-                    },
-                    {
-                        "venue": "2002",
-                        "num": 425,
-                    },
-                    {
-                        "venue": "2000",
-                        "num": 425,
-                    },
+                yearTestList: [
+
                 ],
 
                 numCount: 0,
+                yearArrCount:0,
+
+                paramsObj:{
+                }
             }
         },
 
         methods: {
-            getVenueData() {
+            getYearData() {
                 this.loadFlag = true;
                 let cont = this.numCount;
-                this.yearList = this.testList.map(function (item) {
-                    // item.num = this.toThousands(item.num);
-                    return {
-                        "_VALUE": item.venue,
-                        "img": "el-icon-circle-plus",
-                        "index": cont++,
-                        "show": false,
-                        "num": item.num
-                    };
-                });
-                this.loadFlag = false;
+                this.yearArrCount = 0;
+                this.setParams()
+                axios.get(this.$store.state.host + "/onlyDoc/findAllByTitleMatchesTextYearRefineList",{
+                    params:this.paramsObj
+                }).then(res => {
+                    this.yearTestList = res.data.map(function (item) {
+                        // item.num = this.toThousands(item.num);
+                        return {
+                            "_VALUE": item.group,
+                            "img": "el-icon-circle-plus",
+                            "index": cont++,
+                            "show": false,
+                            "num": item.count
+                        };
+                    });
+
+                    for (let i = 0; i < this.yearTestList.length; i++) {
+                        if (this.$store.state.serchObj.year === '')
+                            break;
+                        else {
+                            if (this.$store.state.serchObj.year == this.yearTestList[i]._VALUE) {
+                                this.yearTestList[i].show = true;
+                                this.yearTestList[i].img = "el-icon-remove";
+                            }
+                        }
+                    }
+
+                    this.yearTestList.sort(function (a,b) {
+                            return b._VALUE - a._VALUE;
+                    })
+
+                    if (this.yearArrCount + 10 <= this.yearTestList.length) {
+                        this.yearList = this.yearTestList.slice(this.yearArrCount, this.yearArrCount + 10);
+                        this.yearArrCount += 10;
+                    } else {
+                        this.yearList = this.yearTestList.slice(this.yearArrCount);
+                        this.yearArrCount += this.yearTestList.length;
+                    }
+
+                    this.sqlSize = this.yearTestList.length
+                    this.loadFlag = false;
+                    this.$store.commit("incrementCleanFlag",{flag:"yearflag"})
+                    this.$store.commit("incrementCleanInputFlag");
+                }).catch(error => {
+                    console.log(error)
+                })
+
             },
 
             getMoreData() {
                 this.loadFlag = true;
-                let cont = this.numCount;
-                this.yearList = this.yearList.concat(this.testList.map(function (item) {
-                        return {
-                            "_VALUE": item.venue,
-                            "img": "el-icon-circle-plus",
-                            "index": cont++,
-                            "show": false,
-                            "num": item.num
-                        };
-                    })
-                );
-                this.numCount = cont;
+
+                if (this.yearArrCount + 10 < this.yearTestList.length) {
+                    this.yearList = this.yearList.concat(this.yearTestList.slice(this.yearArrCount, this.yearArrCount + 10));
+                    this.yearArrCount += 10;
+                } else {
+                    this.yearList = this.yearTestList;
+                    this.yearArrCount += this.yearTestList.length;
+                }
+
                 this.loadFlag = false;
             },
 
@@ -155,7 +161,8 @@
                     this.yearList[index].img = "el-icon-circle-plus";
                     this.$store.commit("incrementCleanYear")
                 }
-                console.log(this.$store.state.year)
+                // console.log(this.$store.state.year)
+                this.$store.commit("incrementCleanFlag")
             },
 
             toThousands(num) {
@@ -169,16 +176,44 @@
                     result = num + result;
                 }
                 return result;
+            },
+
+            setParams(){
+                if(this.$store.state.serchObj.title != ''){
+                    this.paramsObj["title"] = this.$store.state.serchObj.title;
+                }
+                if(this.$store.state.serchObj.year != ''){
+                    this.paramsObj["year"] = this.$store.state.serchObj.year;
+                }
+                if(this.$store.state.serchObj.venue != ''){
+                    this.paramsObj["venue"] = this.$store.state.serchObj.venue;
+                }
+                if(this.$store.state.serchObj.authors .length > 0){
+                    let len = this.$store.state.serchObj.authors.length;
+                    let author = this.$store.state.serchObj.authors[0];
+                    for(let i = 1; i < len; i++){
+                        author += ',' + this.$store.state.serchObj.authors[i];
+                    }
+                    this.paramsObj["author"] = author;
+                }
+                // if(this.$store.state.serchObj.type != ''){
+                //     this.paramsObj["type"] = this.$store.state.serchObj.type;
+                // }
             }
 
         },
 
         watch: {
-
+            '$store.state.serchObj.yearflag':function () {
+                if (this.$store.state.serchObj.yearflag){
+                    this.getYearData();
+                //     this.$store.commit("incrementCleanFlag")
+                }
+            }
         },
 
         created() {
-            this.getVenueData();
+            this.getYearData();
         }
     }
 </script>

@@ -4,64 +4,87 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-    inputData:"",
-    radioLabel:0,
-    year:'',
-    venue:'',
-    type:'',
-    authors:[],
-    host:"http://192.168.3.5:8080",
+    state: {
+        radioLabel: 0,
+        inputfalg: false,
+        inputData:'',
 
-    refineData:'',
-    // filterOb:{
-    //   venue:'',
-    //   authors:[],
-    //   search:'',
-    //   'book and thesis':'',
-    //   'conference and workshop':'',
-    //   'series':'',
-    //   'informal':'',
-    //   'incollection':'',
-    //   'journals article':''
-    // },
+        host: "http://192.168.3.5:8080",
+
+        serchObj: {
+            year: '',
+            venue: '',
+            type: '',
+            authors: [],
+            title: '',
+            yearflag: false,
+            autflag: false,
+            typeflag: false,
+            venflag: false,
+        }
+
+    },
+    mutations: {
+        increment(state, payload) {
+            state.radioLabel = payload.newLabel;
+            state.serchObj.title = payload.newInput.title;
+            state.serchObj.venue = payload.newInput.venue;
+            state.serchObj.type = payload.newInput.type;
+            state.serchObj.authors = payload.newInput.author;
+            state.serchObj.year = payload.newInput.year;
+            state.serchObj.yearflag = true;
+            state.serchObj.autflag = true;
+            state.serchObj.typeflag = true;
+            state.serchObj.venflag = true;
+            state.inputfalg = true;
+        },
+        incrementRadio(state, payload) {
+            state.radioLabel = payload.newLabel;
+        },
+        incrementType(state, payload) {
+            state.serchObj.type = payload.newType;
+            state.inputfalg = true;
+        },
+        incrementCleanType(state) {
+            state.serchObj.type = '';
+            state.inputfalg = true;
+        },
+        incrementVenue(state, payload) {
+            state.serchObj.venue = payload.newVenue;
+            state.inputfalg = true;
+        },
+        incrementCleanVenue(state) {
+            state.serchObj.venue = '';
+            state.inputfalg = true;
+        },
+        incrementYear(state, payload) {
+            state.serchObj.year = payload.newYear;
+            state.inputfalg = true;
+        },
+        incrementCleanYear(state) {
+            state.serchObj.year = '';
+            state.inputfalg = true;
+        },
+        incrementAuthor(state, payload) {
+            state.serchObj.authors.push(payload.newAuthor)
+            state.inputfalg = true;
+        },
+        incrementCleanAuthor(state, payload) {
+            state.serchObj.authors.splice(state.serchObj.authors.indexOf(payload.moveAuthor, 1))
+            state.inputfalg = true;
+        },
+        incrementCleanFlag(state, payload) {
+            state.serchObj[payload.flag] = false;
+        },
+        incrementCleanInputFlag(state) {
+            state.inputfalg = false;
+        },
+        incrementInputData(state,payload) {
+            state.inputData = payload.data;
+        },
 
 
-  },
-  mutations: {
-    increment(state, payload){
-      state.inputData = payload.newInput;
-      state.radioLabel = payload.newLabel;
     },
-    incrementRadio(state,payload){
-      state.radioLabel = payload.newLabel;
-    },
-    incrementType(state,payload){
-      state.type = payload.newType;
-    },
-    incrementCleanType(state){
-      state.type = '';
-    },
-    incrementVenue(state,payload){
-      state.venue = payload.newVenue;
-    },
-    incrementCleanVenue(state){
-      state.venue = '';
-    },
-    incrementYear(state,payload){
-      state.year = payload.newYear;
-    },
-    incrementCleanYear(state){
-      state.year = '';
-    },
-    incrementRefineData(state, payload){
-      state.refineData.push(payload.newFilter);
-    },
-
-
-  },
-  actions: {
-  },
-  modules: {
-  }
+    actions: {},
+    modules: {}
 })

@@ -35,7 +35,7 @@
                         <span style="margin-left: 10%">注意：</span><br>
                         <span style="margin-left: 10%">1）作者姓名只允许精确匹配，这意味着当输入为Yan的时候，不会显示作者包含Yang的论文。</span><br>
                         <span style="margin-left: 10%">2）作者姓名大小写敏感，这意味着当输入为yan的时候，不会显示作者包含Yan的论文。</span>
-                        <span>e.g.,title:distribut&year:2010..2020&author:tom,mike</span>
+                        <span>e.g.,distribut year:2010..2020 author:tom,mike</span>
                     </div>
                 </el-collapse-item>
             </el-collapse>

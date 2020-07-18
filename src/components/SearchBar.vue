@@ -21,15 +21,15 @@
                     <el-radio-group v-model="radio"
                                     style="margin-left: 10px">
                         <div @click="changeRadioToCom">
-                            <el-radio :label="0" style="color: white" >
-                                <router-link :to="{path:'/search/complete'}"  >
+                            <el-radio :label="0" style="color: white">
+                                <router-link :to="{path:'/search/complete'}">
                                     组合搜素
                                 </router-link>
                             </el-radio>
                         </div>
                         <div @click="changeRadioToAut">
-                            <el-radio :label="1" style="color: white" >
-                                <router-link :to="{path:'/search/author'}"  >
+                            <el-radio :label="1" style="color: white">
+                                <router-link :to="{path:'/search/author'}">
                                     作者搜索
                                 </router-link>
                             </el-radio>
@@ -62,27 +62,144 @@
             return {
                 url: title_image,
                 radio: 0,
-                inputData:'',
+                inputData: '',
             }
         },
 
-        methods:{
-            putInputData(){
-                this.$store.commit("increment",{newInput:this.inputData,newLabel:this.radio});
+        watch: {
+            "$store.state.inputfalg": function () {
+                if (this.$store.state.inputfalg && this.$store.state.radioLabel == 0) {
+                    this.concatText();
+                    this.putInputData();
+                    // let flag = true;
+                    // const arr = ["autflag", "typeflag", "venflag", "yearflag"];
+                    // for (let i = 0; i < 4; i++) {
+                    //     if (this.$store.state.serchObj[arr[i]]) {
+                    //         flag = false
+                    //     }
+                    // }
+                    // console.log(this.$store.state)
+                    // if (flag){
+                    //
+                    //
+                    // }
+
+                }
+            }
+        },
+
+        methods: {
+            putInputData() {
+                // if (this.radio == 0)
+                this.$store.commit("increment", {newInput: this.splitText(), newLabel: this.radio});
+                this.$store.commit("incrementInputData", {data: this.inputData});
+                // console.log(this.inputData)
+
             },
 
-            putRadioData(){
-                this.$store.commit("incrementRadio",{newLabel:this.radio})
+            putRadioData() {
+                this.$store.commit("incrementRadio", {newLabel: this.radio})
             },
 
-            changeRadioToAut(){
-              this.radio = 1;
-              this.putRadioData()
+            changeRadioToAut() {
+                this.radio = 1;
+                this.putRadioData()
             },
 
-            changeRadioToCom(){
+            changeRadioToCom() {
                 this.radio = 0;
                 this.putRadioData()
+            },
+
+            splitText() {
+                let data = this.inputData.split("&");
+                let len = data.length;
+                for (let i = 0; i < len; i++) {
+                    let temp = data[i].toString();
+                    data[i] = temp.split(":");
+                }
+
+                let title = '';
+                let year = '';
+                let venue = '';
+                let author = [];
+                let type = '';
+                let titleFlag = false;
+
+
+                for (let i = 0; i < data.length; i++) {
+                    switch (data[i].length) {
+                        case 1:
+                            if (data[i][0] != ' ') {
+                                if (!titleFlag) {
+                                    titleFlag = true;
+                                    title = data[i][0]
+                                } else {
+                                    title += ' ' + data[i][0];
+                                }
+                            }
+                            break;
+                        default:
+                            if (data[i][0] == "year") {
+                                let yearData = data[i][1].split("..");
+                                if (yearData.length > 1) {
+                                    let starYear = Math.min(yearData[0], yearData[1]);
+                                    let endYear = Math.max(yearData[0], yearData[1]);
+                                    year = starYear;
+                                    for (let j = starYear + 1; j <= endYear; j++) {
+                                        year += ',' + j;
+                                    }
+                                } else {
+                                    year = yearData[0];
+                                }
+                            } else if (data[i][0] == "author") {
+                                let authorItem = data[i][1].split(",")
+                                for (let j = 0; j < authorItem.length; j++) {
+                                    author.push(authorItem[j])
+                                }
+                            } else if (data[i][0] == "venue") {
+                                venue = data[i][1];
+                            } else if (data[i][0] == "type") {
+                                type = data[i][1];
+                            } else {
+                                break;
+                            }
+                            break;
+                    }
+                }
+                // console.log(author)
+                return {
+                    title: title,
+                    author: author,
+                    year: year,
+                    venue: venue,
+                    type: type
+                }
+            },
+
+            concatText() {
+                let data = this.$store.state.serchObj;
+                let text = data.title;
+
+                if (this.$store.state.serchObj.year != '') {
+                    text += "&year:" + this.$store.state.serchObj.year;
+                }
+                if (this.$store.state.serchObj.venue != '') {
+                    text += "&venue:" + this.$store.state.serchObj.venue;
+                }
+                if (this.$store.state.serchObj.authors.length > 0) {
+                    let len = this.$store.state.serchObj.authors.length;
+                    let author = this.$store.state.serchObj.authors[0];
+                    for (let i = 1; i < len; i++) {
+                        author += ',' + this.$store.state.serchObj.authors[i];
+                    }
+                    text += "&author:" + author;
+                }
+                if (this.$store.state.serchObj.type != '') {
+                    text += "&type:" + this.$store.state.serchObj.type;
+                }
+                this.inputData = text;
+
             }
 
         },
@@ -114,19 +231,19 @@
         /*float: right;*/
     }
 
-    .searchCon{
+    .searchCon {
         float: right;
         width: 400px;
     }
 
-    .searchRadio{
+    .searchRadio {
         width: 80px;
         float: left;
         display: inline;
     }
 
 
-    .searchInput{
+    .searchInput {
         width: 300px;
         line-height: 90px;
     }

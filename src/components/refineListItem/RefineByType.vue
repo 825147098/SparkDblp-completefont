@@ -11,6 +11,7 @@
                        v-show="item.show"></i>
                     <el-button type="text"
                                size="small"
+                               disabled
                                @mouseenter.native="mouseEnter(index)"
                                @mouseleave.native="mouseLeave(index)"
                                @click="addAuthorToInput(index)"
@@ -27,11 +28,18 @@
                     ></el-icon>
                 </li>
             </ul>
+            <ul v-show="typeList.length == 0 && !loadFlag"
+                class="putList">
+                <li>
+                    结果为空
+                </li>
+            </ul>
         </div>
     </el-main>
 </template>
 
 <script>
+    import axios from 'axios';
     export default {
         name: "RefineByType",
 
@@ -43,34 +51,15 @@
 
                 sqlSize: 300,
 
-                testList: [
-                    {
-                        "type": "Conference and Workshop Papers",
-                        "num": 93292,
-                    },
-                    {
-                        "type": "Journal Articles",
-                        "num": 78105,
-                    },
-                    {
-                        "type": "Informal Publications",
-                        "num": 9701,
-                    },
-                    {
-                        "type": "Books and Theses",
-                        "num": 2159,
-                    },
-                    {
-                        "type": "Parts in Books or Collections",
-                        "num": 868,
-                    },
-                    {
-                        "type": "Editorship",
-                        "num": 425,
-                    },
+                typeTestList: [
+
                 ],
 
                 numCount: 0,
+
+                paramsObj:{
+
+                }
             }
         },
 
@@ -78,17 +67,30 @@
             getTypeData() {
                 this.loadFlag = true;
                 let cont = this.numCount;
-                this.typeList = this.testList.map(function (item) {
-                    // item.num = this.toThousands(item.num);
-                    return {
-                        "_VALUE": item.type,
-                        "img": "el-icon-circle-plus",
-                        "index": cont++,
-                        "show": false,
-                        "num": item.num
-                    };
-                });
-                this.loadFlag = false;
+                this.setParams()
+                axios.get(this.$store.state.host + "/onlyDoc/findAllByTitleMatchesTextTypeRefineList",{
+                    params: this.paramsObj
+                }).then(res => {
+                    this.typeTestList = res.data.map(function (item) {
+                        // item.num = this.toThousands(item.num);
+                        return {
+                            "_VALUE": item.group,
+                            "img": "el-icon-circle-plus",
+                            "index": cont++,
+                            "show": false,
+                            "num": item.count
+                        };
+                    });
+                    // console.log(res.data)
+                    this.changeType()
+                    this.typeList = this.typeTestList
+                    this.sqlSize = this.typeTestList.length
+                    this.loadFlag = false;
+                    this.$store.commit("incrementCleanFlag",{flag:"typeflag"})
+                    this.$store.commit("incrementCleanInputFlag");
+                }).catch(error =>{
+                    console.log(error)
+                })
             },
 
             mouseEnter(index) {
@@ -125,11 +127,68 @@
                     result = num + result;
                 }
                 return result;
+            },
+
+            changeType() {
+                let len = this.typeTestList.length;
+                for (let i = 0; i < len; i++) {
+                    switch (this.typeTestList[i]._VALUE) {
+                        case "inproceedings":
+                            this.typeTestList[i]._VALUE = 'Conference and Workshop Papers';
+                            break;
+                        case "book and thesis":
+                            this.typeTestList[i]._VALUE = 'Book and Theses';
+                            break;
+                        case 'series':
+                            this.typeTestList[i]._VALUE = 'Editorshop';
+                            break;
+                        case "informal":
+                            this.typeTestList[i]._VALUE = 'Informal Publications';
+                            break;
+                        case "incollection":
+                            this.typeTestList[i]._VALUE = 'Parts in Books or Collections';
+                            break;
+                        case "journals article":
+                            this.typeTestList[i]._VALUE = 'Journals Article';
+                            break;
+                    }
+                }
+            },
+
+            setParams(){
+                if(this.$store.state.serchObj.title != ''){
+                    this.paramsObj["title"] = this.$store.state.serchObj.title;
+                }
+                if(this.$store.state.serchObj.year != ''){
+                    this.paramsObj["year"] = this.$store.state.serchObj.year;
+                }
+                if(this.$store.state.serchObj.venue != ''){
+                    this.paramsObj["venue"] = this.$store.state.serchObj.venue;
+                }
+                if(this.$store.state.serchObj.authors.length > 0){
+                    let len = this.$store.state.serchObj.authors.length;
+                    let author = this.$store.state.serchObj.authors[0];
+                    for(let i = 1; i < len; i++){
+                        author += ',' + this.$store.state.serchObj.authors[i];
+                    }
+                    this.paramsObj["author"] = author;
+                }
+                // if(this.$store.state.serchObj.type != ''){
+                //     this.paramsObj["type"] = this.$store.state.serchObj.type;
+                // }
+                // this.$store.commit("incrementCleanFlag")
             }
 
         },
 
-        watch: {},
+        watch: {
+            '$store.state.serchObj.typeflag':function () {
+                if (this.$store.state.serchObj.typeflag){
+                    this.getTypeData();
+                //     this.$store.commit("incrementCleanFlag")
+                }
+            }
+        },
 
         created() {
             this.getTypeData();

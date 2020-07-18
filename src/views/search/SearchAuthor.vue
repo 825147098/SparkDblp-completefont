@@ -175,7 +175,7 @@
                         break;
                 }
             },
-            '$store.state.inputData': function (newValue) {
+            '$store.state.inputfalg': function (newValue) {
                 if(this.$store.state.radioLabel === 1){
                     this.searchName = newValue;
                     this.getAuthorData();

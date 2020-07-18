@@ -15,7 +15,7 @@
                                @mouseleave.native="mouseLeave(index)"
                                @click="addAuthorToInput(index)"
                                :class="['authorButton' ,item.show ? 'buttonSelect' : '']">
-                        {{item._VALUE}}({{item.num}})
+                        {{item._VALUE}}({{toThousands(item.num)}})
                         <span v-show="item.show">✔</span>
                     </el-button>
                 </li>
@@ -27,17 +27,23 @@
                     ></el-icon>
                 </li>
             </ul>
-            <ul v-show="!loadFlag && sqlSize - authorList > 0">
+            <ul v-show="!loadFlag && sqlSize - authorList.length > 0">
                 <li>
                     <el-button
                             type="text"
-                            @click="getMoreData"
+                            @click="getMoreAutData"
                             class="authorButton"
-                            size="samll">
+                            size="small">
                         <em>
                             {{sqlSize - authorList.length}}更多可选项
                         </em>
                     </el-button>
+                </li>
+            </ul>
+            <ul v-show="authorList.length == 0 && !loadFlag"
+                class="putList">
+                <li>
+                    结果为空
                 </li>
             </ul>
         </div>
@@ -45,8 +51,7 @@
 </template>
 
 <script>
-
-    import testData from "../../testData";
+    import axios from 'axios';
 
     export default {
         name: "RefineByAuthor",
@@ -59,27 +64,92 @@
 
                 sqlSize: '',
 
-                testList: [],
+                autTestList: [],
 
-                numCount: 0,
+                autNumCount: 0,
+                autArrCount:0,
+
+                title:"hadoop",
+                year:"2018,2019",
+
+                url:"/onlyDoc/findAllByTitleMatchesTextAuthorRefineList",
+
+                paramsObj:{
+
+                }
+
+
             }
         },
 
         methods: {
             getAuthorData() {
                 this.loadFlag = true;
-                let cont = this.numCount;
-                this.authorList = this.testList.map(function (item) {
+                let cont = 0;
+                this.autArrCount = 0;
+                this.setParams()
 
-                    return {
-                        "_VALUE": item._VALUE,
-                        "img": "el-icon-circle-plus",
-                        "index": cont++,
-                        "show": false,
-                        "num": item.num,
-                    };
-                });
-                this.numCount = cont;
+                axios.get(this.$store.state.host + this.url, {
+                    params : this.paramsObj
+                }).then(res =>{
+                    let data = res.data;
+                    this.autTestList = data.map(function (item) {
+                        return {
+                            "_VALUE": item.group,
+                            "img": "el-icon-circle-plus",
+                            "index": cont++,
+                            "show": false,
+                            "num": item.count,
+                        };
+                    });
+
+                    this.autTestList.sort(function (a,b) {
+                        return b.num > a.num;
+                    })
+
+                    for (let i = 0; i < this.autTestList.length; i++) {
+                        if (this.$store.state.serchObj.authors.length == 0)
+                            break;
+                        else {
+                            if (this.$store.state.serchObj.authors.indexOf(this.autTestList[i]._VALUE) != -1) {
+                                this.autTestList[i].show = true;
+                                this.autTestList[i].img = "el-icon-remove";
+                            }
+                        }
+                    }
+
+                    if (this.autArrCount + 10 < this.autTestList.length) {
+                        this.authorList = this.autTestList.slice(this.autArrCount, this.autArrCount + 10);
+                        this.autArrCount += 10;
+                    } else {
+                        this.authorList = this.autTestList.slice(this.autArrCount);
+                        this.autArrCount += this.autTestList.length;
+                    }
+
+                    this.sqlSize = this.autTestList.length;
+
+                    this.authorNumCount = cont;
+                    // console.log(this.autTestList)
+                    this.loadFlag = false;
+                    this.$store.commit("incrementCleanFlag",{flag:"autflag"})
+                    this.$store.commit("incrementCleanInputFlag");
+                }).catch(error => {
+                    console.log(error)
+                })
+
+            },
+
+            getMoreAutData() {
+                this.loadFlag = true;
+
+                if (this.autArrCount + 10 < this.autTestList.length) {
+                    this.authorList = this.authorList.concat(this.autTestList.slice(this.autArrCount, this.autArrCount + 10));
+                    this.autArrCount += 10;
+                } else {
+                    this.authorList = this.autTestList;
+                    this.autArrCount += this.autTestList.length;
+                }
+
                 this.loadFlag = false;
             },
 
@@ -98,66 +168,70 @@
                     this.authorList[index].show = true;
                     this.authorList[index].img = "el-icon-remove"
                     this.$store.commit("incrementAuthor", {newAuthor: this.authorList[index]._VALUE})
+                    // console.log(this.$store.state)
+
                 } else {
                     this.authorList[index].show = false;
                     this.authorList[index].img = "el-icon-circle-plus";
                     this.$store.commit("incrementCleanAuthor", {moveAuthor: this.authorList[index]._VALUE})
                 }
-                console.log(this.$store.state.authors)
             },
 
-            getMoreData() {
-                this.loadFlag = true;
-                let cont = this.numCount;
-                this.authorList = this.authorList.concat(this.testList.map(function (item) {
-                        return {
-                            "_VALUE": item._VALUE,
-                            "img": "el-icon-circle-plus",
-                            "index": cont++,
-                            "show": false,
-                            "num": 10,
-                        };
-                    })
-                );
-                this.numCount = cont;
-                this.loadFlag = false;
+            toThousands(num) {
+                num = (num || 0).toString();
+                let result = '';
+                while (num.length > 3) {
+                    result = ',' + num.slice(-3) + result;
+                    num = num.slice(0, num.length - 3);
+                }
+                if (num) {
+                    result = num + result;
+                }
+                return result;
             },
 
-            c() {
-                let data = testData.data().test;
-                let arr = []
-                for (let i = 0; i < data.length; i++) {
-                    if(data[i].author != null){
-                        for (let j = 0; j < data[i].author.length; j++) {
-                            arr.push({_VALUE: data[i].author[j]._VALUE});
-                        }
-                    } else {
-                        for (let j = 0; j < data[i].editor.length; j++) {
-                            arr.push({_VALUE: data[i].editor[j]._VALUE});
-                        }
+            setParams(){
+                if(this.$store.state.serchObj.title != ''){
+                    this.paramsObj["title"] = this.$store.state.serchObj.title;
+                }
+                if(this.$store.state.serchObj.year != ''){
+                    this.paramsObj["year"] = this.$store.state.serchObj.year;
+                }
+                if(this.$store.state.serchObj.venue != ''){
+                    this.paramsObj["venue"] = this.$store.state.serchObj.venue;
+                }
+                if(this.$store.state.serchObj.authors.length > 0){
+                    let len = this.$store.state.serchObj.authors.length;
+                    let author = this.$store.state.serchObj.authors[0];
+                    for(let i = 1; i < len; i++){
+                        author += ',' + this.$store.state.serchObj.authors[i];
                     }
+                    this.paramsObj["author"] = author;
                 }
-                let sort = testData.group_signal(arr, "_VALUE");
-                let arrlist = [];
-
-                for (let item in sort) {
-                    arrlist.push({_VALUE: item, num: sort[item].length})
-                }
-                console.log(arrlist)
-                return arrlist
+                // if(this.$store.state.serchObj.type != ''){
+                //     this.paramsObj["type"] = this.$store.state.serchObj.type;
+                // }
+                // this.$store.commit("incrementCleanFlag")
             }
         },
 
         props: [
             'name'
         ],
-        watch: {},
+        watch: {
+            '$store.state.serchObj.autflag':function () {
+                if (this.$store.state.serchObj.autflag){
+                    this.getAuthorData();
+                    // this.$store.commit("incrementCleanFlag")
+                }
+            }
+        },
 
         created() {
-            this.testList = this.c()
-            this.sqlSize = this.testList.length
-            // console.log(this.testList)
+            // console.log(this.$store.state.serchObj)
             this.getAuthorData();
+
+
         }
     }
 </script>
