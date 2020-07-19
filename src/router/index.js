@@ -56,6 +56,10 @@ const routes = [
                 path: '/search/complete',
                 name:'complete',
                 component: () => import('../views/search/SearchComplete')
+            },{
+                path: '/search/venue',
+                name:'venue',
+                component: () => import('../views/search/SearchVenue')
             }
         ]
     },

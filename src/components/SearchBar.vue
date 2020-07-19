@@ -34,8 +34,12 @@
                                 </router-link>
                             </el-radio>
                         </div>
-                        <div>
-                            <el-radio :label="2" style="color: white">会议搜索</el-radio>
+                        <div @click="changeRadioToVen">
+                            <el-radio :label="2" style="color: white">
+                                <router-link :to="{path:'/search/author'}">
+                                    会议搜索
+                                </router-link>
+                            </el-radio>
                         </div>
                         <div>
                             <el-radio :label="3" style="color: white">出版物搜索</el-radio>
@@ -71,19 +75,6 @@
                 if (this.$store.state.inputfalg && this.$store.state.radioLabel == 0) {
                     this.concatText();
                     this.putInputData();
-                    // let flag = true;
-                    // const arr = ["autflag", "typeflag", "venflag", "yearflag"];
-                    // for (let i = 0; i < 4; i++) {
-                    //     if (this.$store.state.serchObj[arr[i]]) {
-                    //         flag = false
-                    //     }
-                    // }
-                    // console.log(this.$store.state)
-                    // if (flag){
-                    //
-                    //
-                    // }
-
                 }
             }
         },
@@ -108,6 +99,11 @@
 
             changeRadioToCom() {
                 this.radio = 0;
+                this.putRadioData()
+            },
+
+            changeRadioToVen() {
+                this.radio = 2;
                 this.putRadioData()
             },
 
