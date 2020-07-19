@@ -30,6 +30,9 @@
                             <JournalItem v-else-if="item.type == 'Journals Article'"
                                          :inner-data="item"
                             ></JournalItem>
+                            <ReferenceWorkItem v-else-if="item.type == 'Reference Works'"
+                                               :inner-data="item">
+                            </ReferenceWorkItem>
                         </li>
                     </ul>
                     <ul v-show="loadFlag"
@@ -252,10 +255,12 @@
     import JournalItem from "./bookTypeItem/JournalItem";
     import testData from "../testData";
     import PartInBookOrCollItem from "./bookTypeItem/PartInBookOrCollItem";
+    import ReferenceWorkItem from "./bookTypeItem/ReferenceWorkItem";
 
     export default {
         name: "AuthorCompleteResult",
         components: {
+            ReferenceWorkItem,
             PartInBookOrCollItem,
             JournalItem, InformalPubItem, EditorShipItem, ConfAndWorkItem, BookAndTheseItem
         },
@@ -693,6 +698,10 @@
                         case "journals article":
                             this.waitList[i].type = 'Journals Article';
                             break;
+                        case  "reference":
+                            this.waitList[i].type = 'Reference Works';
+                            break;
+
                     }
                 }
             },

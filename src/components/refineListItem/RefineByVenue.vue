@@ -5,7 +5,7 @@
                 按照会议细化
             </b></p>
             <ul v-show="!loadFlag">
-                <li v-for="(item,index) in venueList" :key="item._VALUE">
+                <li v-for="(item,index) in venueList" :key="item._VALUE == '' ? item.venue : item._VALUE">
                     <i :class=item.img
                        class="icon"
                        v-show="item.show"></i>
@@ -15,7 +15,7 @@
                                @mouseleave.native="mouseLeave(index)"
                                @click="addVenToInput(index)"
                                :class="['authorButton' ,item.show ? 'buttonSelect' : '']">
-                        {{item._VALUE}}({{toThousands(item.num)}})
+                        {{item._VALUE == '' ? item.venue : item._VALUE}}({{toThousands(item.num)}})
                         <span v-show="item.show">✔</span>
                     </el-button>
                 </li>
@@ -64,15 +64,12 @@
 
                 sqlSize: 0,
 
-                venTestList: [
-
-                ],
+                venTestList: [],
 
                 venArrCount: 0,
-                venNumCount:0,
+                venNumCount: 0,
 
-                paramsObj:{
-                }
+                paramsObj: {}
             }
         },
 
@@ -90,9 +87,8 @@
                         return {
                             "_VALUE": item.property,
                             "img": "el-icon-circle-plus",
-                            "index": cont++,
                             "show": false,
-                            "venue":item.group,
+                            "venue": item.group,
                             "num": item.count
                         };
                     })
@@ -120,7 +116,7 @@
 
                     this.venNumCount = cont
                     this.loadFlag = false;
-                    this.$store.commit("incrementCleanFlag",{flag:"venflag"})
+                    this.$store.commit("incrementCleanFlag", {flag: "venflag"})
                     this.$store.commit("incrementCleanInputFlag");
                 }).catch(error => {
                     console.log(error)
@@ -182,37 +178,38 @@
                 return result;
             },
 
-            setParams(){
-                if(this.$store.state.serchObj.title != ''){
+            setParams() {
+                this.paramsObj = {};
+                if (this.$store.state.serchObj.title != '') {
                     this.paramsObj["title"] = this.$store.state.serchObj.title;
                 }
-                if(this.$store.state.serchObj.year != ''){
+                if (this.$store.state.serchObj.year != '') {
                     this.paramsObj["year"] = this.$store.state.serchObj.year;
                 }
-                if(this.$store.state.serchObj.venue != ''){
+                if (this.$store.state.serchObj.venue != '') {
                     this.paramsObj["venue"] = this.$store.state.serchObj.venue;
                 }
-                if(this.$store.state.serchObj.authors .length > 0){
+                if (this.$store.state.serchObj.authors.length > 0) {
                     let len = this.$store.state.serchObj.authors.length;
                     let author = this.$store.state.serchObj.authors[0];
-                    for(let i = 1; i < len; i++){
+                    for (let i = 1; i < len; i++) {
                         author += ',' + this.$store.state.serchObj.authors[i];
                     }
                     this.paramsObj["author"] = author;
                 }
-                // if(this.$store.state.serchObj.type != ''){
-                //     this.paramsObj["type"] = this.$store.state.serchObj.type;
-                // }
+                if (this.$store.state.serchObj.type != '') {
+                    this.paramsObj["type"] = this.$store.state.serchObj.type;
+                }
                 // this.$store.commit("incrementCleanFlag")
             }
 
         },
 
         watch: {
-            '$store.state.serchObj.venflag':function () {
-                if (this.$store.state.serchObj.venflag){
+            '$store.state.serchObj.venflag': function () {
+                if (this.$store.state.serchObj.venflag) {
                     this.getVenueData();
-                //     this.$store.commit("incrementCleanFlag")
+                    //     this.$store.commit("incrementCleanFlag")
                 }
             }
         },

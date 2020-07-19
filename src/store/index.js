@@ -7,7 +7,7 @@ export default new Vuex.Store({
     state: {
         radioLabel: 0,
         inputfalg: false,
-        inputData:'',
+        inputData: '',
 
         host: "http://192.168.3.5:8080",
 
@@ -21,6 +21,7 @@ export default new Vuex.Store({
             autflag: false,
             typeflag: false,
             venflag: false,
+            conflag: false,
         }
 
     },
@@ -36,6 +37,7 @@ export default new Vuex.Store({
             state.serchObj.autflag = true;
             state.serchObj.typeflag = true;
             state.serchObj.venflag = true;
+            state.serchObj.conflag = true
             state.inputfalg = true;
         },
         incrementRadio(state, payload) {
@@ -79,7 +81,7 @@ export default new Vuex.Store({
         incrementCleanInputFlag(state) {
             state.inputfalg = false;
         },
-        incrementInputData(state,payload) {
+        incrementInputData(state, payload) {
             state.inputData = payload.data;
         },
 

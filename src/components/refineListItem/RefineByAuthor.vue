@@ -67,16 +67,11 @@
                 autTestList: [],
 
                 autNumCount: 0,
-                autArrCount:0,
+                autArrCount: 0,
 
-                title:"hadoop",
-                year:"2018,2019",
+                url: "/onlyDoc/findAllByTitleMatchesTextAuthorRefineList",
 
-                url:"/onlyDoc/findAllByTitleMatchesTextAuthorRefineList",
-
-                paramsObj:{
-
-                }
+                paramsObj: {}
 
 
             }
@@ -90,8 +85,8 @@
                 this.setParams()
 
                 axios.get(this.$store.state.host + this.url, {
-                    params : this.paramsObj
-                }).then(res =>{
+                    params: this.paramsObj
+                }).then(res => {
                     let data = res.data;
                     this.autTestList = data.map(function (item) {
                         return {
@@ -103,7 +98,7 @@
                         };
                     });
 
-                    this.autTestList.sort(function (a,b) {
+                    this.autTestList.sort(function (a, b) {
                         return b.num > a.num;
                     })
 
@@ -131,7 +126,7 @@
                     this.authorNumCount = cont;
                     // console.log(this.autTestList)
                     this.loadFlag = false;
-                    this.$store.commit("incrementCleanFlag",{flag:"autflag"})
+                    this.$store.commit("incrementCleanFlag", {flag: "autflag"})
                     this.$store.commit("incrementCleanInputFlag");
                 }).catch(error => {
                     console.log(error)
@@ -190,27 +185,28 @@
                 return result;
             },
 
-            setParams(){
-                if(this.$store.state.serchObj.title != ''){
+            setParams() {
+                this.paramsObj = {};
+                if (this.$store.state.serchObj.title != '') {
                     this.paramsObj["title"] = this.$store.state.serchObj.title;
                 }
-                if(this.$store.state.serchObj.year != ''){
+                if (this.$store.state.serchObj.year != '') {
                     this.paramsObj["year"] = this.$store.state.serchObj.year;
                 }
-                if(this.$store.state.serchObj.venue != ''){
+                if (this.$store.state.serchObj.venue != '') {
                     this.paramsObj["venue"] = this.$store.state.serchObj.venue;
                 }
-                if(this.$store.state.serchObj.authors.length > 0){
+                if (this.$store.state.serchObj.authors.length > 0) {
                     let len = this.$store.state.serchObj.authors.length;
                     let author = this.$store.state.serchObj.authors[0];
-                    for(let i = 1; i < len; i++){
+                    for (let i = 1; i < len; i++) {
                         author += ',' + this.$store.state.serchObj.authors[i];
                     }
                     this.paramsObj["author"] = author;
                 }
-                // if(this.$store.state.serchObj.type != ''){
-                //     this.paramsObj["type"] = this.$store.state.serchObj.type;
-                // }
+                if (this.$store.state.serchObj.type != '') {
+                    this.paramsObj["type"] = this.$store.state.serchObj.type;
+                }
                 // this.$store.commit("incrementCleanFlag")
             }
         },
@@ -219,8 +215,8 @@
             'name'
         ],
         watch: {
-            '$store.state.serchObj.autflag':function () {
-                if (this.$store.state.serchObj.autflag){
+            '$store.state.serchObj.autflag': function () {
+                if (this.$store.state.serchObj.autflag) {
                     this.getAuthorData();
                     // this.$store.commit("incrementCleanFlag")
                 }

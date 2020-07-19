@@ -26,3 +26,6 @@
    ![Image text](src/assets/mdImg/authorIndetail.png)
    
     Search 搜索页面 （搜索规则，搜索人名，组合搜索）
+####7.18 实验记录
+    bookTypeItem下添加新类型Reference Works
+    完成右侧优化列表与返回结果的联动

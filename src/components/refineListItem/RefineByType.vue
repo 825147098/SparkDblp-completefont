@@ -11,7 +11,6 @@
                        v-show="item.show"></i>
                     <el-button type="text"
                                size="small"
-                               disabled
                                @mouseenter.native="mouseEnter(index)"
                                @mouseleave.native="mouseLeave(index)"
                                @click="addAuthorToInput(index)"
@@ -40,6 +39,7 @@
 
 <script>
     import axios from 'axios';
+
     export default {
         name: "RefineByType",
 
@@ -51,44 +51,51 @@
 
                 sqlSize: 300,
 
-                typeTestList: [
-
-                ],
+                typeTestList: [],
 
                 numCount: 0,
 
-                paramsObj:{
-
-                }
+                paramsObj: {}
             }
         },
 
         methods: {
             getTypeData() {
                 this.loadFlag = true;
-                let cont = this.numCount;
                 this.setParams()
-                axios.get(this.$store.state.host + "/onlyDoc/findAllByTitleMatchesTextTypeRefineList",{
+                axios.get(this.$store.state.host + "/onlyDoc/findAllByTitleMatchesTextTypeRefineList", {
                     params: this.paramsObj
                 }).then(res => {
                     this.typeTestList = res.data.map(function (item) {
                         // item.num = this.toThousands(item.num);
                         return {
                             "_VALUE": item.group,
+                            "type": item.group,
                             "img": "el-icon-circle-plus",
-                            "index": cont++,
                             "show": false,
                             "num": item.count
                         };
                     });
                     // console.log(res.data)
                     this.changeType()
+
+                    for (let i = 0; i < this.typeTestList.length; i++) {
+                        if (this.$store.state.serchObj.type === '')
+                            break;
+                        else {
+                            if (this.$store.state.serchObj.type == this.typeTestList[i].type) {
+                                this.typeTestList[i].show = true;
+                                this.typeTestList[i].img = "el-icon-remove";
+                            }
+                        }
+                    }
+
                     this.typeList = this.typeTestList
                     this.sqlSize = this.typeTestList.length
                     this.loadFlag = false;
-                    this.$store.commit("incrementCleanFlag",{flag:"typeflag"})
+                    this.$store.commit("incrementCleanFlag", {flag: "typeflag"})
                     this.$store.commit("incrementCleanInputFlag");
-                }).catch(error =>{
+                }).catch(error => {
                     console.log(error)
                 })
             },
@@ -107,13 +114,13 @@
                 if (this.typeList[index].img === "el-icon-circle-plus") {
                     this.typeList[index].show = true;
                     this.typeList[index].img = "el-icon-remove";
-                    this.$store.commit("incrementType",{newType:this.typeList[index]._VALUE});
+                    this.$store.commit("incrementType", {newType: this.typeList[index].type});
                 } else {
                     this.typeList[index].show = false;
                     this.typeList[index].img = "el-icon-circle-plus";
                     this.$store.commit("incrementCleanType")
                 }
-                console.log(this.$store.state.type)
+                // console.log(this.$store.state.type)
             },
 
             toThousands(num) {
@@ -151,41 +158,45 @@
                         case "journals article":
                             this.typeTestList[i]._VALUE = 'Journals Article';
                             break;
+                        case  "reference":
+                            this.typeTestList[i]._VALUE = 'Reference Works';
+                            break;
                     }
                 }
             },
 
-            setParams(){
-                if(this.$store.state.serchObj.title != ''){
+            setParams() {
+                this.paramsObj = {};
+                if (this.$store.state.serchObj.title != '') {
                     this.paramsObj["title"] = this.$store.state.serchObj.title;
                 }
-                if(this.$store.state.serchObj.year != ''){
+                if (this.$store.state.serchObj.year != '') {
                     this.paramsObj["year"] = this.$store.state.serchObj.year;
                 }
-                if(this.$store.state.serchObj.venue != ''){
+                if (this.$store.state.serchObj.venue != '') {
                     this.paramsObj["venue"] = this.$store.state.serchObj.venue;
                 }
-                if(this.$store.state.serchObj.authors.length > 0){
+                if (this.$store.state.serchObj.authors.length > 0) {
                     let len = this.$store.state.serchObj.authors.length;
                     let author = this.$store.state.serchObj.authors[0];
-                    for(let i = 1; i < len; i++){
+                    for (let i = 1; i < len; i++) {
                         author += ',' + this.$store.state.serchObj.authors[i];
                     }
                     this.paramsObj["author"] = author;
                 }
-                // if(this.$store.state.serchObj.type != ''){
-                //     this.paramsObj["type"] = this.$store.state.serchObj.type;
-                // }
+                if (this.$store.state.serchObj.type != '') {
+                    this.paramsObj["type"] = this.$store.state.serchObj.type;
+                }
                 // this.$store.commit("incrementCleanFlag")
             }
 
         },
 
         watch: {
-            '$store.state.serchObj.typeflag':function () {
-                if (this.$store.state.serchObj.typeflag){
+            '$store.state.serchObj.typeflag': function () {
+                if (this.$store.state.serchObj.typeflag) {
                     this.getTypeData();
-                //     this.$store.commit("incrementCleanFlag")
+                    //     this.$store.commit("incrementCleanFlag")
                 }
             }
         },
@@ -243,7 +254,8 @@
         padding: 0px;
         white-space: pre-line;
     }
-    .buttonSelect{
+
+    .buttonSelect {
         font-weight: 700;
         font-style: italic;
         padding-right: 4px

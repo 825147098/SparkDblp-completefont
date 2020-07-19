@@ -33,6 +33,9 @@
                         <JournalItem v-else-if="item.type == 'Journals Article'"
                                      :inner-data="item"
                         ></JournalItem>
+                        <ReferenceWorkItem v-else-if="item.type == 'Reference Works'"
+                                :inner-data="item">
+                        </ReferenceWorkItem>
                     </li>
                 </ul>
                 <ul v-show="loadFlag"
@@ -44,7 +47,7 @@
                         ></el-icon>
                     </li>
                 </ul>
-                <ul v-show="!loadFlag"
+                <ul v-show="!loadFlag && !parmasFlag"
                     class="putList">
                     <li>
                         <el-button type="text" @click="load">
@@ -65,10 +68,12 @@
     import EditorShipItem from "./bookTypeItem/EditorShipItem";
     import InformalPubItem from "./bookTypeItem/InformalPubItem";
     import JournalItem from "./bookTypeItem/JournalItem";
+    import ReferenceWorkItem from "./bookTypeItem/ReferenceWorkItem";
     // import PartInBookOrCollItem from "./bookTypeItem/PartInBookOrCollItem";
     export default {
         name: "CompleteResult",
         components: {
+            ReferenceWorkItem,
             // PartInBookOrCollItem,
             JournalItem, InformalPubItem, EditorShipItem, ConfAndWorkItem, BookAndTheseItem
         },
@@ -77,7 +82,7 @@
                 title: 'hadoop',
                 page: 0,
                 size: '',
-                pageDetail: '',
+                pageDetail: {},
 
                 flag: '-',
                 activeName: '1',
@@ -87,12 +92,18 @@
                 pubList: [],
                 waitList: [],
                 yearList: [],
+
+                parmasObj: {},
+                parmasFlag: false
             }
         },
 
         methods: {
+            //false调用
             getPubData() {
-                axios.get(this.$store.state.host + "/onlyDocs/search/findAllByTitleMatches", {
+                this.loadFlag = true;
+                this.dataFlag = false;
+                axios.get(this.$store.state.host + "/onlyDocs/search/findAllByTitleMatchesText", {
                     params: {
                         title: this.title,
                         page: this.page,
@@ -105,7 +116,32 @@
                     this.dataFlag = true;
                     this.changeType();
                     this.pubSort()
-                    // console.log(this.waitList);
+
+                    this.$store.commit("incrementCleanFlag", {flag: "conflag"})
+                    this.$store.commit("incrementCleanInputFlag");
+                }).catch(error => {
+                    console.log(error);
+                })
+            },
+            //true调用
+            getFilPubData() {
+                this.loadFlag = true;
+                this.dataFlag = false;
+                this.setParams();
+                axios.get(this.$store.state.host + "/onlyDoc/findAllByTitleMatchesTextAllList", {
+                    params: this.paramsObj
+                }).then(res => {
+                    this.waitList = res.data;
+                    this.pageDetail["totalElements"] = this.waitList.length;
+                    console.log(this.waitList)
+                    // this.waitList = testData.data().test
+                    this.loadFlag = false;
+                    this.dataFlag = true;
+                    this.changeType();
+                    this.pubSort()
+
+                    this.$store.commit("incrementCleanFlag", {flag: "conflag"})
+                    this.$store.commit("incrementCleanInputFlag");
                 }).catch(error => {
                     console.log(error);
                 })
@@ -134,16 +170,19 @@
                                 }
                             });
                         }
-                        axios.get(this.$store.state.host + "/onlyDocs/search/findAllByTitleContainingIgnoreCase", {
+                        axios.get(this.$store.state.host + "/onlyDocs/search/findAllByTitleMatchesText", {
                             params: {
                                 title: this.title,
                                 page: this.page
                             }
                         }).then(res => {
                             this.waitList = this.waitList.concat(res.data._embedded.onlyDocs);
+                            this.changeType();
                             this.pubSort();
                             this.loadFlag = false;
-                            // console.log(this.waitList);
+
+                            this.$store.commit("incrementCleanFlag", {flag: "conflag"})
+                            this.$store.commit("incrementCleanInputFlag");
                         }).catch(error => {
                             console.log(error);
                         })
@@ -209,7 +248,7 @@
                             this.waitList[i].type = 'Journals Article';
                             break;
                         case  "reference":
-                            console.log(this.waitList[i]);
+                            this.waitList[i].type = 'Reference Works';
                             break;
                     }
                 }
@@ -218,22 +257,75 @@
             pubSort() {
                 this.groupBy();
                 this.sortYear();
+            },
+
+            setParams() {
+                this.paramsObj = {};
+                if (this.$store.state.serchObj.title != '') {
+                    this.paramsObj["title"] = this.$store.state.serchObj.title;
+                }
+                if (this.$store.state.serchObj.year != '') {
+                    this.paramsObj["year"] = this.$store.state.serchObj.year;
+                }
+                if (this.$store.state.serchObj.venue != '') {
+                    this.paramsObj["venue"] = this.$store.state.serchObj.venue;
+                }
+                if (this.$store.state.serchObj.authors.length > 0) {
+                    let len = this.$store.state.serchObj.authors.length;
+                    let author = this.$store.state.serchObj.authors[0];
+                    for (let i = 1; i < len; i++) {
+                        author += ',' + this.$store.state.serchObj.authors[i];
+                    }
+                    this.paramsObj["author"] = author;
+                }
+                if (this.$store.state.serchObj.type != '') {
+                    this.paramsObj["type"] = this.$store.state.serchObj.type;
+                }
+            },
+
+            checkFlag() {
+                this.parmasFlag = false;
+                if (this.$store.state.serchObj.type != '') {
+                    this.parmasFlag = true;
+                }
+                if (this.$store.state.serchObj.year != '') {
+                    this.parmasFlag = true;
+                }
+                if (this.$store.state.serchObj.venue != '') {
+                    this.parmasFlag = true;
+                }
+                if (this.$store.state.serchObj.authors.length > 0) {
+                    this.parmasFlag = true;
+                }
             }
+
+
         },
 
         computed: {},
 
         watch: {
-            // "$store.state.serchObj.flag":function () {
-            //     if (this.$store.state.serchObj.flag){
-            //         this.getPubData();
-            //         this.$store.commit("incrementCleanFlag")
-            //     }
-            // }
+            "$store.state.serchObj.conflag": function () {
+                if (this.$store.state.serchObj.conflag) {
+                    this.title = this.$store.state.serchObj.title
+                    console.log(1)
+                    this.checkFlag();
+                    if (this.parmasFlag)
+                        this.getFilPubData()
+                    else
+                        this.getPubData()
+                    // this.$store.commit("incrementCleanFlag")
+                }
+            }
         },
 
         mounted() {
-            this.getPubData();
+            this.title = this.$store.state.serchObj.title;
+            this.checkFlag();
+            if (this.parmasFlag)
+                this.getFilPubData()
+            else
+                this.getPubData()
         }
     }
 </script>

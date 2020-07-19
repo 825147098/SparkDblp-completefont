@@ -6,7 +6,9 @@
             </b></p>
             <ul v-show="!loadFlag">
                 <li v-for="(item,index) in yearList" :key="item._VALUE">
-                    <i :class=item.img v-show="item.show"></i>
+                    <i :class=item.img
+                       class="icon"
+                       v-show="item.show"></i>
                     <el-button type="text"
                                size="small"
 
@@ -51,6 +53,7 @@
 
 <script>
     import axios from 'axios';
+
     export default {
         name: "RefineByYear",
 
@@ -62,15 +65,12 @@
 
                 sqlSize: 0,
 
-                yearTestList: [
-
-                ],
+                yearTestList: [],
 
                 numCount: 0,
-                yearArrCount:0,
+                yearArrCount: 0,
 
-                paramsObj:{
-                }
+                paramsObj: {}
             }
         },
 
@@ -80,8 +80,8 @@
                 let cont = this.numCount;
                 this.yearArrCount = 0;
                 this.setParams()
-                axios.get(this.$store.state.host + "/onlyDoc/findAllByTitleMatchesTextYearRefineList",{
-                    params:this.paramsObj
+                axios.get(this.$store.state.host + "/onlyDoc/findAllByTitleMatchesTextYearRefineList", {
+                    params: this.paramsObj
                 }).then(res => {
                     this.yearTestList = res.data.map(function (item) {
                         // item.num = this.toThousands(item.num);
@@ -105,8 +105,8 @@
                         }
                     }
 
-                    this.yearTestList.sort(function (a,b) {
-                            return b._VALUE - a._VALUE;
+                    this.yearTestList.sort(function (a, b) {
+                        return b._VALUE - a._VALUE;
                     })
 
                     if (this.yearArrCount + 10 <= this.yearTestList.length) {
@@ -119,7 +119,7 @@
 
                     this.sqlSize = this.yearTestList.length
                     this.loadFlag = false;
-                    this.$store.commit("incrementCleanFlag",{flag:"yearflag"})
+                    this.$store.commit("incrementCleanFlag", {flag: "yearflag"})
                     this.$store.commit("incrementCleanInputFlag");
                 }).catch(error => {
                     console.log(error)
@@ -155,14 +155,14 @@
                 if (this.yearList[index].img === "el-icon-circle-plus") {
                     this.yearList[index].show = true;
                     this.yearList[index].img = "el-icon-remove";
-                    this.$store.commit("incrementYear",{newYear:this.yearList[index]._VALUE});
+                    this.$store.commit("incrementYear", {newYear: this.yearList[index]._VALUE});
                 } else {
                     this.yearList[index].show = false;
                     this.yearList[index].img = "el-icon-circle-plus";
                     this.$store.commit("incrementCleanYear")
                 }
                 // console.log(this.$store.state.year)
-                this.$store.commit("incrementCleanFlag")
+                // this.$store.commit("incrementCleanFlag")
             },
 
             toThousands(num) {
@@ -178,36 +178,37 @@
                 return result;
             },
 
-            setParams(){
-                if(this.$store.state.serchObj.title != ''){
+            setParams() {
+                this.paramsObj = {};
+                if (this.$store.state.serchObj.title != '') {
                     this.paramsObj["title"] = this.$store.state.serchObj.title;
                 }
-                if(this.$store.state.serchObj.year != ''){
+                if (this.$store.state.serchObj.year != '') {
                     this.paramsObj["year"] = this.$store.state.serchObj.year;
                 }
-                if(this.$store.state.serchObj.venue != ''){
+                if (this.$store.state.serchObj.venue != '') {
                     this.paramsObj["venue"] = this.$store.state.serchObj.venue;
                 }
-                if(this.$store.state.serchObj.authors .length > 0){
+                if (this.$store.state.serchObj.authors.length > 0) {
                     let len = this.$store.state.serchObj.authors.length;
                     let author = this.$store.state.serchObj.authors[0];
-                    for(let i = 1; i < len; i++){
+                    for (let i = 1; i < len; i++) {
                         author += ',' + this.$store.state.serchObj.authors[i];
                     }
                     this.paramsObj["author"] = author;
                 }
-                // if(this.$store.state.serchObj.type != ''){
-                //     this.paramsObj["type"] = this.$store.state.serchObj.type;
-                // }
+                if (this.$store.state.serchObj.type != '') {
+                    this.paramsObj["type"] = this.$store.state.serchObj.type;
+                }
             }
 
         },
 
         watch: {
-            '$store.state.serchObj.yearflag':function () {
-                if (this.$store.state.serchObj.yearflag){
+            '$store.state.serchObj.yearflag': function () {
+                if (this.$store.state.serchObj.yearflag) {
                     this.getYearData();
-                //     this.$store.commit("incrementCleanFlag")
+                    //     this.$store.commit("incrementCleanFlag")
                 }
             }
         },
@@ -242,6 +243,11 @@
         text-decoration: none;
     }
 
+    .refine-by > ul > li > .icon {
+        position: absolute;
+        margin: 3px -15px;
+    }
+
     .authorButton {
         display: inline;
         overflow: visible;
@@ -257,7 +263,8 @@
         margin: 0;
         padding: 0;
     }
-    .buttonSelect{
+
+    .buttonSelect {
         font-weight: 700;
         font-style: italic;
         padding-right: 4px

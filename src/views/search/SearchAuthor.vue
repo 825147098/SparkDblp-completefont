@@ -39,7 +39,8 @@
                             </li>
                         </ul>
                         <p v-if="totalElements > 300">前300条匹配项</p>
-                        <p v-else>{{totalElements}}</p>
+                        <p v-else-if="totalElements > 0">所有{{totalElements}}条匹配项</p>
+                        <p v-else>无匹配项</p>
                         <ul >
                             <li v-for="author in authorList" :key="author._VALUE">
                                 <el-button type="text"  size="mini">
@@ -53,6 +54,7 @@
                             </li>
                             <p v-if="totalElements > 300">忽略{{totalElements - 300}}条匹配项</p>
                         </ul>
+
                     </div>
                 </el-collapse-item>
             </el-collapse>
@@ -76,42 +78,16 @@
                 flag: '-',
                 warnflag: false,
                 //搜索信息
-                searchName: 'Base',
-                listSize: 300,
+                searchName: '',
+                listSize: 0,
 
                 totalElements:"",
                 //幸运列表
                 luckList: [
-                    {
-                        "_VALUE": "A. Habeeb",
-                        "_orcid": null,
-                        "_aux": null,
-                        "_links": {
-                            "self": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2f7"
-                            },
-                            "authors": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2f7"
-                            }
-                        }
-                    },
                 ],
                 luckflag: false,
 
                 authorList: [
-                    {
-                        "_VALUE": "A. Habeeb",
-                        "_orcid": null,
-                        "_aux": null,
-                        "_links": {
-                            "self": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2f7"
-                            },
-                            "authors": {
-                                "href": "http://localhost:8080/authorses/5f04943ce27d337efceaa2f7"
-                            }
-                        }
-                    },
                 ],
 
 

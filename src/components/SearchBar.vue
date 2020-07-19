@@ -198,6 +198,7 @@
                 if (this.$store.state.serchObj.type != '') {
                     text += "&type:" + this.$store.state.serchObj.type;
                 }
+                // console.log(this.$store.state.serchObj)
                 this.inputData = text;
 
             }
