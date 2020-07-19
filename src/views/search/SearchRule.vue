@@ -19,8 +19,10 @@
                 </h3>
             </header>
 <!--            手风琴模式的搜索规则-->
-            <el-collapse v-model="activeName" accordion>
-                <el-collapse-item name="1">
+            <el-collapse v-model="activeName"
+                         accordion>
+                <el-collapse-item
+                        name="1">
                     <div style="font-size: 13px; text-align: left">
                         <span>Title允许使用一个字符串作为输。例如:</span><br>
                         <span style="margin-left: 10%">title:bigdata title中含有bigdata字符串的论文</span><br>
@@ -34,8 +36,9 @@
                         <span style="margin-left: 10%">author: Yang,mike 查询作者姓名的含有Yang或者mike的论文</span><br>
                         <span style="margin-left: 10%">注意：</span><br>
                         <span style="margin-left: 10%">1）作者姓名只允许精确匹配，这意味着当输入为Yan的时候，不会显示作者包含Yang的论文。</span><br>
-                        <span style="margin-left: 10%">2）作者姓名大小写敏感，这意味着当输入为yan的时候，不会显示作者包含Yan的论文。</span>
-                        <span>e.g.,distribut year:2010..2020 author:tom,mike</span>
+                        <span style="margin-left: 10%">2）作者姓名大小写敏感，这意味着当输入为yan的时候，不会显示作者包含Yan的论文。</span><br>
+                        <span style="margin-left: 10%">e.g.,distribut&year:2010..2020&author:tom,mike</span><br>
+                        <span>Venue与Type类型不允许用户直接输入，可以根据搜索结果优化列表点击筛选</span>
                     </div>
                 </el-collapse-item>
             </el-collapse>
@@ -60,11 +63,11 @@
         methods: {
             //修改手风琴标记
             changeFalg() {
-                if (this.flag === '-')
+                if (this.flag == '-')
                     this.flag = '+';
                 else
                     this.flag = '-';
-            }
+            },
         },
 
         watch: {
@@ -78,7 +81,7 @@
                         this.activeName = "1";
                         break;
                 }
-            }
+            },
         },
 
         mounted() {
