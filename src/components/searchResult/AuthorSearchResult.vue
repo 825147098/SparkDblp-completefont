@@ -203,8 +203,7 @@
     .head-hide {
         border-bottom: 2px #7d848a solid;
         min-height: 27px;
-        padding: 0px 16px 0px 24px;
-        margin: 0;
+        padding: 0 16px 0 24px;
         text-align: left;
         margin: 20px 0 0 0;
     }
@@ -222,8 +221,8 @@
         font-size: 11pt;
         font-weight: 400;
         min-width: 768px;
-        margin: 0px;
-        padding: 0px;
+        margin: 0;
+        padding: 0;
     }
     .body>p{
         text-align: left;

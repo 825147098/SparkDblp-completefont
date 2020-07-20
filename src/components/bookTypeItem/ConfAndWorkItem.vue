@@ -150,7 +150,7 @@
 <style scoped>
     .box {
         display: table-cell;
-        padding: 0px 2px;
+        padding: 0 2px;
     }
 
     .box > div {

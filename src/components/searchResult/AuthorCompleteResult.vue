@@ -962,21 +962,21 @@
 
 <style scoped>
     .infoMatch {
-        margin: 1ex 0px 1ex 24px;
-        padding: 0px;
+        margin: 1ex 0 1ex 24px;
+        padding: 0;
         text-align: left;
     }
 
     .putList {
-        margin: 1ex 0em 1ex;
-        padding: 0px;
+        margin: 1ex 0 1ex;
+        padding: 0;
     }
 
     .putList > li {
         text-decoration: none;
         display: table;
-        margin: 0ex 0em 1ex;
-        padding: 0px;
+        margin: 0 0 1ex;
+        padding: 0;
     }
 
     putList > li.year {

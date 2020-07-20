@@ -122,8 +122,8 @@
     .browtable > li {
         position: relative;
         list-style-type: none;
-        margin: 0.5ex 0em;
-        padding: 0px;
+        margin: 0.5ex 0;
+        padding: 0;
     }
 
     .browtable > li > ul {
@@ -135,16 +135,16 @@
     .browtable > li > ul > li {
         display: inline-block;
         list-style-type: none;
-        margin: 0ex 0.5em 0ex 0em;
+        margin: 0 0.5em 0 0;
         text-decoration: none;
-        padding: 0px;
+        padding: 0;
     }
 
     .browtable > li > header {
         font-weight: 700;
         border: none;
-        margin: 0px;
-        padding: 0px;
+        margin: 0;
+        padding: 0;
         display: flex;
         min-height: 27px;
     }

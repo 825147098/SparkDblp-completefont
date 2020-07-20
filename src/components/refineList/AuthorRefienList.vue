@@ -73,6 +73,6 @@
         display: inline;
         max-width: 250px;
         background: #ffffff;
-        margin: 0ex;
+        margin: 0;
     }
 </style>

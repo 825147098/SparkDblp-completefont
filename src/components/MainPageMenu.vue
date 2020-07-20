@@ -57,7 +57,7 @@
         color: #ffffff;
         background: #606b70;
         border-bottom: 2px solid #606B70;
-        margin: 0px;
+        margin: 0;
         width: 270px;
     }
 </style>

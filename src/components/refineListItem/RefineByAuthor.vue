@@ -273,8 +273,8 @@
         font-size: 1em;
         font-weight: 400;
         background-color: transparent;
-        margin: 0px;
-        padding: 0px;
+        margin: 0;
+        padding: 0;
         white-space: pre-line;
     }
 
