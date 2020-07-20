@@ -40,6 +40,7 @@
 
         created() {
             this.activeShow = this.$store.state.inputfalg
+            this.$store.commit("incrementRadio",{newLabel: 3})
         }
     }
 </script>
