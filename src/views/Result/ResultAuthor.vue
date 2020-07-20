@@ -14,7 +14,7 @@
 
 <script>
     import SearchBar from "../../components/SearchBar";
-    import AuthorCompleteResult from "../../components/AuthorCompleteResult";
+    import AuthorCompleteResult from "../../components/searchResult/AuthorCompleteResult";
     export default {
         name: "resultAuthor",
         components: {AuthorCompleteResult, SearchBar},

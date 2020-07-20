@@ -46,8 +46,12 @@
                                 </router-link>
                             </el-radio>
                         </div>
-                        <div>
-                            <el-radio :label="3" style="color: white">出版物搜索</el-radio>
+                        <div @click="changeRadioToPub">
+                            <el-radio :label="3" style="color: white">
+                                <router-link :to="{path:'/search/publicat'}">
+                                    出版物搜索
+                                </router-link>
+                            </el-radio>
                         </div>
                     </el-radio-group>
                 </el-submenu>
@@ -109,6 +113,11 @@
 
             changeRadioToVen() {
                 this.radio = 2;
+                this.putRadioData()
+            },
+
+            changeRadioToPub() {
+                this.radio = 3;
                 this.putRadioData()
             },
 

@@ -60,6 +60,10 @@ const routes = [
                 path: '/search/venue',
                 name:'venue',
                 component: () => import('../views/search/SearchVenue')
+            },{
+                path: '/search/publicat',
+                name:'publicat',
+                component: () => import('../views/search/SearchPublication')
             }
         ]
     },

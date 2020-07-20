@@ -63,12 +63,12 @@
 
 <script>
     import axios from 'axios';
-    import BookAndTheseItem from "./bookTypeItem/BookAndTheseItem";
-    import ConfAndWorkItem from "./bookTypeItem/ConfAndWorkItem";
-    import EditorShipItem from "./bookTypeItem/EditorShipItem";
-    import InformalPubItem from "./bookTypeItem/InformalPubItem";
-    import JournalItem from "./bookTypeItem/JournalItem";
-    import ReferenceWorkItem from "./bookTypeItem/ReferenceWorkItem";
+    import BookAndTheseItem from "../bookTypeItem/BookAndTheseItem";
+    import ConfAndWorkItem from "../bookTypeItem/ConfAndWorkItem";
+    import EditorShipItem from "../bookTypeItem/EditorShipItem";
+    import InformalPubItem from "../bookTypeItem/InformalPubItem";
+    import JournalItem from "../bookTypeItem/JournalItem";
+    import ReferenceWorkItem from "../bookTypeItem/ReferenceWorkItem";
     // import PartInBookOrCollItem from "./bookTypeItem/PartInBookOrCollItem";
     export default {
         name: "CompleteResult",

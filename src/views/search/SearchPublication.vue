@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-header class="header" v-show="activeShow">
-            <h1 class="headline">搜索 Spark Dblp</h1>
+            <h1 class="headline">搜索 Spark Dblp For 出版物 </h1>
         </el-header>
         <el-container v-if="activeShow">
             <CompleteResult></CompleteResult>
@@ -16,7 +16,7 @@
     import ComRefineList from "../../components/refineList/ComRefineList";
     import SearchRule from "./SearchRule";
     export default {
-        name: "SearchComplete",
+        name: "SearchPublication",
         components: {SearchRule, ComRefineList, CompleteResult},
 
         data:function () {
@@ -29,7 +29,7 @@
             '$store.state.inputfalg': {
                 handler() {
                     // console.log(this.$store.state)
-                    if(this.$store.state.inputfalg && this.$store.state.radioLabel === 0){
+                    if(this.$store.state.inputfalg && this.$store.state.radioLabel === 3){
                         this.activeShow = true;
                         // console.log(this.$store.state)
                     }

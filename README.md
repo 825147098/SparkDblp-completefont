@@ -19,7 +19,7 @@
    ![Image text](src/assets/mdImg/searchBar.png)
     
 #### views内容
-    brows 浏览结果（实现人民浏览）
+    brows 浏览结果（实现人名浏览）
    ![Image text](src/assets/mdImg/broAut.png)
    
     Result 详细结果（实现个人精确匹配结果浏览）
