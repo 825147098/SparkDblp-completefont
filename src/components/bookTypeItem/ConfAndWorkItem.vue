@@ -1,6 +1,6 @@
 <template>
     <el-container>
-<!--        分辨图标-->
+        <!--        分辨图标-->
         <div class="box">
             <el-tooltip class="item"
                         effect="dark"
@@ -9,7 +9,7 @@
                 <div></div>
             </el-tooltip>
         </div>
-<!--        链接按钮-->
+        <!--        链接按钮-->
         <div class="articelButton">
             <el-dropdown style="padding: 0 10px" :underline="false"
                          v-if="confAndWorkData.ee != null">
@@ -33,11 +33,11 @@
             </el-tooltip>
         </div>
         <cite class="data">
-<!--            作者-->
+            <!--            作者-->
             <span v-for="authors in confAndWorkData.author" :key="authors._VALUE" class="name">
                 <router-link :to="{path:'/resAut',query:{autName:authors._VALUE}}"
                              class="name">
-                                {{authors._VALUE}}
+                                <p class="mark" v-html="getMatch(authors._VALUE)">{{authors._VALUE}}</p>
                             </router-link>
                 <el-tooltip class="item" effect="dark" :content=authors._orcid placement="bottom-end"
                             v-if="authors._orcid != null">
@@ -47,10 +47,18 @@
                 <span v-if="confAndWorkData.author.indexOf(authors) < confAndWorkData.author.length - 1">,</span>
             </span>
             :<br>
-<!--            标题-->
-            <span class="title">{{confAndWorkData.title}}</span>
-<!--            链接要补-->
-            <el-link class="name">{{confAndWorkData.booktitle}}</el-link>
+            <!--            标题-->
+            <span class="title">
+                <p class="mark" v-html="getMatch(confAndWorkData.title)">
+                    {{confAndWorkData.title}}
+                </p>
+             </span>
+            <!--            链接要补-->
+            <el-link class="name">
+                <p class="mark" v-html="getMatch(confAndWorkData.booktitle)">
+                    {{confAndWorkData.booktitle}}
+                </p>
+            </el-link>
             <span class="name">&nbsp;{{confAndWorkData.year}}</span>
             <span class="name">:{{confAndWorkData.pages}}</span>
         </cite><br>
@@ -61,9 +69,9 @@
     export default {
         name: "ConfAndWorkItem",
 
-        data:function () {
-            return{
-                confAndWorkData:{
+        data: function () {
+            return {
+                confAndWorkData: {
                     "_key": "conf/igarss/CzechMI16",
                     "prefix1": "conf/",
                     "prefix2": "conf/igarss/",
@@ -102,7 +110,27 @@
             }
         },
 
-        methods: {},
+        methods: {
+            getMatch(val) {
+                let str = this.$store.state.serchObj.title;
+
+                let copyVal = val.toLowerCase();
+                let copyStr = str.toLowerCase();
+
+                let num = copyVal.indexOf(copyStr);
+
+                if (num === -1) {
+                    return val
+                } else {
+                    let or = val.substring(num, num + str.length)
+                    // console.log(or + num)
+                    let re = new RegExp(str, "gim")
+                    return val.replace(re, "<mark style='background-color: #fff8c6'>" + or + "</mark>")
+                }
+
+
+            },
+        },
 
         props: [
             'innerData',
@@ -152,6 +180,10 @@
         padding: 0 2px;
         max-width: 800px;
         text-align: left;
+    }
+
+    .mark {
+        display: inline;
     }
 
 </style>

@@ -29,7 +29,10 @@
                         <ul v-show="luckList">
                             <li v-for="luckly in luckList" :key="luckly._VALUE">
                                 <el-button type="text"  size="mini">
-                                    {{luckly._VALUE}}
+                                    <router-link :to="{path:'/resAut',query:{autName:luckly._VALUE}}"
+                                                 class="name">
+                                        <p class="mark" v-html="getMatch(luckly._VALUE)">{{getMatch(luckly._VALUE)}}</p>
+                                    </router-link>
                                     <el-tooltip class="item" effect="dark" :content=luckly._orcid placement="bottom-end"
                                                 v-if="luckly._orcid != null">
                                         <el-image src="https://dblp2.uni-trier.de/img/orcid-mark.12x12.png"
@@ -44,7 +47,10 @@
                         <ul >
                             <li v-for="author in authorList" :key="author._VALUE">
                                 <el-button type="text"  size="mini">
-                                    {{author._VALUE}}
+                                    <router-link :to="{path:'/resAut',query:{autName:author._VALUE}}"
+                                                 class="name">
+                                        <p  class="mark" v-html="getMatch(author._VALUE)">{{getMatch(author._VALUE)}}</p>
+                                    </router-link>
                                     <el-tooltip class="item" effect="dark" :content=author._orcid placement="bottom-end"
                                                 v-if="author._orcid != null">
                                         <el-image src="https://dblp2.uni-trier.de/img/orcid-mark.12x12.png"
@@ -137,6 +143,27 @@
                 // console.log(this.lucklyList);
             },
 
+            getMatch(val) {
+                let str = this.$store.state.serchObj.title;
+
+                let copyVal = val.toLowerCase();
+                let copyStr = str.toLowerCase();
+
+                let num = copyVal.indexOf(copyStr);
+
+                if (num === -1) {
+                    return val
+                } else {
+                    let or = val.substring(num, num + str.length)
+                    // console.log(or + num)
+                    let re = new RegExp(str, "gim")
+                    return val.replace(re, "<mark style='background-color: #fff8c6'>" + or + "</mark>")
+                }
+
+
+            },
+
+
         },
 
         watch: {
@@ -171,7 +198,7 @@
 
         created() {
             if (this.$store.state.inputData != '') {
-                this.searchName = this.$store.state.inputData;
+                this.searchName = this.$store.state.serchObj.title;
                 this.activeShow = true;
             } else {
                 this.activeShow = false;
@@ -234,5 +261,16 @@
     }
     .body>ul>li{
         text-align: left;
+    }
+
+    .body>ul>li>button>span>p{
+        margin: 0;
+    }
+    .mark{
+        display: inline;
+    }
+    .name {
+        color: #7d848a;
+        text-decoration: none;
     }
 </style>

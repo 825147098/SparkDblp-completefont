@@ -37,7 +37,7 @@
             <span v-for="authors in inforData.author" :key="authors._VALUE" class="name">
                 <router-link :to="{path:'/resAut',query:{autName:authors._VALUE}}"
                              class="name">
-                                {{authors._VALUE}}
+                                <p class="mark" v-html="getMatch(authors._VALUE)">{{authors._VALUE}}</p>
                             </router-link>
                 <el-tooltip class="item" effect="dark" :content=authors._orcid placement="bottom-end"
                             v-if="authors._orcid != null">
@@ -48,11 +48,17 @@
             </span>
             :<br>
             <!--            标题-->
-            <span class="title">{{inforData.title}}</span>
+            <span class="title">
+                <p class="mark" v-html="getMatch(inforData.title)">
+                    {{inforData.title}}
+                </p>
+             </span>
             <!--            链接要补-->
             <el-link class="name">
                 <span>
-                    {{inforData.journal}}
+                    <p class="mark" v-html="getMatch(inforData.journal)">
+                   {{inforData.journal}}
+                    </p>
                 </span>
                 <span>
                     {{inforData.volume}}
@@ -67,9 +73,9 @@
     export default {
         name: "InformalPubItem",
 
-        data:function () {
-            return{
-                inforData:{
+        data: function () {
+            return {
+                inforData: {
                     "_id": "5f049504b073270c2204c5ec",
                     "_key": "journals/corr/abs-2001-00062",
                     "prefix1": "journals/",
@@ -117,7 +123,27 @@
             }
         },
 
-        methods: {},
+        methods: {
+            getMatch(val) {
+                let str = this.$store.state.serchObj.title;
+
+                let copyVal = val.toLowerCase();
+                let copyStr = str.toLowerCase();
+
+                let num = copyVal.indexOf(copyStr);
+
+                if (num === -1) {
+                    return val
+                } else {
+                    let or = val.substring(num, num + str.length)
+                    // console.log(or + num)
+                    let re = new RegExp(str, "gim")
+                    return val.replace(re, "<mark style='background-color: #fff8c6'>" + or + "</mark>")
+                }
+
+
+            },
+        },
 
         props: [
             'innerData',
@@ -169,4 +195,7 @@
         text-align: left;
     }
 
+    .mark {
+        display: inline;
+    }
 </style>

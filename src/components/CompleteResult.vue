@@ -297,7 +297,7 @@
                 if (this.$store.state.serchObj.authors.length > 0) {
                     this.parmasFlag = true;
                 }
-            }
+            },
 
 
         },
@@ -353,4 +353,5 @@
         font-size: small;
         font-weight: 800;
     }
+
 </style>

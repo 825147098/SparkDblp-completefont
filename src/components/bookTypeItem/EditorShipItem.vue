@@ -37,7 +37,7 @@
             <span v-for="editor in editorData.editor" :key="editor._VALUE" class="name">
                 <router-link :to="{path:'/resAut',query:{autName:editor._VALUE}}"
                              class="name">
-                                {{editor._VALUE}}
+                                <p class="mark" v-html="getMatch(editor._VALUE)">{{authors._VALUE}}</p>
                 </router-link>
                 <el-tooltip class="item" effect="dark" :content=editor._orcid placement="bottom-end"
                             v-if="editor._orcid != null">
@@ -48,7 +48,11 @@
             </span>
             :<br>
             <!--            标题-->
-            <span class="title">{{editorData.title}}&nbsp;</span>
+            <span class="title">
+                <p class="mark" v-html="getMatch(editorData.title)">
+                    {{editorData.title}}
+                </p>
+             </span>
             <!--            链接要补-->
             <span v-if="editorData.series != null" class="name">
                 <el-link :href="editorData.series._href">
@@ -145,7 +149,27 @@
             }
         },
 
-        methods: {},
+        methods: {
+            getMatch(val) {
+                let str = this.$store.state.serchObj.title;
+
+                let copyVal = val.toLowerCase();
+                let copyStr = str.toLowerCase();
+
+                let num = copyVal.indexOf(copyStr);
+
+                if (num === -1) {
+                    return val
+                } else {
+                    let or = val.substring(num, num + str.length)
+                    // console.log(or + num)
+                    let re = new RegExp(str, "gim")
+                    return val.replace(re, "<mark style='background-color: #fff8c6'>" + or + "</mark>")
+                }
+
+
+            },
+        },
 
         props: [
             'innerData',
@@ -195,6 +219,9 @@
         padding: 0 2px;
         max-width: 800px;
         text-align: left;
+    }
+    .mark{
+        display: inline;
     }
 
 </style>

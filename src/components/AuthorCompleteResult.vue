@@ -132,6 +132,7 @@
                             <p><b>
                                 按照协作者细化
                                 <el-button
+                                        v-show="!autLoadFlag"
                                         class="dialogButton"
                                         @click="openDialog"
                                         type="text">
@@ -162,7 +163,7 @@
                                     ></el-icon>
                                 </li>
                             </ul>
-                            <ul v-show="!autLoadFlag && autSqlSize - authorList > 0">
+                            <ul v-show="!autLoadFlag && autSqlSize - authorList.length > 0">
                                 <li>
                                     <el-button
                                             type="text"
@@ -238,10 +239,10 @@
         </el-aside>
         <el-dialog
                 :visible.sync="dialogVisible"
-                width="40%"
+                width="70%"
                 center
         >
-            <div id="autGraph" style="height:400px;margin: auto;width: 600px"></div>
+            <div id="autGraph" style="height:600px;margin: auto;width: 800px"></div>
         </el-dialog>
     </el-container>
 </template>
@@ -347,7 +348,7 @@
                 // this.waitList = testData.data().test
                 this.filterList = this.waitList;
                 this.pageDetail = res.data.page;
-                console.log(this.waitList)
+                // console.log(this.waitList)
 
                 this.changeType();
                 this.getData()
@@ -716,7 +717,7 @@
                         break;
                     } else {
                         if (ven == this.waitList[i].journal || ven == this.waitList[i].booktitle) {
-                            console.log(this.waitList[i].booktitle)
+                            // console.log(this.waitList[i].booktitle)
                             venArr.push(this.waitList[i])
                         }
                     }
@@ -821,16 +822,16 @@
                                 show: true
                             },
                             edgeSymbol: ['circle', 'arrow'],
-                            edgeSymbolSize: [4, 10],
+                            edgeSymbolSize: [0, 0],
                             edgeLabel: {
                                 fontSize: 12
                             },
                             data: this.nodeList,
-                            // links: [],
                             links: this.linkList,
                             lineStyle: {
                                 opacity: 0.9,
                                 width: 2,
+                                symbolSize: [0,0],
                                 curveness: 0
                             }
                         }
@@ -838,14 +839,41 @@
                 }
                 // 使用刚指定的配置项和数据显示图表。
                 myChart.setOption(option);
+
+                //节点拖拽固定
+                myChart.on('mouseup', function (params) {
+                    var option = myChart.getOption();
+                    option.series[0].data[params.dataIndex].x = params.event.offsetX;
+                    option.series[0].data[params.dataIndex].y = params.event.offsetY;
+                    option.series[0].data[params.dataIndex].fixed = true;
+                    myChart.setOption(option);
+                });
+
             },
 
             getNode() {
+                let x = 400;
+                let y = 300;
+                let num = 360 / this.autTestList.length;
+                let cont = 0;
+                let aut = this.name
                 this.nodeList = this.autTestList.map(function (item) {
-                    return {
-                        name: item._VALUE,
-                        x: Math.random() * 500,
-                        y: Math.random() * 300,
+                    if(item._VALUE === aut){
+                        return {
+                            name: item._VALUE,
+                            x: x,
+                            y: y,
+                        }
+                    } else {
+                        // x =
+                        // y = ;
+                        cont ++;
+                        // console.log(x + ":" + y)
+                        return {
+                            name: item._VALUE,
+                            x: x + x * Math.cos(num * cont),
+                            y: y + y * Math.sin(num * cont),
+                        }
                     }
                 })
             },

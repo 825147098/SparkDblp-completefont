@@ -34,21 +34,28 @@
             <span v-for="authors in jourData.author" :key="authors._VALUE" class="name">
                 <router-link :to="{path:'/resAut',query:{autName:authors._VALUE}}"
                              class="name">
-                                {{authors._VALUE}}
-                            </router-link>
-                <el-tooltip class="item" effect="dark" :content=authors._orcid placement="bottom-end"
-                            v-if="authors._orcid != null">
+                                <p class="mark" v-html="getMatch(authors._VALUE)">{{authors._VALUE}}</p>
+                    <el-tooltip class="item" effect="dark" :content=authors._orcid placement="bottom-end"
+                                v-if="authors._orcid != null">
                     <el-image src="https://dblp2.uni-trier.de/img/orcid-mark.12x12.png"
                               style="padding-left:0.25em;"></el-image>
                 </el-tooltip>
-                <span v-if="jourData.author.indexOf(authors) < jourData.author.length - 1">,</span>
+                    <span v-if="jourData.author.indexOf(authors) < jourData.author.length - 1">,</span>
+                </router-link>
+
             </span>
             :<br>
-            <span class="title">{{jourData.title}}</span>
+            <span class="title">
+                <p class="mark" v-html="getMatch(jourData.title)">
+                    {{jourData.title}}
+                </p>
+            </span>
             <!--类型划分加链接-->
             <el-link class="nameVolume name" v-show="showNameVolme">
                 <span class="name">
+                    <p class="mark" v-html="getMatch(jourData.journal)">
                     {{jourData.journal}}
+                </p>
                 </span>
                 <span class="name">
                     {{jourData.volume}}
@@ -126,7 +133,27 @@
             }
         },
 
-        methods: {},
+        methods: {
+            getMatch(val) {
+                let str = this.$store.state.serchObj.title;
+
+                let copyVal = val.toLowerCase();
+                let copyStr = str.toLowerCase();
+
+                let num = copyVal.indexOf(copyStr);
+
+                if (num === -1) {
+                    return val
+                } else {
+                    let or = val.substring(num, num + str.length)
+                    // console.log(or + num)
+                    let re = new RegExp(str, "gim")
+                    return val.replace(re, "<mark style='background-color: #fff8c6'>" + or + "</mark>")
+                }
+
+
+            },
+        },
 
         props: [
             'innerData',
@@ -186,4 +213,7 @@
         display: inline;
     }
 
+    .mark {
+        display: inline;
+    }
 </style>

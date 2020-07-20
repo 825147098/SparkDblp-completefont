@@ -9,7 +9,12 @@
             <el-input size="mini"
                       class="searchInput"
                       @keyup.enter.native="putInputData"
-                      v-model="inputData" clearable/>
+                      v-model="inputData" clearable>
+            </el-input>
+            <el-button
+                    @click="putInputData" size="mini">
+                Search
+            </el-button>
             <el-menu background-color="#959595"
                      mode="horizontal"
                      class="searchRadio"
@@ -230,7 +235,7 @@
 
     .searchCon {
         float: right;
-        width: 400px;
+        width: 500px;
     }
 
     .searchRadio {

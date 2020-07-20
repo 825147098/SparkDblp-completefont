@@ -34,8 +34,8 @@
             <span v-for="authors in bookData.author" :key="authors._VALUE" class="name">
                 <router-link :to="{path:'/resAut',query:{autName:authors._VALUE}}"
                              class="name">
-                                {{authors._VALUE}}
-                            </router-link>
+                               <p class="mark" v-html="getMatch(authors._VALUE)">{{authors._VALUE}}</p>
+                </router-link>
                 <el-tooltip class="item" effect="dark" :content=authors._orcid placement="bottom-end"
                             v-if="authors._orcid != null">
                     <el-image src="https://dblp2.uni-trier.de/img/orcid-mark.12x12.png"
@@ -44,7 +44,11 @@
                 <span v-if="bookData.author.indexOf(authors) < bookData.author.length - 1">,</span>
             </span>
             :<br>
-            <span class="title">{{bookData.title}}</span>
+            <span class="title">
+                <p class="mark" v-html="getMatch(bookData.title)">
+                    {{bookData.title}}
+                </p>
+            </span>
             <!--类型划分加链接-->
             <span class="name" v-for="item in bookData.school" :key="item">
                 {{item}}
@@ -64,7 +68,7 @@
                 pp.&nbsp;
                 <span v-for="page in bookData.pages" :key="page">
                     {{page}}
-                    <span v-if="bookData.pages.indexOf(page) < bookData.pages.length - 1">,</span>
+<!--                    <span v-if="bookData.pages.indexOf(page) < bookData.pages.length - 1">,</span>-->
                 </span>
             </span>
         </cite><br>
@@ -144,16 +148,25 @@
         },
 
         methods: {
-            mapData(){
-                let data={};
-                for(let item in this.bookData){
-                    if(this.bookData[item] != null){
-                     data[item] = this.bookData[item];
-                    }
+            getMatch(val) {
+                let str = this.$store.state.serchObj.title;
+
+                let copyVal = val.toLowerCase();
+                let copyStr = str.toLowerCase();
+
+                let num = copyVal.indexOf(copyStr);
+
+                if (num === -1) {
+                    return val
+                } else {
+                    let or = val.substring(num, num + str.length)
+                    // console.log(or + num)
+                    let re = new RegExp(str, "gim")
+                    return val.replace(re, "<mark style='background-color: #fff8c6'>" + or + "</mark>")
                 }
-                console.log(data)
-                this.bookData = data
-            }
+
+
+            },
         },
 
         props: [
@@ -206,5 +219,7 @@
         max-width: 800px;
         text-align: left;
     }
-
+    .mark{
+        display: inline;
+    }
 </style>

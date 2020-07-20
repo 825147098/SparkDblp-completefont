@@ -37,7 +37,7 @@
             <span v-for="authors in PartData.author" :key="authors._VALUE" class="name">
                 <router-link :to="{path:'/resAut',query:{autName:authors._VALUE}}"
                              class="name">
-                                {{authors._VALUE}}
+                                <p class="mark" v-html="getMatch(authors._VALUE)">{{authors._VALUE}}</p>
                             </router-link>
                 <el-tooltip class="item" effect="dark" :content=authors._orcid placement="bottom-end"
                             v-if="authors._orcid != null">
@@ -48,10 +48,18 @@
             </span>
             :<br>
             <!--            标题-->
-            <span class="title">{{PartData.title}}</span>
+            <span class="title">
+                <p class="mark" v-html="getMatch(PartData.title)">
+                    {{PartData.title}}
+                </p>
+             </span>
             <!--            链接要补-->
             <el-link class="name">
-                <span>{{PartData.booktitle}}</span>
+                <span>
+                     <p class="mark" v-html="getMatch(PartData.booktitle)">
+                   {{PartData.booktitle}}
+                     </p>
+                </span>
                 <span>&nbsp;{{PartData.year}}</span>
             </el-link>
             <span class="name">&nbsp;:{{PartData.pages}}</span>
@@ -103,7 +111,27 @@
             }
         },
 
-        methods: {},
+        methods: {
+            getMatch(val) {
+                let str = this.$store.state.serchObj.title;
+
+                let copyVal = val.toLowerCase();
+                let copyStr = str.toLowerCase();
+
+                let num = copyVal.indexOf(copyStr);
+
+                if (num === -1) {
+                    return val
+                } else {
+                    let or = val.substring(num, num + str.length)
+                    // console.log(or + num)
+                    let re = new RegExp(str, "gim")
+                    return val.replace(re, "<mark style='background-color: #fff8c6'>" + or + "</mark>")
+                }
+
+
+            },
+        },
 
         props: [
             'innerData',
@@ -153,6 +181,9 @@
         padding: 0 2px;
         max-width: 800px;
         text-align: left;
+    }
+    .mark{
+        display: inline;
     }
 
 </style>

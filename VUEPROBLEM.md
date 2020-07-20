@@ -36,3 +36,31 @@ JS 对象转换字符串
             this.setEchartsOption();
         },300)
      },
+JS正则匹配添加标签模板
+    
+```
+getMatch(val) {
+                let str = this.$store.state.serchObj.title;
+
+                let copyVal = val.toLowerCase();
+                let copyStr = str.toLowerCase();
+
+                let num = copyVal.indexOf(copyStr);
+
+                if (num === -1) {
+                    return val
+                } else {
+                    let or = val.substring(num, num + str.length)
+                    // console.log(or + num)
+                    let re = new RegExp(str, "gim")
+                    return val.replace(re, "<mark style='background-color: #fff8c6'>" + or + "</mark>")
+                }
+
+
+            },
+```
+
+echarts graph links取消箭头
+        
+    首先series里面设置edgeSymbol: ['circle', 'arrow']，edgeSymbolSize: [0,0]
+    然后到需要要剪头的link下设置symbolSize: [0, 10] link下的symbolSize 跟 serie下的edgeSymbolSize 设置以后效果一样

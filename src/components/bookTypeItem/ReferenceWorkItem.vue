@@ -47,8 +47,16 @@
             :<br>
             </span>
             <!--类型划分加链接-->
-            <span class="title">{{referData.title}}</span>
-            <span class="name">{{referData.booktitle}}</span>
+            <span class="title">
+                <p class="mark" v-html="getMatch(referData.title)">
+                    {{referData.title}}
+                </p>
+             </span>
+            <span class="title">
+                <p class="mark" v-html="getMatch(referData.booktitle)">
+                    {{referData.booktitle}}
+                </p>
+             </span>
             <span class="name" v-if="referData.pages != null">:{{referData.pages}}</span>
         </cite><br>
     </el-container>
@@ -101,16 +109,25 @@
         },
 
         methods: {
-            mapData() {
-                let data = {};
-                for (let item in this.referData) {
-                    if (this.referData[item] != null) {
-                        data[item] = this.referData[item];
-                    }
+            getMatch(val) {
+                let str = this.$store.state.serchObj.title;
+
+                let copyVal = val.toLowerCase();
+                let copyStr = str.toLowerCase();
+
+                let num = copyVal.indexOf(copyStr);
+
+                if (num === -1) {
+                    return val
+                } else {
+                    let or = val.substring(num, num + str.length)
+                    // console.log(or + num)
+                    let re = new RegExp(str, "gim")
+                    return val.replace(re, "<mark style='background-color: #fff8c6'>" + or + "</mark>")
                 }
-                console.log(data)
-                this.referData = data
-            }
+
+
+            },
         },
 
         props: [
@@ -162,5 +179,8 @@
         padding: 0 2px;
         max-width: 800px;
         text-align: left;
+    }
+    .mark{
+        display: inline;
     }
 </style>
