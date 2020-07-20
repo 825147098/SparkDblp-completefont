@@ -4,6 +4,9 @@
             <h1 class="headline">搜索 Spark Dblp</h1>
         </el-header>
         <el-container v-if="activeShow">
+            <AuthorSearchResult :search-author=false></AuthorSearchResult>
+        </el-container>
+        <el-container v-if="activeShow">
             <CompleteResult></CompleteResult>
             <ComRefineList></ComRefineList>
         </el-container>
@@ -15,9 +18,10 @@
     import CompleteResult from "../../components/searchResult/CompleteResult";
     import ComRefineList from "../../components/refineList/ComRefineList";
     import SearchRule from "./SearchRule";
+    import AuthorSearchResult from "../../components/searchResult/AuthorSearchResult";
     export default {
         name: "SearchComplete",
-        components: {SearchRule, ComRefineList, CompleteResult},
+        components: {AuthorSearchResult, SearchRule, ComRefineList, CompleteResult},
 
         data:function () {
             return{
@@ -40,6 +44,7 @@
 
         created() {
             this.activeShow = this.$store.state.inputfalg
+            this.$store.commit("incrementRadio",{newLabel: 0})
         }
     }
 </script>
@@ -62,4 +67,6 @@
         min-width: 1000px;
         margin: auto;
     }
+
+
 </style>

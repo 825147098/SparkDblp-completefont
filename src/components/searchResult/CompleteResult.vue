@@ -2,8 +2,8 @@
     <el-main style="padding-top: 0; max-width: 850px">
         <el-collapse v-model="activeName" accordion @change="changeFalg">
             <el-collapse-item name="1">
-                <template slot="title">
-                    [{{flag}}] 搜索结果
+                <template slot="title" class="head-hide">
+                    [{{flag}}] 出版物搜索结果
                 </template>
                 <p v-show="dataFlag"
                    class="infoMatch"
@@ -47,7 +47,7 @@
                         ></el-icon>
                     </li>
                 </ul>
-                <ul v-show="!loadFlag && !parmasFlag"
+                <ul v-show="!loadFlag && !parmasFlag && pageDetail.totalElements > 0"
                     class="putList">
                     <li>
                         <el-button type="text" @click="load">
@@ -354,4 +354,11 @@
         font-weight: 800;
     }
 
+    .head-hide {
+        border-bottom: 2px #7d848a solid;
+        min-height: 27px;
+        padding: 0 16px 0 24px;
+        text-align: left;
+        margin: 20px 0 0 0;
+    }
 </style>

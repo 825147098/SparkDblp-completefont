@@ -27,6 +27,12 @@ export default new Vuex.Store({
     },
     mutations: {
         increment(state, payload) {
+            state.serchObj.title = '';
+            state.serchObj.venue = '';
+            state.serchObj.type = '';
+            state.serchObj.authors = [];
+            state.serchObj.year = '';
+
             state.radioLabel = payload.newLabel;
             state.serchObj.title = payload.newInput.title;
             state.serchObj.venue = payload.newInput.venue;

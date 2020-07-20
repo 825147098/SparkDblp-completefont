@@ -3,7 +3,7 @@
         <el-header class="header" v-show="activeShow">
             <h1 class="headline">搜索 Spark Dblp For 作者</h1>
         </el-header>
-       <AuthorSearchResult v-if="activeShow"></AuthorSearchResult>
+       <AuthorSearchResult v-if="activeShow" :search-author="true"></AuthorSearchResult>
         <SearchRule v-else ></SearchRule>
     </el-container>
 </template>
@@ -72,13 +72,15 @@
         },
 
         mounted() {
-            if(this.activeShow){
-                this.getAuthorData();
+            if (this.$route.query.autName != null) {
+                // this.searchName = this.$route.query.autName;
+                console.log(this.activeShow)
+                this.activeShow = true;
             }
         },
 
         created() {
-
+            this.$store.commit("incrementRadio",{newLabel: 1})
         }
     }
 </script>

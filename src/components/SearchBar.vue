@@ -41,7 +41,7 @@
                         </div>
                         <div @click="changeRadioToVen">
                             <el-radio :label="2" style="color: white">
-                                <router-link :to="{path:'/search/author'}">
+                                <router-link :to="{path:'/search/venue'}">
                                     会议搜索
                                 </router-link>
                             </el-radio>
@@ -85,6 +85,9 @@
                     this.concatText();
                     this.putInputData();
                 }
+            },
+            "store.state.radioLabel":function () {
+                this.radio = this.$store.state.radioLabel
             }
         },
 
@@ -93,7 +96,7 @@
                 // if (this.radio == 0)
                 this.$store.commit("increment", {newInput: this.splitText(), newLabel: this.radio});
                 this.$store.commit("incrementInputData", {data: this.inputData});
-                // console.log(this.inputData)
+                // console.log(this.$store.state.serchObj.title)
 
             },
 
@@ -101,13 +104,13 @@
                 this.$store.commit("incrementRadio", {newLabel: this.radio})
             },
 
-            changeRadioToAut() {
-                this.radio = 1;
+            changeRadioToCom() {
+                this.radio = 0;
                 this.putRadioData()
             },
 
-            changeRadioToCom() {
-                this.radio = 0;
+            changeRadioToAut() {
+                this.radio = 1;
                 this.putRadioData()
             },
 
