@@ -59,7 +59,4 @@
         margin: auto;
         padding: 0;
     }
-    .refineList{
-        margin-right: 20px;
-    }
 </style>

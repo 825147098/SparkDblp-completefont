@@ -38,8 +38,12 @@
                                     </template>
                                     <ul class="bodyText">
                                         <li v-for="titles in luckly.venueArr" :key="titles.title">
+                                            <router-link
+                                                class="name"
+                                                :to="{path:'/resVen',query: {venName:titles.title,cross:titles._key,book:titles.booktitle}}">
                                             <p class="mark" v-html="getMatch(titles.title)">
                                                 {{getMatch(titles.title)}}</p>
+                                        </router-link>
                                         </li>
                                     </ul>
                                 </el-collapse-item>
@@ -66,8 +70,12 @@
                                     </template>
                                     <ul class="bodyText">
                                         <li v-for="titles in venue.venueArr" :key="titles.title">
-                                            <p class="mark" v-html="getMatch(titles.title)">
-                                                {{getMatch(titles.title)}}</p>
+                                            <router-link
+                                                    class="name"
+                                                    :to="{path:'/resVen',query: {venName:titles.title,cross:titles._key}}">
+                                                <p class="mark" v-html="getMatch(titles.title)">
+                                                    {{getMatch(titles.title)}}</p>
+                                            </router-link>
                                         </li>
                                     </ul>
                                 </el-collapse-item>
@@ -107,8 +115,12 @@
                                     </template>
                                     <ul class="bodyText">
                                         <li v-for="titles in luckly.venueArr" :key="titles.title">
-                                            <p class="mark" v-html="getMatch(titles.title)">
-                                                {{getMatch(titles.title)}}</p>
+                                            <router-link
+                                                    class="name"
+                                                    :to="{path:'/resVen',query: {venName:titles.title,cross:titles._key}}">
+                                                <p class="mark" v-html="getMatch(titles.title)">
+                                                    {{getMatch(titles.title)}}</p>
+                                            </router-link>
                                         </li>
                                     </ul>
                                 </el-collapse-item>
@@ -139,8 +151,12 @@
                                     </template>
                                     <ul class="bodyText">
                                         <li v-for="titles in venue.venueArr" :key="titles.title">
-                                            <p class="mark" v-html="getMatch(titles.title)">
-                                                {{getMatch(titles.title)}}</p>
+                                            <router-link
+                                                    class="name"
+                                                    :to="{path:'/resVen',query: {venName:titles.title,cross:titles._key}}">
+                                                <p class="mark" v-html="getMatch(titles.title)">
+                                                    {{getMatch(titles.title)}}</p>
+                                            </router-link>
                                         </li>
                                     </ul>
                                 </el-collapse-item>
@@ -379,7 +395,7 @@
     }
 
     .titleLine {
-        line-height: 20px;
+        line-height: 25px;
         text-align: left;
         align-self: flex-end;
     }

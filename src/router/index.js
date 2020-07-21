@@ -72,6 +72,11 @@ const routes = [
         name:'resaut',
         component: () => import('../views/Result/ResultAuthor')
     },
+    {
+        path: '/resVen',
+        name:'resven',
+        component: () => import('../views/Result/ResultVenue')
+    },
 ]
 
 const router = new VueRouter({
