@@ -64,3 +64,12 @@ echarts graph links取消箭头
         
     首先series里面设置edgeSymbol: ['circle', 'arrow']，edgeSymbolSize: [0,0]
     然后到需要要剪头的link下设置symbolSize: [0, 10] link下的symbolSize 跟 serie下的edgeSymbolSize 设置以后效果一样
+el-collapse的title由于内部内容太多无法换行
+
+    在templete下添加一个div设置div样式
+```
+    line-height: 20px;
+    text-align: left;
+    align-self: flex-end;
+    
+```

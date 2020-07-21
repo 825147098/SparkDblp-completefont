@@ -56,8 +56,8 @@
     .header {
         width: 100%;
         min-width: 1000px;
-        height: auto;
         margin: auto;
+        padding: 0;
     }
     .refineList{
         margin-right: 20px;

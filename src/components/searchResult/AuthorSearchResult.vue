@@ -170,7 +170,7 @@
                 this.warnflag = false
                 this.luckflag = false;
                 this.luckList = []
-                axios.get("http://192.168.3.5:8080/authorses/search/findAllBy_VALUEContainingIgnoreCase", {
+                axios.get(this.$store.state.host + "/authorses/search/findAllBy_VALUEContainingIgnoreCase", {
                     params: {
                         author: this.searchName,
                         size: this.listSize,
@@ -228,21 +228,18 @@
         },
 
         watch: {
-            //监视标记,手风琴标记为string格式
-            // flag: function () {
-            //     switch (this.flag) {
-            //         case '+':
-            //             this.activeName = "0";
-            //             break;
-            //         case'-':
-            //             this.activeName = "1";
-            //             break;
-            //     }
-            // },
             '$store.state.serchObj.title': function () {
-                if(this.$store.state.radioLabel === 1 && this.$store.state.serchObj.title != []){
+                if((this.$store.state.radioLabel === 1  || !this.webPage)&& this.$store.state.serchObj.title != '' ){
                     this.searchName = this.$store.state.serchObj.title;
                     this.getAuthorData();
+                }
+            },
+
+            totalElements:function () {
+                if(this.totalElements > 0){
+                    this.$store.commit("incrementSetSerchAut")
+                } else {
+                    this.$store.commit("incrementCleanSerchAut")
                 }
             }
 

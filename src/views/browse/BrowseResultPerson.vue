@@ -271,13 +271,14 @@
         width: 100%;
         min-width: 1000px;
         margin: auto;
+        padding: 0;
     }
 
     .namePrefixCon {
         display: inline;
         display: flex;
-        margin: 0px 0px 0px 0px;
-        padding: 0px 0px 20px 20px;
+        margin: 0 0 0 0;
+        padding: 0 0 20px 20px;
     }
 
     .drop-down-con > ul {

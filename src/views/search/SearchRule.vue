@@ -110,8 +110,8 @@
         width: 100%;
         min-width: 1000px;
         margin: auto;
+        padding: 0;
     }
-
     .breadClass {
         padding: 0 20px;
     }
@@ -119,8 +119,7 @@
     .head-hide {
         border-bottom: 2px #7d848a solid;
         min-height: 27px;
-        padding: 0px 16px 0px 24px;
-        margin: 0;
+        padding: 0 16px 0 24px;
         text-align: left;
         margin: 20px 0 0 0;
     }

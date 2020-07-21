@@ -308,7 +308,7 @@
             "$store.state.serchObj.conflag": function () {
                 if (this.$store.state.serchObj.conflag) {
                     this.title = this.$store.state.serchObj.title
-                    console.log(1)
+                    // console.log(1)
                     this.checkFlag();
                     if (this.parmasFlag)
                         this.getFilPubData()

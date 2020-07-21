@@ -3,8 +3,9 @@
         <el-header class="header" v-show="activeShow">
             <h1 class="headline">搜索 Spark Dblp</h1>
         </el-header>
-        <el-container v-if="activeShow">
-            <AuthorSearchResult :search-author=false></AuthorSearchResult>
+        <el-container v-show="activeShow">
+            <AuthorSearchResult v-show="showAutList" :search-author=false class="autList"></AuthorSearchResult>
+            <VenueSearchResult v-show="showVenList" :search-venue="false"></VenueSearchResult>
         </el-container>
         <el-container v-if="activeShow">
             <CompleteResult></CompleteResult>
@@ -19,13 +20,16 @@
     import ComRefineList from "../../components/refineList/ComRefineList";
     import SearchRule from "./SearchRule";
     import AuthorSearchResult from "../../components/searchResult/AuthorSearchResult";
+    import VenueSearchResult from "../../components/searchResult/VenueSearchResult";
     export default {
         name: "SearchComplete",
-        components: {AuthorSearchResult, SearchRule, ComRefineList, CompleteResult},
+        components: {VenueSearchResult, AuthorSearchResult, SearchRule, ComRefineList, CompleteResult},
 
         data:function () {
             return{
                 activeShow:false,
+                showAutList:true,
+                showVenList:true,
             }
         },
 
@@ -39,6 +43,20 @@
                     }
                 },
                 deep:true
+            },
+            '$store.state.showObj.authorflag':function () {
+                if(this.$store.state.showObj.authorflag)
+                    this.showAutList =true;
+                else
+                    this.showAutList = false
+                // console.log(this.showAutList)
+            },
+            '$store.state.showObj.venueflag':function () {
+                if(this.$store.state.showObj.venueflag)
+                    this.showVenList =true;
+                else
+                    this.showVenList = false
+                // console.log(this.showVenList)
             }
         },
 
@@ -66,7 +84,11 @@
         width: 100%;
         min-width: 1000px;
         margin: auto;
+        padding: 0;
     }
 
+    .autList{
+        min-width: 300px;
+    }
 
 </style>

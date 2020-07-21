@@ -62,5 +62,6 @@
         width: 100%;
         min-width: 1000px;
         margin: auto;
+        padding: 0;
     }
 </style>

@@ -13,62 +13,26 @@
     import AuthorSearchResult from "../../components/searchResult/AuthorSearchResult";
 
     export default {
-        name: "author",
+        name: "SearchAuthor",
         components: {AuthorSearchResult, SearchRule},
         data: function () {
             return {
                 activeShow:false,
-
                 activeName: '1',
-                flag: '-',
-                warnflag: false,
-                //搜索信息
-                searchName: '',
-                listSize: 0,
-
-                totalElements:"",
-                //幸运列表
-                luckList: [
-                ],
-                luckflag: false,
-
-                authorList: [
-                ],
-
-
             }
         },
 
         methods: {
-            //修改手风琴标记
-            changeFalg() {
-                if (this.flag === '-')
-                    this.flag = '+';
-                else
-                    this.flag = '-';
-            },
-
         },
 
         watch: {
             //监视标记,手风琴标记为string格式
-            flag: function () {
-                switch (this.flag) {
-                    case '+':
-                        this.activeName = "0";
-                        break;
-                    case'-':
-                        this.activeName = "1";
-                        break;
-                }
-            },
+
             '$store.state.inputfalg': function () {
                 if(this.$store.state.radioLabel === 1){
                     this.activeShow = true;
                 }
             }
-
-
         },
 
         mounted() {
@@ -102,6 +66,7 @@
         width: 100%;
         min-width: 1000px;
         margin: auto;
+        padding: 0;
     }
 
 

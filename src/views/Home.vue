@@ -1,21 +1,17 @@
 <template>
-    <el-container>
-    <SearchBar></SearchBar>
+    <el-container style="width: 1100px">
+    <VenueSearchResult :search-venue="true"></VenueSearchResult>
     </el-container>
 </template>
 
 <script>
     // @ is an alias to /src
 
-
-
-
-
-    import SearchBar from "../components/SearchBar";
+    import VenueSearchResult from "../components/searchResult/VenueSearchResult";
     export default {
         name: 'Home',
         components: {
-            SearchBar
+            VenueSearchResult,
 
         },
 

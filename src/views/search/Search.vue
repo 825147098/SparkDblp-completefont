@@ -1,6 +1,6 @@
 <template>
     <el-container style="width: 80%;margin: auto; max-width: 1150px">
-        <el-header height="auto">
+        <el-header height="auto" style="padding: 0">
             <SearchBar></SearchBar>
         </el-header>
         <router-view></router-view>

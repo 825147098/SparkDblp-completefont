@@ -11,6 +11,11 @@ export default new Vuex.Store({
 
         host: "http://192.168.3.5:8080",
 
+        showObj:{
+            authorflag:true,
+            venueflag:true,
+        },
+
         serchObj: {
             year: '',
             venue: '',
@@ -89,6 +94,18 @@ export default new Vuex.Store({
         },
         incrementInputData(state, payload) {
             state.inputData = payload.data;
+        },
+        incrementSetSerchAut(state){
+            state.showObj.authorflag = true
+        },
+        incrementCleanSerchAut(state){
+            state.showObj.authorflag = false
+        },
+        incrementSetSerchVen(state){
+            state.showObj.venueflag = true
+        },
+        incrementCleanSerchVen(state){
+            state.showObj.venueflag = false
         },
 
 

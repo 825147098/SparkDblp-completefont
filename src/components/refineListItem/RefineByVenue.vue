@@ -5,7 +5,7 @@
                 按照会议细化
             </b></p>
             <ul v-show="!loadFlag">
-                <li v-for="(item,index) in venueList" :key="item._VALUE == '' ? item.venue : item._VALUE">
+                <li v-for="(item,index) in venueList" :key="item._VALUE == '' ? item.venue : item.venue">
                     <i :class=item.img
                        class="icon"
                        v-show="item.show"></i>
