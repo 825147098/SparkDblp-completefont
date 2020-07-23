@@ -56,7 +56,7 @@
                 </p>
             </span>
             <!--类型划分加链接-->
-            <el-link class="nameVolume name" v-show="showNameVolme">
+            <span class="nameVolume name" v-show="showNameVolme">
                 <span class="name">
                     <p class="mark" v-html="getMatch(jourData.journal)">
                     {{jourData.journal}}
@@ -65,7 +65,7 @@
                 <span class="name">
                     {{jourData.volume}}
                 </span>
-            </el-link>
+            </span>
             <span class="name" v-if="jourData.pages != null">
                 {{jourData.pages}}
             </span>

@@ -30,7 +30,7 @@
 <!--                                    显示所有相同会议的不同名称-->
                                     <template slot="title" class="bodytitle name">
                                         <div class="titleLine">
-                                        <span v-for="booktitle in luckly.booktitles" :key="booktitle"
+                                        <span v-for="(booktitle,index) in luckly.booktitles" :key="booktitle + index"
                                               style="white-space: pre">
                                              <p class="mark" v-html="getMatch(booktitle)">{{getMatch(booktitle)}}</p>
                                             <span v-if="luckly.booktitles.indexOf(booktitle) < luckly.booktitles.length - 1">
@@ -64,7 +64,7 @@
 <!--                                    完整列表booktitle-->
                                     <template slot="title" class="bodytitle name">
                                         <div class="titleLine">
-                                            <span v-for="booktitle in venue.booktitles" :key="booktitle"
+                                           <span v-for="(booktitle,index) in venue.booktitles" :key="booktitle + index"
                                                   style="white-space: pre">
                                             <p class="mark" v-html="getMatch(booktitle)">{{getMatch(booktitle)}}</p>
                                             <span v-if="venue.booktitles.indexOf(booktitle) < venue.booktitles.length - 1">
@@ -112,7 +112,7 @@
 <!--                                    显示所有相同会议的不同名称-->
                                     <template slot="title" class="bodytitle name">
                                         <div class="titleLine">
-                                        <span v-for="booktitle in luckly.booktitles" :key="booktitle"
+                                        <span v-for="(booktitle,index) in luckly.booktitles" :key="booktitle + index"
                                               style="white-space: pre">
                                              <p class="mark" v-html="getMatch(booktitle)">{{getMatch(booktitle)}}</p>
                                             <span v-if="luckly.booktitles.indexOf(booktitle) < luckly.booktitles.length - 1">
@@ -142,22 +142,22 @@
                             </span>
                         </li>
 <!--                        跳转按钮-->
-                        <li v-show="!loadFlag && luckflag && luckList.length > 0">
+                        <li v-show="!loadFlag && luckflag && luckList.length > 0" style="text-align: left">
                             <router-link :to="{path:'/search/venue',query:{venName:searchTitle}}" class="name">
-                                <el-button size="small" type="text">
+                                <el-button size="small" type="text" >
                                     显示所有{{totalElements}}条匹配项
                                 </el-button>
                             </router-link>
                         </li>
                     </ul>
 <!--                    组合搜索完整显示-->
-                    <ul v-show="venueList.length <= 6">
+                    <ul v-show="venueList.length <= 6 && !loadFlag">
                         <el-collapse v-model="venueName" v-show="venueList.length <= 6">
                             <li v-for="venue in venueList" :key="venue.flag">
                                 <el-collapse-item :name="venue.flag">
                                     <template slot="title" class="bodytitle name">
                                         <div class="titleLine">
-                                        <span v-for="booktitle in venue.booktitles" :key="booktitle"
+                                        <span v-for="(booktitle,index) in venue.booktitles" :key="booktitle + index"
                                               style="white-space: pre">
                                             <p class="mark" v-html="getMatch(booktitle)">{{getMatch(booktitle)}}</p>
                                             <span v-if="venue.booktitles.indexOf(booktitle) < venue.booktitles.length - 1">
@@ -268,7 +268,7 @@
                 let length = this.venueList.length;
                 for (let i = 0; i < 6; i++) {
                     let num = Math.floor(Math.random() * length);
-                    if (list.indexOf(this.venueList[num]) == -1 && this.venueList[num].booktitles.length <= 5) {
+                    if ((list.indexOf(this.venueList[num]) == -1 )&& (this.venueList[num].booktitles.length <= 5)) {
                         list.push(this.venueList[num]);
                     } else {
                         i--;

@@ -20,7 +20,7 @@
             class="putList"
         >
 <!--            文章列表-->
-            <li v-for="item in pubList" :key="item.title">
+            <li v-for="item in pubList" :key="item.title + item.type">
                 <BookAndTheseItem v-if="item.type == 'Book and Theses'"
                                   :inner-data="item"
                 ></BookAndTheseItem>

@@ -160,9 +160,9 @@
                     this.venueList[index].img = "el-icon-remove";
                     this.$store.commit("incrementVenue", {newVenue: this.venueList[index].venue});
 
-                    let temp = this.venueList[index];
-                    // this.venueList = []
-                    this.venueList.push(temp)
+                    // let temp = this.venueList[index];
+                    // // this.venueList = []
+                    // this.venueList.push(temp)
                 } else {
                     this.venueList[index].show = false;
                     this.venueList[index].img = "el-icon-circle-plus";

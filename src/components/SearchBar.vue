@@ -86,7 +86,7 @@
 
         watch: {
             "$store.state.inputfalg": function () {
-                if (this.$store.state.inputfalg && this.$store.state.radioLabel == 0) {
+                if (this.$store.state.inputfalg) {
                     this.concatText();
                     this.putInputData();
                 }

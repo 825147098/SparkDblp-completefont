@@ -9,14 +9,14 @@
                 <p v-show="dataFlag"
                    class="infoMatch"
                 >
-                    匹配到{{this.pageDetail.totalElements}}条结果</p>
+                    匹配到{{pageDetail.totalElements}}条结果</p>
 <!--                出版物列表-->
                 <ul v-show="dataFlag"
                     class="putList"
                     v-for="year in yearList" :key="year"
                 >
                     <li class="year">{{year}}</li>
-                    <li v-for="item in pubList[year]" :key="item.title">
+                    <li v-for="item in pubList[year]" :key="item.title + item.type">
                         <BookAndTheseItem v-if="item.type == 'Book and Theses'"
                                           :inner-data="item"
                         ></BookAndTheseItem>
@@ -51,7 +51,7 @@
                     </li>
                 </ul>
 <!--                加载按钮-->
-                <ul v-show="!loadFlag && !parmasFlag && pageDetail.totalElements > 0"
+                <ul v-show="!loadFlag && !parmasFlag && this.page < this.pageDetail.totalPages"
                     class="putList">
                     <li>
                         <el-button type="text" @click="load">
@@ -101,6 +101,7 @@
                 parmasFlag: false
             }
         },
+
 
         methods: {
             //false调用
@@ -308,7 +309,6 @@
 
         },
 
-        computed: {},
 
         watch: {
             "$store.state.serchObj.conflag": function () {
@@ -332,6 +332,12 @@
                 this.getFilPubData()
             else
                 this.getPubData()
+            this.$router.push({
+                path:'/search/complete',
+                query:{
+                    title:this.title
+                }
+            })
         }
     }
 </script>

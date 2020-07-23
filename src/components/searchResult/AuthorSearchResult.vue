@@ -103,7 +103,7 @@
                         </li>
                     </ul>
 <!--                    数量少显示全部结果-->
-                    <ul v-show="authorList.length <= 6">
+                    <ul v-show="authorList.length <= 6 && !loadFlag">
                         <li v-for="author in authorList" :key="author._VALUE">
                             <el-button type="text"  size="mini">
                                 <router-link :to="{path:'/resAut',query:{autName:author._VALUE}}"

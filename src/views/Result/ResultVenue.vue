@@ -39,6 +39,14 @@
 
         },
 
+        watch:{
+          '$route.query.venName':function () {
+              this.venueTitle = this.$route.query.venName;
+              this.venueSearch = this.$route.query.cross;
+              this.venueBook = this.$route.query.book
+          }
+        },
+
         created() {
             if (this.$route.query.venName != null) {
                 this.venueTitle = this.$route.query.venName;

@@ -78,7 +78,7 @@
             </span>
             <span class="name" v-if="bookData.isbn != null && bookData.pages != null">
                 pp.&nbsp;
-                <span v-for="page in bookData.pages" :key="page">
+                <span v-for="(page,index) in bookData.pages" :key="page+index">
                     {{page}}
 <!--                    <span v-if="bookData.pages.indexOf(page) < bookData.pages.length - 1">,</span>-->
                 </span>

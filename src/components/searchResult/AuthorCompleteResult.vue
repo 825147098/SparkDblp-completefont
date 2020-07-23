@@ -13,7 +13,7 @@
                     >
 <!--                        年份排序文章列表-->
                         <li class="year">{{year}}</li>
-                        <li v-for="item in pubList[year]" :key="item.title">
+                        <li v-for="item in pubList[year]" :key="item.title + item.type">
                             <BookAndTheseItem v-if="item.type == 'Book and Theses'"
                                               :inner-data="item"
                             ></BookAndTheseItem>
