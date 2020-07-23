@@ -5,9 +5,13 @@
                 <template slot="title">
                     [{{flag}}] 搜索优化列表
                 </template>
+<!--                作者细化-->
                 <RefineByAuthor name="作者"></RefineByAuthor>
+<!--                会议细化-->
                 <RefineByVenue></RefineByVenue>
+<!--                类型细化-->
                 <RefineByType></RefineByType>
+<!--                年份细化-->
                 <RefineByYear></RefineByYear>
             </el-collapse-item>
         </el-collapse>
@@ -32,6 +36,7 @@
         },
 
         methods: {
+            // 折叠板标记
             changeFalg() {
                 if (this.flag === '-')
                     this.flag = '+';

@@ -34,11 +34,13 @@
         </div>
         <cite class="data">
             <!--            作者-->
+            <span v-if="confAndWorkData.author != null">
             <span v-for="authors in confAndWorkData.author" :key="authors._VALUE" class="name">
                 <router-link :to="{path:'/resAut',query:{autName:authors._VALUE}}"
                              class="name">
-                                <p class="mark" v-html="getMatch(authors._VALUE)">{{authors._VALUE}}</p>
-                            </router-link>
+                    <p class="mark" v-html="getMatch(authors._VALUE)">{{authors._VALUE}}</p>
+                </router-link>
+<!--                ORCID提示-->
                 <el-tooltip class="item" effect="dark" :content=authors._orcid placement="bottom-end"
                             v-if="authors._orcid != null">
                     <el-image src="https://dblp2.uni-trier.de/img/orcid-mark.12x12.png"
@@ -47,6 +49,7 @@
                 <span v-if="confAndWorkData.author.indexOf(authors) < confAndWorkData.author.length - 1">,</span>
             </span>
             :<br>
+            </span>
             <!--            标题-->
             <span class="title">
                 <p class="mark" v-html="getMatch(confAndWorkData.title)">
@@ -54,11 +57,13 @@
                 </p>
              </span>
             <!--            链接要补-->
-            <el-link class="name">
+<!--            venue链接-->
+            <router-link class="name"
+                         :to="{path:'/resVen',query:{venName:confAndWorkData.title,cross:confAndWorkData.crossref,book:confAndWorkData.booktitle}}">
                 <p class="mark" v-html="getMatch(confAndWorkData.booktitle)">
                     {{confAndWorkData.booktitle}}
                 </p>
-            </el-link>
+            </router-link>
             <span class="name">&nbsp;{{confAndWorkData.year}}</span>
             <span class="name">:{{confAndWorkData.pages}}</span>
         </cite><br>
@@ -111,6 +116,7 @@
         },
 
         methods: {
+            //标记匹配
             getMatch(val) {
                 let str = this.$store.state.serchObj.title;
 

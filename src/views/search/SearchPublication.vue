@@ -4,6 +4,7 @@
             <h1 class="headline">搜索 Spark Dblp For 出版物 </h1>
         </el-header>
         <el-container v-if="activeShow">
+<!--            出版物搜索结果-->
             <CompleteResult></CompleteResult>
             <ComRefineList></ComRefineList>
         </el-container>

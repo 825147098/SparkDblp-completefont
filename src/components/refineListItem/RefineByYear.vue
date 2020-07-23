@@ -5,6 +5,7 @@
                 按照时间（年）细化
             </b></p>
             <ul v-show="!loadFlag">
+<!--                年份列表-->
                 <li v-for="(item,index) in yearList" :key="item._VALUE">
                     <i :class=item.img
                        class="icon"
@@ -21,6 +22,7 @@
                     </el-button>
                 </li>
             </ul>
+<!--            加载图标-->
             <ul v-show="loadFlag">
                 <li>
                     <el-icon class="el-icon-loading"
@@ -28,6 +30,7 @@
                     ></el-icon>
                 </li>
             </ul>
+<!--            获取更多按钮-->
             <ul v-show="!loadFlag && sqlSize - yearList.length > 0">
                 <li>
                     <el-button
@@ -41,6 +44,7 @@
                     </el-button>
                 </li>
             </ul>
+<!--            结果null-->
             <ul v-show="yearList.length == 0 && !loadFlag"
                 class="putList">
                 <li>
@@ -75,6 +79,7 @@
         },
 
         methods: {
+            //获取数据
             getYearData() {
                 this.loadFlag = true;
                 let cont = this.numCount;
@@ -83,6 +88,7 @@
                 axios.get(this.$store.state.host + "/onlyDoc/findAllByTitleMatchesTextYearRefineList", {
                     params: this.paramsObj
                 }).then(res => {
+                    //数据清洗
                     this.yearTestList = res.data.map(function (item) {
                         // item.num = this.toThousands(item.num);
                         return {
@@ -104,7 +110,7 @@
                             }
                         }
                     }
-
+                    //排序
                     this.yearTestList.sort(function (a, b) {
                         return b._VALUE - a._VALUE;
                     })
@@ -119,6 +125,7 @@
 
                     this.sqlSize = this.yearTestList.length
                     this.loadFlag = false;
+                    //加载完成清除标记
                     this.$store.commit("incrementCleanFlag", {flag: "yearflag"})
                     this.$store.commit("incrementCleanInputFlag");
                 }).catch(error => {
@@ -126,7 +133,7 @@
                 })
 
             },
-
+            //显示更多结果
             getMoreData() {
                 this.loadFlag = true;
 
@@ -140,17 +147,17 @@
 
                 this.loadFlag = false;
             },
-
+            //鼠标移入
             mouseEnter(index) {
                 if (this.yearList[index].img === "el-icon-circle-plus")
                     this.yearList[index].show = true;
             },
-
+            //鼠标移出
             mouseLeave(index) {
                 if (this.yearList[index].img === "el-icon-circle-plus")
                     this.yearList[index].show = false;
             },
-
+            //选中函数
             addAuthorToInput(index) {
                 if (this.yearList[index].img === "el-icon-circle-plus") {
                     this.yearList[index].show = true;
@@ -164,7 +171,7 @@
                 // console.log(this.$store.state.year)
                 // this.$store.commit("incrementCleanFlag")
             },
-
+            //数量格式化
             toThousands(num) {
                 num = (num || 0).toString();
                 let result = '';
@@ -177,7 +184,7 @@
                 }
                 return result;
             },
-
+            //设置axios参数
             setParams() {
                 this.paramsObj = {};
                 if (this.$store.state.serchObj.title != '') {
@@ -205,6 +212,7 @@
         },
 
         watch: {
+            //监控标记
             '$store.state.serchObj.yearflag': function () {
                 if (this.$store.state.serchObj.yearflag) {
                     this.getYearData();

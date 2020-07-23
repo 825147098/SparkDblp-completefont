@@ -3,12 +3,15 @@
         <el-header class="header" v-show="activeShow">
             <h1 class="headline">搜索 Spark Dblp</h1>
         </el-header>
+<!--        作者会议碎片结果-->
         <el-container v-show="activeShow">
             <AuthorSearchResult v-show="showAutList" :search-author=false class="autList"></AuthorSearchResult>
             <VenueSearchResult v-show="showVenList" :search-venue="false"></VenueSearchResult>
         </el-container>
         <el-container v-if="activeShow">
+<!--            出版物结果-->
             <CompleteResult></CompleteResult>
+<!--            搜索结果细化栏-->
             <ComRefineList></ComRefineList>
         </el-container>
         <SearchRule v-else></SearchRule>
@@ -44,6 +47,7 @@
                 },
                 deep:true
             },
+            //作者结果标记
             '$store.state.showObj.authorflag':function () {
                 if(this.$store.state.showObj.authorflag)
                     this.showAutList =true;
@@ -51,6 +55,7 @@
                     this.showAutList = false
                 // console.log(this.showAutList)
             },
+            //会议结果标记
             '$store.state.showObj.venueflag':function () {
                 if(this.$store.state.showObj.venueflag)
                     this.showVenList =true;

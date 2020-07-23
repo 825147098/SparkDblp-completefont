@@ -34,6 +34,7 @@
         </div>
         <cite class="data">
             <!--            作者-->
+            <span v-if="PartData.author != null">
             <span v-for="authors in PartData.author" :key="authors._VALUE" class="name">
                 <router-link :to="{path:'/resAut',query:{autName:authors._VALUE}}"
                              class="name">
@@ -47,6 +48,7 @@
                 <span v-if="PartData.author.indexOf(authors) < PartData.author.length - 1">,</span>
             </span>
             :<br>
+            </span>
             <!--            标题-->
             <span class="title">
                 <p class="mark" v-html="getMatch(PartData.title)">
@@ -54,14 +56,15 @@
                 </p>
              </span>
             <!--            链接要补-->
-            <el-link class="name">
+            <router-link class="name"
+                         :to="{path:'/resVen',query:{venName:PartData.title,cross:PartData.crossref,book:PartData.booktitle}}">>
                 <span>
                      <p class="mark" v-html="getMatch(PartData.booktitle)">
                    {{PartData.booktitle}}
                      </p>
                 </span>
                 <span>&nbsp;{{PartData.year}}</span>
-            </el-link>
+            </router-link>
             <span class="name">&nbsp;:{{PartData.pages}}</span>
         </cite><br>
     </el-container>
@@ -112,6 +115,7 @@
         },
 
         methods: {
+            //标记匹配
             getMatch(val) {
                 let str = this.$store.state.serchObj.title;
 

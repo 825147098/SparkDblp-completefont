@@ -1,4 +1,5 @@
 <template>
+<!--    人名精确搜素结果-->
     <el-container>
         <el-main style="padding-top: 0; max-width: 850px">
             <el-collapse v-model="activeName" accordion @change="changeFalg">
@@ -10,6 +11,7 @@
                         class="putList"
                         v-for="year in yearList" :key="year"
                     >
+<!--                        年份排序文章列表-->
                         <li class="year">{{year}}</li>
                         <li v-for="item in pubList[year]" :key="item.title">
                             <BookAndTheseItem v-if="item.type == 'Book and Theses'"
@@ -35,6 +37,7 @@
                             </ReferenceWorkItem>
                         </li>
                     </ul>
+<!--                    加载图标-->
                     <ul v-show="loadFlag"
                         class="putList">
                         <li style="color: #409EFF">
@@ -53,12 +56,14 @@
                 </el-collapse-item>
             </el-collapse>
         </el-main>
+<!--        右侧细化列表-->
         <el-aside class="asideCon">
             <el-collapse v-model="refineActiveName" accordion @change="changeRefineFalg">
                 <el-collapse-item name="1">
                     <template slot="title">
                         [{{flagRefine}}] 搜索优化列表
                     </template>
+<!--                    数量统计-->
                     <div class="refine-by"
                          v-show="!loadFlag && dataFlag">
                         <em>
@@ -237,6 +242,7 @@
                 </el-collapse-item>
             </el-collapse>
         </el-aside>
+<!--        关系图弹窗-->
         <el-dialog
                 :visible.sync="dialogVisible"
                 width="70%"
@@ -357,14 +363,14 @@
                     console.log(error);
                 })
             },
-
+            //分组函数
             group_signal(data, key) {
                 return data.reduce(function (prev, cur) {
                     (prev[cur[key]] = prev[cur[key]] || []).push(cur);
                     return prev;
                 }, {});
             },
-
+            //列表按照年份分组
             groupBy() {
                 if (this.pubList.length > 0) {
                     this.pubList.splice(0, this.pubList);
@@ -372,7 +378,7 @@
                 this.pubList = this.group_signal(this.filterList, "year");
                 // console.log(this.pubList)
             },
-
+            //年份分组排序
             sortYear() {
                 if (this.yearList.length > 0) {
                     this.yearList.splice(0, this.yearList.length);
@@ -391,7 +397,7 @@
                 this.yearList = yearArr;
                 // console.log(this.yearList)
             },
-
+            //列表调用
             pubSort() {
                 this.groupBy();
                 this.sortYear();
@@ -405,7 +411,7 @@
                 else
                     this.flag = '-';
             },
-
+            //细化列表标记
             changeRefineFalg() {
                 if (this.flagRefine === '-')
                     this.flagRefine = '+';
@@ -420,12 +426,12 @@
                 })
                 // this.setTypeArray()
             },
-
+            //type列表清空
             handleDeleteAllChange() {
                 this.typeList = [];
                 // this.setTypeArray()
             },
-
+            //获取type选项参数
             getTypeData() {
                 let data = this.waitList;
                 let arr = []
@@ -476,6 +482,7 @@
                 for (let item in sort) {
                     arrlist.push({_VALUE: item, num: sort[item].length})
                 }
+                //数据清洗
                 this.autTestList = arrlist.map(function (item) {
 
                     return {
@@ -511,7 +518,7 @@
                 this.authorNumCount = cont;
                 this.autLoadFlag = false;
             },
-
+            //作者获取更多
             getMoreAutData() {
                 this.autLoadFlag = true;
 
@@ -525,17 +532,17 @@
 
                 this.autLoadFlag = false;
             },
-
+            //鼠标移入
             mouseAutEnter(index) {
                 if (this.authorList[index].img === "el-icon-circle-plus")
                     this.authorList[index].show = true;
             },
-
+            //鼠标移出
             mouseAutLeave(index) {
                 if (this.authorList[index].img === "el-icon-circle-plus")
                     this.authorList[index].show = false;
             },
-
+            //作者选中
             addAuthorToInput(index) {
                 if (this.authorList[index].img === "el-icon-circle-plus") {
                     this.authorList[index].show = true;
@@ -613,7 +620,7 @@
                 this.venNumCount = cont
                 this.venLoadFlag = false;
             },
-
+            //会议获得更多
             getMoreVenData() {
                 this.venLoadFlag = true;
 
@@ -627,18 +634,18 @@
 
                 this.venLoadFlag = false;
             },
-
+            //会议鼠标移入
             mouseVenEnter(index) {
                 if (this.venueList[index].img === "el-icon-circle-plus")
                     this.venueList[index].show = true;
             },
-
+            //会议鼠标移出
             mouseVenLeave(index) {
 
                 if (this.venueList[index].img === "el-icon-circle-plus")
                     this.venueList[index].show = false;
             },
-
+            //会议选中
             addVenToInput(index) {
                 if (this.venueList[index].img === "el-icon-circle-plus") {
                     this.venueList[index].show = true;
@@ -661,7 +668,7 @@
 
                 this.filterObj.flag = true;
             },
-
+            //数量格式化
             toThousands(num) {
                 num = (num || 0).toString();
                 let result = '';
@@ -708,6 +715,7 @@
             },
             //过滤函数
             listFilter() {
+                //会议过滤
                 let venArr = [];
                 let ven = this.filterObj.venue;
                 let len = this.waitList.length
@@ -722,7 +730,7 @@
                         }
                     }
                 }
-
+                //作者过滤
                 len = venArr.length;
                 let autArr = [];
                 for (let i = 0; i < len; i++) {
@@ -752,7 +760,7 @@
                     }
                 }
                 // console.log(autArr)
-
+                //类型过滤
                 let typeArr = [];
                 len = autArr.length;
                 for (let i = 0; i < len; i++) {
@@ -760,7 +768,7 @@
                         typeArr.push(autArr[i]);
                     }
                 }
-
+                //搜索内容过滤
                 let searchArr = [];
                 len = typeArr.length;
                 for (let i = 0; i < len; i++) {
@@ -850,7 +858,7 @@
                 });
 
             },
-
+            //关系图节点
             getNode() {
                 let x = 400;
                 let y = 300;
@@ -877,7 +885,7 @@
                     }
                 })
             },
-
+            //关系图连线
             getLink() {
                 let data = this.filterList;
                 let arr = []
@@ -899,6 +907,7 @@
                 this.linkList = arr;
             },
 
+            //弹窗控制
             openDialog() {
 
                 this.dialogVisible = true;
@@ -912,6 +921,7 @@
         },
 
         watch: {
+            //类型列表监控
             typeList: function () {
                 this.filterObj["Book and Theses"] = this.filterObj.Editorshop = this.filterObj["Conference and Workshop Papers"] =
                     this.filterObj["Informal Publications"] = this.filterObj["Journals Article"] =
@@ -924,12 +934,12 @@
 
                 this.filterObj.flag = true
             },
-
+            //细化搜索监控
             refineInput: function () {
                 this.filterObj.search = this.refineInput;
                 this.filterObj.flag = true
             },
-
+            //过滤条件选中监控
             'filterObj.flag': function () {
                 if (this.filterObj.flag) {
                     this.listFilter();
@@ -937,13 +947,14 @@
                     this.getData()
 
                 }
+
             },
 
-            // dialogVisible:function () {
-            //     if(this.dialogVisible){
-            //         this.setEchartsOption()
-            //     }
-            // }
+            name:function () {
+                this.author = this.name;
+                this.getPubData()
+            }
+
 
         },
 

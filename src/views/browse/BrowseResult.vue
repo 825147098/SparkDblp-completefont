@@ -1,8 +1,10 @@
 <template>
     <el-container style="width: 80%;margin: auto ;max-width: 1150px">
-        <el-header height="auto" >
+        <el-header height="auto " style="padding: 0" >
+<!--            搜索栏-->
             <SearchBar></SearchBar>
         </el-header>
+<!--        子路由-->
             <router-view ></router-view>
     </el-container>
 </template>

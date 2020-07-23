@@ -1,5 +1,6 @@
 <template>
     <el-container class="con">
+<!--        分辨图标-->
         <div class="box">
             <el-tooltip class="item"
                         effect="dark"
@@ -8,6 +9,7 @@
                 <div></div>
             </el-tooltip>
         </div>
+<!--        文章链接-->
         <div class="articelButton">
             <el-dropdown style="padding: 0 10px" :underline="false"
                          v-if="jourData.ee != null">
@@ -31,6 +33,8 @@
             </el-tooltip>
         </div>
         <cite class="data">
+<!--            作者-->
+            <span v-if="jourData.author != null">
             <span v-for="authors in jourData.author" :key="authors._VALUE" class="name">
                 <router-link :to="{path:'/resAut',query:{autName:authors._VALUE}}"
                              class="name">
@@ -45,6 +49,7 @@
 
             </span>
             :<br>
+            </span>
             <span class="title">
                 <p class="mark" v-html="getMatch(jourData.title)">
                     {{jourData.title}}
@@ -134,6 +139,7 @@
         },
 
         methods: {
+            //标记匹配
             getMatch(val) {
                 let str = this.$store.state.serchObj.title;
 

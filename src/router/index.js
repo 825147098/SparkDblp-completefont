@@ -43,7 +43,7 @@ const routes = [
             //默认页面
             {
                 path: '/',
-                redirect: '/search/rules'
+                redirect: '/search/complete'
             }, {
                 path: '/search/rules',
                 name: 'rule',

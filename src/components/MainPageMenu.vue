@@ -27,7 +27,7 @@
                     <el-menu-item
                             route="/search/complete"
                             index="searchDblp">搜索dblp</el-menu-item>
-                    <el-menu-item index="searchByID">搜索ID</el-menu-item>
+<!--                    <el-menu-item index="searchByID">搜索ID</el-menu-item>-->
                 </el-submenu>
 <!--                <el-submenu index="about">-->
 <!--                    <template slot="title">about</template>-->

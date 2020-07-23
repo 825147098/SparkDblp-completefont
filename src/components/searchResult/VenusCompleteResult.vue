@@ -1,18 +1,15 @@
 <template>
     <el-main >
         <div>
+<!--            面包头-->
             <el-breadcrumb separator-class="el-icon-arrow-right" class="breadClass">
                 <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/search' }">搜索</el-breadcrumb-item>
                 <el-breadcrumb-item v-show="!loadFlag">{{publisher}}</el-breadcrumb-item>
             </el-breadcrumb>
+<!--            标题-->
             <header class="head-hide">
                 <h2>
-<!--                    <el-button size="mini"-->
-<!--                               @click="changeFalg"-->
-<!--                               type="text">-->
-<!--                        [{{flag}}]-->
-<!--                    </el-button>-->
                     {{title}}
                 </h2>
             </header>
@@ -22,6 +19,7 @@
         <ul v-show="dataFlag"
             class="putList"
         >
+<!--            文章列表-->
             <li v-for="item in pubList" :key="item.title">
                 <BookAndTheseItem v-if="item.type == 'Book and Theses'"
                                   :inner-data="item"
@@ -46,26 +44,16 @@
                 </ReferenceWorkItem>
             </li>
         </ul>
-        <ul v-show="loadFlag"
+<!--        加载图标-->
+        <div v-show="loadFlag"
             class="putList">
-            <li style="color: #409EFF">
+            <div style="color: #409EFF">
                 Loading
                 <el-icon class="el-icon-loading"
                          style="font-size: 20px "
                 ></el-icon>
-            </li>
-        </ul>
-<!--        <ul v-show="!loadFlag && !parmasFlag && pageDetail.totalElements > 0"-->
-<!--            class="putList">-->
-<!--            <li>-->
-<!--                <el-button type="text" @click="load">-->
-<!--                    点击获取更多-->
-<!--                    <img src="https://dblp.uni-trier.de/img/waiting.anim.gif" alt="">-->
-<!--                </el-button>-->
-<!--            </li>-->
-<!--        </ul>-->
-<!--            </el-collapse-item>-->
-<!--        </el-collapse>-->
+            </div>
+        </div>
     </el-main>
 </template>
 
@@ -103,7 +91,7 @@
         },
 
         methods: {
-            //false调用
+            //获取数据
             getVenPubData() {
                 this.loadFlag = true;
                 this.dataFlag = false;
@@ -156,7 +144,7 @@
                     }
                 }
             },
-
+            //折叠面板标记
             changeFalg() {
                 if (this.flag === '-')
                     this.flag = '+';
@@ -164,7 +152,18 @@
                     this.flag = '-';
             },
         },
+        //传入数据
         props:["cross","texttitle"],
+
+        watch:{
+            //数据更新
+            cross:function () {
+                this.crossref = this.cross;
+                this.title = this.texttitle;
+                this.getVenPubData()
+            },
+
+        },
 
         created() {
             this.crossref = this.cross;
@@ -182,7 +181,7 @@
     }
 
     .putList {
-        margin: 1ex 0 1ex;
+        margin: 3ex 0 1ex;
         padding: 0;
     }
 

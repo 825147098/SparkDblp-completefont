@@ -1,4 +1,5 @@
 <template>
+<!--    组合搜索结果-->
     <el-main style="padding-top: 0; max-width: 850px">
         <el-collapse v-model="activeName" accordion @change="changeFalg">
             <el-collapse-item name="1">
@@ -9,6 +10,7 @@
                    class="infoMatch"
                 >
                     匹配到{{this.pageDetail.totalElements}}条结果</p>
+<!--                出版物列表-->
                 <ul v-show="dataFlag"
                     class="putList"
                     v-for="year in yearList" :key="year"
@@ -38,6 +40,7 @@
                         </ReferenceWorkItem>
                     </li>
                 </ul>
+<!--                加载图标-->
                 <ul v-show="loadFlag"
                     class="putList">
                     <li style="color: #409EFF">
@@ -47,6 +50,7 @@
                         ></el-icon>
                     </li>
                 </ul>
+<!--                加载按钮-->
                 <ul v-show="!loadFlag && !parmasFlag && pageDetail.totalElements > 0"
                     class="putList">
                     <li>
@@ -100,6 +104,7 @@
 
         methods: {
             //false调用
+            //获取数据，根据标题搜索不含筛选条件
             getPubData() {
                 this.loadFlag = true;
                 this.dataFlag = false;
@@ -124,6 +129,7 @@
                 })
             },
             //true调用
+            //含筛选条件获取数据
             getFilPubData() {
                 this.loadFlag = true;
                 this.dataFlag = false;
@@ -146,14 +152,14 @@
                     console.log(error);
                 })
             },
-
+            //修改折叠板标记
             changeFalg() {
                 if (this.flag === '-')
                     this.flag = '+';
                 else
                     this.flag = '-';
             },
-
+            //获得更多的加载函数
             load() {
                 if (this.dataFlag) {
                     this.loadFlag = true;
@@ -189,14 +195,14 @@
                     }, 2000)
                 }
             },
-
+            //分组函数
             group_signal(data, key) {
                 return data.reduce(function (prev, cur) {
                     (prev[cur[key]] = prev[cur[key]] || []).push(cur);
                     return prev;
                 }, {});
             },
-
+            //按照年份分组
             groupBy() {
                 if (this.pubList.length > 0) {
                     this.pubList.splice(0, this.pubList);
@@ -204,7 +210,7 @@
                 this.pubList = this.group_signal(this.waitList, "year");
                 // console.log(this.pubList)
             },
-
+            //年份提取排序
             sortYear() {
                 if (this.yearList.length > 0) {
                     this.yearList.splice(0, this.yearList.length);
@@ -253,12 +259,12 @@
                     }
                 }
             },
-
+            //数据拉取后分组
             pubSort() {
                 this.groupBy();
                 this.sortYear();
             },
-
+            //设置过滤参数
             setParams() {
                 this.paramsObj = {};
                 if (this.$store.state.serchObj.title != '') {
@@ -282,7 +288,7 @@
                     this.paramsObj["type"] = this.$store.state.serchObj.type;
                 }
             },
-
+            //标记检测是否含有筛选条件
             checkFlag() {
                 this.parmasFlag = false;
                 if (this.$store.state.serchObj.type != '') {

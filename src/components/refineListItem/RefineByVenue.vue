@@ -5,6 +5,7 @@
                 按照会议细化
             </b></p>
             <ul v-show="!loadFlag">
+<!--                会议列表-->
                 <li v-for="(item,index) in venueList" :key="item._VALUE == '' ? item.venue : item.venue">
                     <i :class=item.img
                        class="icon"
@@ -20,6 +21,7 @@
                     </el-button>
                 </li>
             </ul>
+<!--            加载图标-->
             <ul v-show="loadFlag">
                 <li>
                     <el-icon class="el-icon-loading"
@@ -40,6 +42,7 @@
                     </el-button>
                 </li>
             </ul>
+<!--           null结果-->
             <ul v-show="venueList.length == 0 && !loadFlag"
                 class="putList">
                 <li>
@@ -74,6 +77,7 @@
         },
 
         methods: {
+            //获取数据
             getVenueData() {
                 this.loadFlag = true;
                 let cont = 0;
@@ -83,6 +87,7 @@
                 axios.get(this.$store.state.host + "/onlyDoc/findAllByTitleMatchesTextPrefix2RefineList", {
                     params: this.paramsObj
                 }).then(res => {
+                    //数据清洗
                     this.venTestList = res.data.map(function (item) {
                         return {
                             "_VALUE": item.property,
@@ -92,7 +97,7 @@
                             "num": item.count
                         };
                     })
-
+                    //选中结果
                     for (let i = 0; i < this.venTestList.length; i++) {
                         if (this.$store.state.serchObj.venue === '')
                             break;
@@ -116,6 +121,7 @@
 
                     this.venNumCount = cont
                     this.loadFlag = false;
+                    //加载完成清洗标记
                     this.$store.commit("incrementCleanFlag", {flag: "venflag"})
                     this.$store.commit("incrementCleanInputFlag");
                 }).catch(error => {
@@ -123,7 +129,7 @@
                 })
 
             },
-
+            //点击获取更多数据
             getMoreVenData() {
                 this.loadFlag = true;
 
@@ -137,17 +143,17 @@
 
                 this.loadFlag = false;
             },
-
+            //鼠标移入
             mouseEnter(index) {
                 if (this.venueList[index].img === "el-icon-circle-plus")
                     this.venueList[index].show = true;
             },
-
+            //鼠标移出
             mouseLeave(index) {
                 if (this.venueList[index].img === "el-icon-circle-plus")
                     this.venueList[index].show = false;
             },
-
+            //选中添加
             addVenToInput(index) {
                 if (this.venueList[index].img === "el-icon-circle-plus") {
                     this.venueList[index].show = true;
@@ -164,7 +170,7 @@
                     // this.getVenueData()
                 }
             },
-
+            //数量格式化
             toThousands(num) {
                 num = (num || 0).toString();
                 let result = '';
@@ -177,7 +183,7 @@
                 }
                 return result;
             },
-
+            //设置axios参数
             setParams() {
                 this.paramsObj = {};
                 if (this.$store.state.serchObj.title != '') {
@@ -206,6 +212,7 @@
         },
 
         watch: {
+            //监控标记
             '$store.state.serchObj.venflag': function () {
                 if (this.$store.state.serchObj.venflag) {
                     this.getVenueData();

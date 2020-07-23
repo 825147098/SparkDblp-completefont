@@ -34,6 +34,7 @@
         </div>
         <cite class="data">
             <!--            作者-->
+            <span v-if="editorData.editor != null">
             <span v-for="editor in editorData.editor" :key="editor._VALUE" class="name">
                 <router-link :to="{path:'/resAut',query:{autName:editor._VALUE}}"
                              class="name">
@@ -47,6 +48,7 @@
                 <span v-if="editorData.editor.indexOf(editor) < editorData.editor.length - 1">,</span>
             </span>
             :<br>
+            </span>
             <!--            标题-->
             <span class="title">
                 <p class="mark" v-html="getMatch(editorData.title)">
@@ -59,14 +61,21 @@
                     {{editorData.series._VALUE}}
                 </el-link>
             </span>
+<!--            出版物-->
             <span class="name">,{{editorData.publisher._VALUE}}</span>
             <span class="name">&nbsp;{{editorData.year}}</span>
+<!--            ISBN-->
             <span class="name" v-if="editorData.isbn != null">
                 ,ISBN
                 <span v-for="item in editorData.isbn" :key="item._VALUE">
                     {{item._VALUE}}&nbsp;
                 </span>
             </span>
+            <el-link class="name" v-if="editorData.series != null && editorData.series[0]._href != null"
+                :href="'https://dblp.uni-trier.de/' + editorData.series[0]._href"
+            >
+             [content]
+            </el-link>
         </cite><br>
     </el-container>
 </template>
@@ -150,6 +159,7 @@
         },
 
         methods: {
+            //标记匹配
             getMatch(val) {
                 let str = this.$store.state.serchObj.title;
 

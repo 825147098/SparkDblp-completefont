@@ -1,4 +1,5 @@
 <template>
+<!--    废弃状态-->
     <el-aside>
         <el-aside class="asideCon">
             <el-collapse v-model="activeName" accordion @change="changeFalg">

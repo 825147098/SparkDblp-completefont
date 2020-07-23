@@ -5,6 +5,7 @@
                 按照类型细化
             </b></p>
             <ul v-show="!loadFlag">
+<!--                列表类型显示//只显示返回数据类型-->
                 <li v-for="(item,index) in typeList" :key="item._VALUE">
                     <i :class=item.img
                        class="icon"
@@ -20,6 +21,7 @@
                     </el-button>
                 </li>
             </ul>
+<!--            加载图标-->
             <ul v-show="loadFlag">
                 <li>
                     <el-icon class="el-icon-loading"
@@ -27,6 +29,7 @@
                     ></el-icon>
                 </li>
             </ul>
+<!--            null结果-->
             <ul v-show="typeList.length == 0 && !loadFlag"
                 class="putList">
                 <li>
@@ -49,7 +52,7 @@
 
                 loadFlag: true,
 
-                sqlSize: 300,
+                sqlSize: 0,
 
                 typeTestList: [],
 
@@ -60,12 +63,14 @@
         },
 
         methods: {
+            //获取数据
             getTypeData() {
                 this.loadFlag = true;
                 this.setParams()
                 axios.get(this.$store.state.host + "/onlyDoc/findAllByTitleMatchesTextTypeRefineList", {
                     params: this.paramsObj
                 }).then(res => {
+                    //数据清洗
                     this.typeTestList = res.data.map(function (item) {
                         // item.num = this.toThousands(item.num);
                         return {
@@ -77,8 +82,9 @@
                         };
                     });
                     // console.log(res.data)
+                    //类型映射
                     this.changeType()
-
+                    //类型选中
                     for (let i = 0; i < this.typeTestList.length; i++) {
                         if (this.$store.state.serchObj.type === '')
                             break;
@@ -91,25 +97,27 @@
                     }
 
                     this.typeList = this.typeTestList
+                    //结果全部数量
                     this.sqlSize = this.typeTestList.length
                     this.loadFlag = false;
+                    //加载完成删除标记
                     this.$store.commit("incrementCleanFlag", {flag: "typeflag"})
                     this.$store.commit("incrementCleanInputFlag");
                 }).catch(error => {
                     console.log(error)
                 })
             },
-
+            //鼠标移入
             mouseEnter(index) {
                 if (this.typeList[index].img === "el-icon-circle-plus")
                     this.typeList[index].show = true;
             },
-
+            //鼠标移出
             mouseLeave(index) {
                 if (this.typeList[index].img === "el-icon-circle-plus")
                     this.typeList[index].show = false;
             },
-
+            //选中函数
             addAuthorToInput(index) {
                 if (this.typeList[index].img === "el-icon-circle-plus") {
                     this.typeList[index].show = true;
@@ -122,7 +130,7 @@
                 }
                 // console.log(this.$store.state.type)
             },
-
+            //数量格式化
             toThousands(num) {
                 num = (num || 0).toString();
                 let result = '';
@@ -135,7 +143,7 @@
                 }
                 return result;
             },
-
+            //类型映射转换
             changeType() {
                 let len = this.typeTestList.length;
                 for (let i = 0; i < len; i++) {
@@ -164,7 +172,7 @@
                     }
                 }
             },
-
+            //设置axios参数
             setParams() {
                 this.paramsObj = {};
                 if (this.$store.state.serchObj.title != '') {
@@ -193,6 +201,7 @@
         },
 
         watch: {
+            //标记监控
             '$store.state.serchObj.typeflag': function () {
                 if (this.$store.state.serchObj.typeflag) {
                     this.getTypeData();

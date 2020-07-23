@@ -5,6 +5,7 @@
                 按照{{name}}细化
             </b></p>
             <ul v-show="!loadFlag">
+<!--                作者名单-->
                 <li v-for="(item,index) in authorList" :key="item._VALUE">
                     <i :class=item.img
                        class="icon"
@@ -15,11 +16,13 @@
                                @mouseleave.native="mouseLeave(index)"
                                @click="addAuthorToInput(index)"
                                :class="['authorButton' ,item.show ? 'buttonSelect' : '']">
+<!--                        选中切换-->
                         {{item._VALUE}}({{toThousands(item.num)}})
                         <span v-show="item.show">✔</span>
                     </el-button>
                 </li>
             </ul>
+<!--            加载图标-->
             <ul v-show="loadFlag">
                 <li>
                     <el-icon class="el-icon-loading"
@@ -27,6 +30,7 @@
                     ></el-icon>
                 </li>
             </ul>
+<!--            更多按钮-->
             <ul v-show="!loadFlag && sqlSize - authorList.length > 0">
                 <li>
                     <el-button
@@ -40,6 +44,7 @@
                     </el-button>
                 </li>
             </ul>
+<!--            null标识-->
             <ul v-show="authorList.length == 0 && !loadFlag"
                 class="putList">
                 <li>
@@ -78,6 +83,7 @@
         },
 
         methods: {
+            //获取数据
             getAuthorData() {
                 this.loadFlag = true;
                 let cont = 0;
@@ -88,6 +94,7 @@
                     params: this.paramsObj
                 }).then(res => {
                     let data = res.data;
+                    //映射数据清洗
                     this.autTestList = data.map(function (item) {
                         return {
                             "_VALUE": item.group,
@@ -97,11 +104,11 @@
                             "num": item.count,
                         };
                     });
-
+                    //数量排序
                     this.autTestList.sort(function (a, b) {
                         return b.num > a.num;
                     })
-
+                    //选中标记
                     for (let i = 0; i < this.autTestList.length; i++) {
                         if (this.$store.state.serchObj.authors.length == 0)
                             break;
@@ -112,7 +119,7 @@
                             }
                         }
                     }
-
+                    //前十项
                     if (this.autArrCount + 10 < this.autTestList.length) {
                         this.authorList = this.autTestList.slice(this.autArrCount, this.autArrCount + 10);
                         this.autArrCount += 10;
@@ -126,6 +133,7 @@
                     this.authorNumCount = cont;
                     // console.log(this.autTestList)
                     this.loadFlag = false;
+                    //加载完成标记
                     this.$store.commit("incrementCleanFlag", {flag: "autflag"})
                     this.$store.commit("incrementCleanInputFlag");
                 }).catch(error => {
@@ -133,7 +141,7 @@
                 })
 
             },
-
+            //获得更多显示
             getMoreAutData() {
                 this.loadFlag = true;
 
@@ -147,17 +155,17 @@
 
                 this.loadFlag = false;
             },
-
+            //鼠标移入
             mouseEnter(index) {
                 if (this.authorList[index].img === "el-icon-circle-plus")
                     this.authorList[index].show = true;
             },
-
+            //鼠标移出
             mouseLeave(index) {
                 if (this.authorList[index].img === "el-icon-circle-plus")
                     this.authorList[index].show = false;
             },
-
+            //选中函数
             addAuthorToInput(index) {
                 if (this.authorList[index].img === "el-icon-circle-plus") {
                     this.authorList[index].show = true;
@@ -171,7 +179,7 @@
                     this.$store.commit("incrementCleanAuthor", {moveAuthor: this.authorList[index]._VALUE})
                 }
             },
-
+            //数量格式化
             toThousands(num) {
                 num = (num || 0).toString();
                 let result = '';
@@ -184,7 +192,7 @@
                 }
                 return result;
             },
-
+            //设置axios参数
             setParams() {
                 this.paramsObj = {};
                 if (this.$store.state.serchObj.title != '') {
@@ -210,11 +218,12 @@
                 // this.$store.commit("incrementCleanFlag")
             }
         },
-
+        //显示名称
         props: [
             'name'
         ],
         watch: {
+            //监察
             '$store.state.serchObj.autflag': function () {
                 if (this.$store.state.serchObj.autflag) {
                     this.getAuthorData();

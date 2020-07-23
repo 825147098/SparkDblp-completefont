@@ -7,6 +7,7 @@
            </h3>
        </el-header>
         <el-container>
+<!--            作者详细结果-->
             <AuthorCompleteResult :name=authorName></AuthorCompleteResult>
         </el-container>
     </el-container>

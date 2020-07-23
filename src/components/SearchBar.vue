@@ -1,11 +1,15 @@
 <template>
+<!--    搜索栏-->
     <el-main class="searchBarMain">
+<!--        图标-->
         <el-image :src=url
                   class="searchBarImg"
                   fit="cover">
         </el-image>
         <div class="searchCon">
+<!--            导航栏-->
             <MainPageMenu class="searchBarMenu"></MainPageMenu>
+<!--            搜索栏-->
             <el-input size="mini"
                       class="searchInput"
                       @keyup.enter.native="putInputData"
@@ -15,6 +19,7 @@
                     @click="putInputData" size="mini">
                 Search
             </el-button>
+<!--            路由选择-->
             <el-menu background-color="#959595"
                      mode="horizontal"
                      class="searchRadio"
@@ -92,6 +97,7 @@
         },
 
         methods: {
+            //设置搜索条件
             putInputData() {
                 // if (this.radio == 0)
                 this.$store.commit("increment", {newInput: this.splitText(), newLabel: this.radio});
@@ -99,31 +105,31 @@
                 // console.log(this.$store.state.serchObj.title)
 
             },
-
+            //设置搜索类型
             putRadioData() {
                 this.$store.commit("incrementRadio", {newLabel: this.radio})
             },
-
+            //选择组合搜索
             changeRadioToCom() {
                 this.radio = 0;
                 this.putRadioData()
             },
-
+            //选择作者搜索
             changeRadioToAut() {
                 this.radio = 1;
                 this.putRadioData()
             },
-
+            //选择会议搜索
             changeRadioToVen() {
                 this.radio = 2;
                 this.putRadioData()
             },
-
+            //选择出版物搜索
             changeRadioToPub() {
                 this.radio = 3;
                 this.putRadioData()
             },
-
+            //信息切割
             splitText() {
                 let data = this.inputData.split("&");
                 let len = data.length;
@@ -189,7 +195,7 @@
                     type: type
                 }
             },
-
+            //信息拼装
             concatText() {
                 let data = this.$store.state.serchObj;
                 let text = data.title;

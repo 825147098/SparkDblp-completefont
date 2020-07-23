@@ -7,6 +7,7 @@
             </h3>
         </el-header>
         <el-container>
+<!--            会议详细结果-->
             <VenusCompleteResult
                     :texttitle="venueTitle"
                     :cross="venueSearch"></VenusCompleteResult>

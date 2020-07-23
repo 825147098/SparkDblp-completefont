@@ -1,6 +1,7 @@
 <template>
     <el-main>
         <div v-show="webPage">
+<!--            面包头-->
             <el-breadcrumb separator-class="el-icon-arrow-right" class="breadClass">
                 <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
                 <el-breadcrumb-item>搜索</el-breadcrumb-item>
@@ -17,6 +18,7 @@
             </header>
         </div>
         <el-collapse v-model="activeName" accordion @change="changeFalg">
+<!--            完整搜索结果-->
             <el-collapse-item name="1" v-if="webPage">
                 <div class="body">
                     <p v-show="luckflag">幸运匹配项</p>
@@ -25,6 +27,7 @@
                         <el-collapse v-model="luckName">
                             <li v-for="luckly in luckList" :key="luckly.flag" style="height: auto">
                                 <el-collapse-item :name="luckly.flag" style="height: auto">
+<!--                                    显示所有相同会议的不同名称-->
                                     <template slot="title" class="bodytitle name">
                                         <div class="titleLine">
                                         <span v-for="booktitle in luckly.booktitles" :key="booktitle"
@@ -36,6 +39,7 @@
                                         </span>
                                         </div>
                                     </template>
+<!--                                    详细列表-->
                                     <ul class="bodyText">
                                         <li v-for="titles in luckly.venueArr" :key="titles.title">
                                             <router-link
@@ -50,13 +54,14 @@
                             </li>
                         </el-collapse>
                     </ul>
-                    <!--                    <p v-if="totalElements > 300 && !loadFlag">前300条匹配项</p>-->
+<!--                    结果提示-->
                     <p v-if="totalElements > 0 && !loadFlag">所有{{totalElements}}条匹配项</p>
                     <p v-else v-show="!loadFlag">无匹配项</p>
                     <ul v-show="!loadFlag">
                         <el-collapse v-model="venueName">
                             <li v-for="venue in venueList" :key="venue.flag" style="height: auto">
                                 <el-collapse-item :name="venue.flag" style="height: auto">
+<!--                                    完整列表booktitle-->
                                     <template slot="title" class="bodytitle name">
                                         <div class="titleLine">
                                             <span v-for="booktitle in venue.booktitles" :key="booktitle"
@@ -69,6 +74,7 @@
                                         </div>
                                     </template>
                                     <ul class="bodyText">
+<!--                                        完整清单-->
                                         <li v-for="titles in venue.venueArr" :key="titles.title">
                                             <router-link
                                                     class="name"
@@ -98,10 +104,12 @@
                     [{{flag}}] 会议搜索结果
                 </template>
                 <div class="body">
-                    <ul v-show="luckList && luckflag">
-                        <el-collapse v-model="luckName">
+<!--                    幸运结果-->
+                    <ul v-show="luckList.length > 0 && luckflag">
+                        <el-collapse v-model="luckName" v-show="luckList.length > 0 && luckflag">
                             <li v-for="luckly in luckList" :key="luckly.flag">
                                 <el-collapse-item :name="luckly.flag">
+<!--                                    显示所有相同会议的不同名称-->
                                     <template slot="title" class="bodytitle name">
                                         <div class="titleLine">
                                         <span v-for="booktitle in luckly.booktitles" :key="booktitle"
@@ -113,6 +121,7 @@
                                         </span>
                                         </div>
                                     </template>
+<!--                                    会议下的具体会议-->
                                     <ul class="bodyText">
                                         <li v-for="titles in luckly.venueArr" :key="titles.title">
                                             <router-link
@@ -126,7 +135,14 @@
                                 </el-collapse-item>
                             </li>
                         </el-collapse>
-                        <li v-show="!loadFlag && luckflag && luckList">
+<!--                        超长提示-->
+                        <li v-show="!loadFlag && luckflag && luckList.length === 0">
+                            <span class="name">
+                                结果超长,请去查看所有选项
+                            </span>
+                        </li>
+<!--                        跳转按钮-->
+                        <li v-show="!loadFlag && luckflag && luckList.length > 0">
                             <router-link :to="{path:'/search/venue',query:{venName:searchTitle}}" class="name">
                                 <el-button size="small" type="text">
                                     显示所有{{totalElements}}条匹配项
@@ -134,8 +150,9 @@
                             </router-link>
                         </li>
                     </ul>
+<!--                    组合搜索完整显示-->
                     <ul v-show="venueList.length <= 6">
-                        <el-collapse v-model="venueName">
+                        <el-collapse v-model="venueName" v-show="venueList.length <= 6">
                             <li v-for="venue in venueList" :key="venue.flag">
                                 <el-collapse-item :name="venue.flag">
                                     <template slot="title" class="bodytitle name">
@@ -163,9 +180,10 @@
                             </li>
                         </el-collapse>
                     </ul>
+<!--                    加载图标-->
                     <ul v-show="loadFlag"
                         class="putList">
-                        <li style="color: #409EFF">
+                        <li style="color: #409EFF ;text-align: left">
                             Loading
                             <el-icon class="el-icon-loading"
                                      style="font-size: 20px "
@@ -219,7 +237,7 @@
                 // console.log(this.flag)
             },
 
-
+            //获取数据
             getVenueData() {
                 this.loadFlag = true;
                 this.warnflag = false
@@ -235,7 +253,7 @@
                     this.getCleanData();
                     this.venueList = this.venueTestList
                     // console.log(this.venueList[0].booktitles.toString())
-                    if (this.totalElements >= 20)
+                    if (this.totalElements >= 20 || !this.webPage)
                         this.getLuckly();
                     if (this.totalElements > 300)
                         this.warnflag = true;
@@ -244,13 +262,13 @@
                     console.log(error);
                 })
             },
-
+            //随机列表
             getLuckly() {
                 let list = [];
                 let length = this.venueList.length;
                 for (let i = 0; i < 6; i++) {
                     let num = Math.floor(Math.random() * length);
-                    if (list.indexOf(this.venueList[num]) == -1) {
+                    if (list.indexOf(this.venueList[num]) == -1 && this.venueList[num].booktitles.length <= 5) {
                         list.push(this.venueList[num]);
                     } else {
                         i--;
@@ -260,7 +278,7 @@
                 this.luckflag = true;
                 // console.log(this.lucklyList);
             },
-
+            //数据清洗
             getCleanData() {
                 let data = this.venueTestList;
                 this.venueTestList = data.map(function (item) {
@@ -285,7 +303,7 @@
                     return b.year - a.year
                 })
             },
-
+            //匹配标记
             getMatch(val) {
                 let str = this.searchTitle;
 
@@ -312,9 +330,17 @@
         },
 
         watch: {
+            //完整搜索标记
             '$store.state.serchObj.title': function () {
                 if ((this.$store.state.radioLabel === 2 || !this.webPage) && this.$store.state.serchObj.title != '') {
                     this.searchTitle = this.$store.state.serchObj.title;
+                    this.getVenueData();
+                }
+            },
+            //碎片标记
+            "$store.state.serchObj.conflag": function () {
+                if (this.$store.state.serchObj.conflag) {
+                    this.searchName = this.$store.state.serchObj.title;
                     this.getVenueData();
                 }
             },

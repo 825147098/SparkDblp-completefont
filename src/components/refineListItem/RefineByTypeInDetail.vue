@@ -1,4 +1,5 @@
 <template>
+<!--    废弃-->
     <el-main style="padding: 0">
         <div class="refine-by" style="padding: 0">
             <p><b>
@@ -90,22 +91,6 @@
         },
 
         methods: {
-            // con(){
-            //     // axios.get(this.$store.state.host + "/onlyDocReactive/test")
-            //     //     .then(res => {
-            //     //         for(var key in res.data){
-            //     //             console.log(res.data[key])
-            //     //         }
-            //     //     }).catch(error => {
-            //     //         console.log(error)
-            //     // })
-            //     let es = new EventSource(this.$store.state.host + '/onlyDocReactive/test');
-            //     es.addEventListener('message', event => {
-            //         let data = JSON.parse(event.data);
-            //         // this.typeList.push(data)
-            //         console.log(data)
-            //     }, false);
-            // },
 
             handleCheckAllChange() {
                 this.typeList = this.typeNameList.map(function (item) {

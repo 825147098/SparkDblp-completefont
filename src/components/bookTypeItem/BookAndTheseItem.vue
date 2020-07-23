@@ -1,5 +1,6 @@
 <template>
     <el-container>
+<!--        //颜色图标-->
         <div class="box">
             <el-tooltip class="item"
                         effect="dark"
@@ -8,6 +9,7 @@
                 <div></div>
             </el-tooltip>
         </div>
+<!--        链接按钮-->
         <div class="articelButton">
             <el-dropdown style="padding: 0 10px" :underline="false"
                          v-if="bookData.ee != null">
@@ -25,13 +27,17 @@
                     </el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
+<!--            无链接提示-->
             <el-tooltip v-else content="sorry,无链接" placement="bottom-end">
                 <el-button circle icon="el-icon-document" size="mini" disabled
                            style="margin-right: 20px"></el-button>
             </el-tooltip>
         </div>
+<!--        主体数据-->
         <cite class="data">
+            <span v-if="bookData.author != null">
             <span v-for="authors in bookData.author" :key="authors._VALUE" class="name">
+<!--                人名精确搜索链接-->
                 <router-link :to="{path:'/resAut',query:{autName:authors._VALUE}}"
                              class="name">
                                <p class="mark" v-html="getMatch(authors._VALUE)">{{authors._VALUE}}</p>
@@ -41,22 +47,28 @@
                     <el-image src="https://dblp2.uni-trier.de/img/orcid-mark.12x12.png"
                               style="padding-left:0.25em;"></el-image>
                 </el-tooltip>
+<!--                人名分割-->
                 <span v-if="bookData.author.indexOf(authors) < bookData.author.length - 1">,</span>
             </span>
             :<br>
+            </span>
+<!--            文章名-->
             <span class="title">
                 <p class="mark" v-html="getMatch(bookData.title)">
                     {{bookData.title}}
                 </p>
             </span>
             <!--类型划分加链接-->
+<!--            出版学校-->
             <span class="name" v-for="item in bookData.school" :key="item">
                 {{item}}
             </span>
+<!--            出版人-->
             <span class="name" v-if="bookData.publisher != null">
                 ,{{bookData.publisher._VALUE}}
             </span>
             <span class="name">{{bookData.year}}</span>
+<!--            ISBN-->
             <span class="name" v-if="bookData.isbn != null">
                 ,ISBN
                 <span v-for="item in bookData.isbn" :key="item._VALUE">
@@ -148,6 +160,7 @@
         },
 
         methods: {
+            //匹配标记
             getMatch(val) {
                 let str = this.$store.state.serchObj.title;
 
