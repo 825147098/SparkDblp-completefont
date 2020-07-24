@@ -1,5 +1,5 @@
 <template>
-    <el-container>
+    <div>
         <el-header class="header" v-show="activeShow">
             <h1 class="headline">搜索 Spark Dblp</h1>
         </el-header>
@@ -15,7 +15,7 @@
             <ComRefineList></ComRefineList>
         </el-container>
         <SearchRule v-else></SearchRule>
-    </el-container>
+    </div>
 </template>
 
 <script>
@@ -76,13 +76,15 @@
     .headline {
         position: relative;
         clear: both;
-        background: #606b70;
-        color: #ffffff;
+        /*background: #606b70;*/
+        /*color: #ffffff;*/
+        background-color: #C1CBD7;
+        color: #7d848a;
         font-size: x-large;
         font-weight: 600;
         text-align: left;
         padding: 4px 24px;
-        margin: auto;
+        margin-top: 0;
     }
 
     .header {

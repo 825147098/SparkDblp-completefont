@@ -1,68 +1,86 @@
 <template>
-<!--    搜索栏-->
-    <el-main class="searchBarMain">
-<!--        图标-->
-        <el-image :src=url
-                  class="searchBarImg"
-                  fit="cover">
-        </el-image>
+    <!--    搜索栏-->
+    <div class="searchBarMain">
+        <!--            导航栏-->
+        <MainPageMenu class="searchBarMenu"></MainPageMenu>
+        <!--        图标-->
+        <!--        <el-image :src=url-->
+        <!--                  class="searchBarImg"-->
+        <!--                  fit="cover">-->
+        <!--        </el-image>-->
         <div class="searchCon">
-<!--            导航栏-->
-            <MainPageMenu class="searchBarMenu"></MainPageMenu>
-<!--            搜索栏-->
-            <el-input size="mini"
-                      class="searchInput"
-                      @keyup.enter.native="putInputData"
-                      v-model="inputData" clearable>
-            </el-input>
-            <el-button
-                    @click="putInputData" size="mini">
-                Search
-            </el-button>
-<!--            路由选择-->
-            <el-menu background-color="#959595"
-                     mode="horizontal"
-                     class="searchRadio"
-                     text-color="#fff">
-                <el-submenu index="searchLabel">
-                    <template slot="title">
-                        <i class="el-icon-search" style="color: #ebebeb"></i>
-                    </template>
-                    <el-radio-group v-model="radio"
-                                    style="margin-left: 10px">
-                        <div @click="changeRadioToCom">
-                            <el-radio :label="0" style="color: white">
-                                <router-link :to="{path:'/search/complete'}">
-                                    组合搜素
-                                </router-link>
-                            </el-radio>
-                        </div>
-                        <div @click="changeRadioToAut">
-                            <el-radio :label="1" style="color: white">
-                                <router-link :to="{path:'/search/author'}">
-                                    作者搜索
-                                </router-link>
-                            </el-radio>
-                        </div>
-                        <div @click="changeRadioToVen">
-                            <el-radio :label="2" style="color: white">
-                                <router-link :to="{path:'/search/venue'}">
-                                    会议搜索
-                                </router-link>
-                            </el-radio>
-                        </div>
-                        <div @click="changeRadioToPub">
-                            <el-radio :label="3" style="color: white">
-                                <router-link :to="{path:'/search/publicat'}">
-                                    出版物搜索
-                                </router-link>
-                            </el-radio>
-                        </div>
-                    </el-radio-group>
-                </el-submenu>
-            </el-menu>
+            <div style="justify-items: right">
+
+                <el-dropdown type="primary">
+                    <el-button type="info">
+                        搜索模式<i class="el-icon-arrow-down el-icon--right"></i>
+                    </el-button>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item @click="changeRadioToCom">
+                            <router-link :to="{path:'/search/complete'}" tag="span">
+                                组合搜素
+                            </router-link>
+                        </el-dropdown-item>
+                        <el-dropdown-item @click="changeRadioToAut">
+                            <router-link :to="{path:'/search/author'}" tag="span">
+                                作者搜索
+                            </router-link>
+                        </el-dropdown-item>
+                        <el-dropdown-item @click="changeRadioToVen">
+                            <router-link :to="{path:'/search/venue'}" tag="span">
+                                会议搜索
+                            </router-link>
+                        </el-dropdown-item>
+                        <el-dropdown-item @click="changeRadioToPub">
+                            <router-link :to="{path:'/search/publicat'}" tag="span">
+                                出版物搜索
+                            </router-link>
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+                <!--            路由选择-->
+                <!--     <el-menu background-color="#959595"
+                              mode="horizontal"
+                              class="searchRadio"
+                              text-color="#fff">
+                         &lt;!&ndash;                <el-submenu>111</el-submenu>&ndash;&gt;
+                         <el-submenu index="searchLabel">
+                             <template slot="title" style="width: 20px">
+                                 <i class="el-icon-search" style="color: #ebebeb"></i>
+                             </template>
+                             <el-radio-group v-model="radio"
+                                             style="margin-left: 10px">
+                                 <div @click="changeRadioToCom">
+                                     <el-radio :label="0" style="color: white">
+                                         <router-link :to="{path:'/search/complete'}">
+                                             组合搜素
+                                         </router-link>
+                                     </el-radio>
+                                 </div>
+                                 <div @click="changeRadioToAut">
+                                     <el-radio :label="1" style="color: white">
+                                         <router-link :to="{path:'/search/author'}">
+                                             作者搜索
+                                         </router-link>
+                                     </el-radio>
+                                 </div>
+
+                             </el-radio-group>
+                         </el-submenu>
+                     </el-menu>-->
+                <!--            搜索栏-->
+                <el-input
+                          class="searchInput"
+                          @keyup.enter.native="putInputData"
+                          v-model="inputData" clearable>
+                </el-input>
+                <el-button
+                        @click="putInputData">
+                    Search
+                </el-button>
+            </div>
         </div>
-    </el-main>
+    </div>
 </template>
 
 <script>
@@ -91,7 +109,7 @@
                     this.putInputData();
                 }
             },
-            "store.state.radioLabel":function () {
+            "store.state.radioLabel": function () {
                 this.radio = this.$store.state.radioLabel
             }
         },
@@ -232,40 +250,58 @@
 
 <style scoped>
     .searchBarMain {
-        background-color: #959595;
-        margin: auto;
+        /*background-color: #C1CBD7;*/
+        /*background-color: #AFB0B2;*/
+        background-color: #8696A6;
+        /*background-color: #9CA8B8;*/
+        /*margin: auto;*/
         /*width: 80%;*/
         min-width: 1000px;
         padding: 0;
         /*height: 120px;*/
+        display: flex;
+        flex-direction: column;
     }
 
     .searchBarImg {
         float: left;
         /*height: 120px;*/
-        padding: 39px;
+        padding-top: 39px;
+        padding-left: 0;
     }
 
     .searchBarMenu {
         display: inline;
-        /*float: right;*/
+        float: left;
     }
 
     .searchCon {
-        float: right;
-        width: 500px;
+        /*float: right;*/
+        /*width: 500px;*/
+        display: flex;
+        flex-direction: row-reverse;
+        /*font-size: medium;*/
+        /*height: auto;*/
+        /*align-items: center;*/
+        /*justify-content: right;*/
     }
 
     .searchRadio {
-        width: 80px;
-        float: left;
-        display: inline;
+        /*width: 80px;*/
+        /*float: left;*/
+        /*display: inline;*/
+        border-bottom: none;
     }
 
 
     .searchInput {
         width: 300px;
-        line-height: 90px;
+        /*line-height: 90px;*/
+        align-self: center;
     }
+
+    /*.searchLabel{*/
+    /*    width: 200px;*/
+    /*}*/
 
 </style>
