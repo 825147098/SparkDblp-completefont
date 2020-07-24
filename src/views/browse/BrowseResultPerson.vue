@@ -4,7 +4,7 @@
         <el-header class="header">
             <h1 class="headline">计算机科学 作者与出版人</h1>
         </el-header>
-        <el-main>
+        <el-main style="background-color:aliceblue;">
             <!--            搜索选择栏-->
             <div class="namePrefixCon">
                 <span>跳转到姓氏前缀为&nbsp;：</span>
@@ -259,12 +259,13 @@
     .headline {
         position: relative;
         clear: both;
-        background: #606b70;
-        color: #ffffff;
+        background-color: #C1CBD7;
         font-size: x-large;
+        color: #7d848a;
         font-weight: 600;
         text-align: left;
         padding: 4px 24px;
+        margin-top: 0;
     }
 
     .header {
