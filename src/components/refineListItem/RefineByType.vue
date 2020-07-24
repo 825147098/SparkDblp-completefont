@@ -6,7 +6,7 @@
             </b></p>
             <ul v-show="!loadFlag">
 <!--                列表类型显示//只显示返回数据类型-->
-                <li v-for="(item,index) in typeList" :key="item._VALUE">
+                <li v-for="(item,index) in typeList" :key="item.type">
                     <i :class=item.img
                        class="icon"
                        v-show="item.show"></i>
@@ -155,6 +155,9 @@
                             this.typeTestList[i]._VALUE = 'Book and Theses';
                             break;
                         case 'series':
+                            this.typeTestList[i]._VALUE = 'Book and Theses';
+                            break;
+                        case 'proceedings':
                             this.typeTestList[i]._VALUE = 'Editorshop';
                             break;
                         case "informal":

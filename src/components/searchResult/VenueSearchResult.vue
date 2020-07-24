@@ -151,7 +151,7 @@
                         </li>
                     </ul>
 <!--                    组合搜索完整显示-->
-                    <ul v-show="venueList.length <= 6 && !loadFlag">
+                    <ul v-show="venueList.length <= 6 && !loadFlag && !luckflag">
                         <el-collapse v-model="venueName" v-show="venueList.length <= 6">
                             <li v-for="venue in venueList" :key="venue.flag">
                                 <el-collapse-item :name="venue.flag">

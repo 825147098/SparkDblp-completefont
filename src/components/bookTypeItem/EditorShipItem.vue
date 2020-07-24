@@ -38,7 +38,7 @@
             <span v-for="editor in editorData.editor" :key="editor._VALUE" class="name">
                 <router-link :to="{path:'/resAut',query:{autName:editor._VALUE}}"
                              class="name">
-                                <p class="mark" v-html="getMatch(editor._VALUE)">{{authors._VALUE}}</p>
+                                <p class="mark" v-html="getMatch(editor._VALUE)">{{editor._VALUE}}</p>
                 </router-link>
                 <el-tooltip class="item" effect="dark" :content=editor._orcid placement="bottom-end"
                             v-if="editor._orcid != null">
@@ -71,11 +71,13 @@
                     {{item._VALUE}}&nbsp;
                 </span>
             </span>
-            <el-link class="name" v-if="editorData.series != null && editorData.series[0]._href != null"
-                :href="'https://dblp.uni-trier.de/' + editorData.series[0]._href"
-            >
+            <span  v-if="editorData.series != null">
+                <el-link class="name" v-if="editorData.series.length > 0"
+                         :href="'https://dblp.uni-trier.de/' + editorData.series[0]._href"
+                >
              [content]
             </el-link>
+            </span>
         </cite><br>
     </el-container>
 </template>
@@ -86,7 +88,8 @@
 
         data: function () {
             return {
-                editorData: {
+                editorData:
+                    {
                     "_key": "series/lnsn/2018kkkd",
                     "prefix1": "series/",
                     "prefix2": "series/lnsn/",
@@ -141,10 +144,11 @@
                         "_href": null
                     },
                     "school": null,
-                    "series": {
-                        "_VALUE": "Lecture Notes in Social Networks",
-                        "_href": "db/series/lnsn/index.html"
-                    },
+                    "series": null,
+                    //     {
+                    //     "_VALUE": "Lecture Notes in Social Networks",
+                    //     "_href": "db/series/lnsn/index.html"
+                    // },
                     "volume": null,
                     "_links": {
                         "self": {
@@ -192,6 +196,7 @@
         mounted() {
             if (this.innerData != null)
                 this.editorData = this.innerData;
+            // console.log(this.innerData.isbn)
         }
     }
 </script>

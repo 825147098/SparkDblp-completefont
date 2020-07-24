@@ -37,15 +37,12 @@
         },
 
         watch:{
-            '$store.state.inputfalg': {
-                handler() {
+            '$store.state.inputfalg': function(){
                     // console.log(this.$store.state)
                     if(this.$store.state.inputfalg && this.$store.state.radioLabel === 0){
                         this.activeShow = true;
                         // console.log(this.$store.state)
                     }
-                },
-                deep:true
             },
             //作者结果标记
             '$store.state.showObj.authorflag':function () {

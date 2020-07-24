@@ -129,6 +129,9 @@
                         case 'series':
                             this.waitList[i].type = 'Editorshop';
                             break;
+                        case 'proceedings':
+                            this.waitList[i].type = 'Editorshop';
+                            break;
                         case "informal":
                             this.waitList[i].type = 'Informal Publications';
                             break;

@@ -1,5 +1,5 @@
 <template>
-<!--    组合搜索结果-->
+    <!--    组合搜索结果-->
     <el-main style="padding-top: 0; max-width: 850px">
         <el-collapse v-model="activeName" accordion @change="changeFalg">
             <el-collapse-item name="1">
@@ -10,7 +10,7 @@
                    class="infoMatch"
                 >
                     匹配到{{pageDetail.totalElements}}条结果</p>
-<!--                出版物列表-->
+                <!--                出版物列表-->
                 <ul v-show="dataFlag"
                     class="putList"
                     v-for="year in yearList" :key="year"
@@ -36,11 +36,11 @@
                                      :inner-data="item"
                         ></JournalItem>
                         <ReferenceWorkItem v-else-if="item.type == 'Reference Works'"
-                                :inner-data="item">
+                                           :inner-data="item">
                         </ReferenceWorkItem>
                     </li>
                 </ul>
-<!--                加载图标-->
+                <!--                加载图标-->
                 <ul v-show="loadFlag"
                     class="putList">
                     <li style="color: #409EFF">
@@ -50,8 +50,8 @@
                         ></el-icon>
                     </li>
                 </ul>
-<!--                加载按钮-->
-                <ul v-show="!loadFlag && !parmasFlag && this.page < this.pageDetail.totalPages"
+                <!--                加载按钮-->
+                <ul v-show="!loadFlag && !parmasFlag && this.page < this.pageDetail.totalPages - 1"
                     class="putList">
                     <li>
                         <el-button type="text" @click="load">
@@ -122,7 +122,7 @@
                     this.dataFlag = true;
                     this.changeType();
                     this.pubSort()
-
+                    // console.log(this.waitList)
                     this.$store.commit("incrementCleanFlag", {flag: "conflag"})
                     this.$store.commit("incrementCleanInputFlag");
                 }).catch(error => {
@@ -243,6 +243,9 @@
                             this.waitList[i].type = 'Book and Theses';
                             break;
                         case 'series':
+                            this.waitList[i].type = 'Book and Theses';
+                            break;
+                        case 'proceedings':
                             this.waitList[i].type = 'Editorshop';
                             break;
                         case "informal":
@@ -332,12 +335,12 @@
                 this.getFilPubData()
             else
                 this.getPubData()
-            this.$router.push({
-                path:'/search/complete',
-                query:{
-                    title:this.title
-                }
-            })
+            // this.$router.push({
+            //     path:'/search/complete',
+            //     query:{
+            //         title:this.title
+            //     }
+            // })
         }
     }
 </script>

@@ -695,6 +695,9 @@
                             this.waitList[i].type = 'Book and Theses';
                             break;
                         case 'series':
+                            this.waitList[i].type = 'Book and Theses';
+                            break;
+                        case 'proceedings':
                             this.waitList[i].type = 'Editorshop';
                             break;
                         case "informal":
