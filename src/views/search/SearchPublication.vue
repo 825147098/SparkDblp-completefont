@@ -52,9 +52,11 @@
     .headline {
         position: relative;
         clear: both;
-        background: #606b70;
-        color: #ffffff;
+        /*background: #606b70;*/
+        /*color: #ffffff;*/
+        background-color: #C1CBD7;
         font-size: x-large;
+        color: #7d848a;
         font-weight: 600;
         text-align: left;
         padding: 4px 24px;

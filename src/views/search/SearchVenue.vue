@@ -1,5 +1,5 @@
 <template>
-    <el-container >
+    <el-container>
         <el-header class="header" v-show="activeShow">
             <h1 class="headline">搜索 Spark Dblp For 作者</h1>
         </el-header>
@@ -58,8 +58,10 @@
     .headline {
         position: relative;
         clear: both;
-        background: #606b70;
-        color: #ffffff;
+        /*background: #606b70;*/
+        /*background: #C1CBD7;*/
+        background-color: #C1CBD7;
+        color: #7d848a;
         font-size: x-large;
         font-weight: 600;
         text-align: left;
@@ -72,6 +74,7 @@
         min-width: 1000px;
         margin: auto;
         padding: 0;
+        /*background-color: #C1CBD7;*/
     }
 
 </style>

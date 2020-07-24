@@ -61,8 +61,8 @@
     .headline {
         position: relative;
         clear: both;
-        background: #606b70;
-        color: #ffffff;
+        background-color: #C1CBD7;
+        color: #2c3e50;
         font-size: x-large;
         font-weight: 600;
         text-align: left;
