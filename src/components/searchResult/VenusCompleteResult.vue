@@ -42,6 +42,9 @@
                 <ReferenceWorkItem v-else-if="item.type == 'Reference Works'"
                                    :inner-data="item">
                 </ReferenceWorkItem>
+                <WithdrawnItem v-else-if="item.type == 'Withdrawn Item'"
+                               :inner-data="item">
+                </WithdrawnItem>
             </li>
         </ul>
 <!--        加载图标-->
@@ -65,9 +68,11 @@
     import InformalPubItem from "../bookTypeItem/InformalPubItem";
     import JournalItem from "../bookTypeItem/JournalItem";
     import ReferenceWorkItem from "../bookTypeItem/ReferenceWorkItem";
+    import WithdrawnItem from "../bookTypeItem/WithdrawnItem";
     export default {
         name: "VenusCompleteResult",
         components: {
+            WithdrawnItem,
             ReferenceWorkItem,
             // PartInBookOrCollItem,
             JournalItem, InformalPubItem, EditorShipItem, ConfAndWorkItem, BookAndTheseItem
@@ -143,6 +148,9 @@
                             break;
                         case  "reference":
                             this.waitList[i].type = 'Reference Works';
+                            break;
+                        case "withdrawn":
+                            this.waitList[i].type = 'Withdrawn Item';
                             break;
                     }
                 }
