@@ -9,7 +9,7 @@ export default new Vuex.Store({
         inputfalg: false,
         inputData: '',
 
-        host: "http://192.168.3.5:8080",
+        host: "http://localhost:8080",
 
         showObj:{
             authorflag:true,
