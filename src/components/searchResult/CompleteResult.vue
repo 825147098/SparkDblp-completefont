@@ -114,7 +114,7 @@
             getPubData() {
                 this.loadFlag = true;
                 this.dataFlag = false;
-                axios.get(this.$store.state.host + "/onlyDocs/search/findAllByTitleMatchesText", {
+                axios.get(this.$store.state.host + "/onlyDocs/search/findAllByText", {
                     params: {
                         title: this.title,
                         page: this.page,
@@ -142,7 +142,7 @@
                 this.loadFlag = true;
                 this.dataFlag = false;
                 this.setParams();
-                axios.get(this.$store.state.host + "/onlyDoc/findAllByTitleMatchesTextAllList", {
+                axios.get(this.$store.state.host + "/onlyDoc/findAllByTextReturnList", {
                     params: this.paramsObj
                 }).then(res => {
                     this.waitList = res.data;
@@ -186,7 +186,7 @@
                                 }
                             });
                         }
-                        axios.get(this.$store.state.host + "/onlyDocs/search/findAllByTitleMatchesText", {
+                        axios.get(this.$store.state.host + "/onlyDocs/search/findAllByText", {
                             params: {
                                 title: this.title,
                                 page: this.page
