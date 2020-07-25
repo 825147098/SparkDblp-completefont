@@ -282,7 +282,7 @@
             }else {
                 this.webPage = false;
             }
-            if (this.$store.state.inputData != '') {
+            if (this.$store.state.inputData != null) {
                 this.searchName = this.$store.state.serchObj.title;
                 this.activeShow = true;
             } else {

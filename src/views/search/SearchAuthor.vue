@@ -33,7 +33,7 @@
                 if(this.$store.state.radioLabel === 1){
                     this.activeShow = true;
                 }
-            }
+            },
         },
 
         mounted() {
@@ -45,7 +45,10 @@
         },
 
         created() {
-            this.$store.commit("incrementRadio",{newLabel: 1})
+            this.$store.commit("incrementRadio",{newLabel: 1});
+            if(this.$store.state.inputData != null){
+                this.activeShow = true
+            }
         }
     }
 </script>

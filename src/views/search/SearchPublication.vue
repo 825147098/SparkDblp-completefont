@@ -27,21 +27,23 @@
         },
 
         watch:{
-            '$store.state.inputfalg': {
-                handler() {
+            '$store.state.inputfalg': function () {
                     // console.log(this.$store.state)
                     if(this.$store.state.inputfalg && this.$store.state.radioLabel === 3){
                         this.activeShow = true;
                         // console.log(this.$store.state)
                     }
-                },
-                deep:true
-            }
+
+            },
+
         },
 
         created() {
             this.activeShow = this.$store.state.inputfalg
-            this.$store.commit("incrementRadio",{newLabel: 3})
+            this.$store.commit("incrementRadio",{newLabel: 3});
+            if(this.$store.state.inputData != null){
+                this.activeShow = true
+            }
         }
     }
 </script>

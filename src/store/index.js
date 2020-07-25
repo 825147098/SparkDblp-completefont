@@ -7,7 +7,7 @@ export default new Vuex.Store({
     state: {
         radioLabel: 0,
         inputfalg: false,
-        inputData: '',
+        inputData: null,
 
         host: "http://localhost:8080",
 

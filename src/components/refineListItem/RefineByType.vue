@@ -5,23 +5,30 @@
                 按照类型细化
             </b></p>
             <ul v-show="!loadFlag">
-<!--                列表类型显示//只显示返回数据类型-->
+                <!--                列表类型显示//只显示返回数据类型-->
                 <li v-for="(item,index) in typeList" :key="item.type">
                     <i :class=item.img
                        class="icon"
                        v-show="item.show"></i>
-                    <el-button type="text"
-                               size="small"
-                               @mouseenter.native="mouseEnter(index)"
-                               @mouseleave.native="mouseLeave(index)"
-                               @click="addAuthorToInput(index)"
-                               :class="['authorButton' ,item.show ? 'buttonSelect' : '']">
-                        {{item._VALUE}}({{toThousands(item.num)}})
-                        <span v-show="item.show">✔</span>
-                    </el-button>
+                    <el-tooltip class="item"
+                                effect="dark"
+                                :content="item.type"
+                                placement="bottom-end">
+
+
+                        <el-button type="text"
+                                   size="small"
+                                   @mouseenter.native="mouseEnter(index)"
+                                   @mouseleave.native="mouseLeave(index)"
+                                   @click="addAuthorToInput(index)"
+                                   :class="['authorButton' ,item.show ? 'buttonSelect' : '']">
+                            {{item._VALUE}}({{toThousands(item.num)}})
+                            <span v-show="item.show">✔</span>
+                        </el-button>
+                    </el-tooltip>
                 </li>
             </ul>
-<!--            加载图标-->
+            <!--            加载图标-->
             <ul v-show="loadFlag">
                 <li>
                     <el-icon class="el-icon-loading"
@@ -29,7 +36,7 @@
                     ></el-icon>
                 </li>
             </ul>
-<!--            null结果-->
+            <!--            null结果-->
             <ul v-show="typeList.length == 0 && !loadFlag"
                 class="putList">
                 <li>
@@ -171,6 +178,9 @@
                             break;
                         case  "reference":
                             this.typeTestList[i]._VALUE = 'Reference Works';
+                            break;
+                        case "withdrawn":
+                            this.typeTestList[i]._VALUE = 'Withdrawn Item';
                             break;
                     }
                 }

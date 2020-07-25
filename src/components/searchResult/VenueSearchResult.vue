@@ -218,7 +218,21 @@
                 luckName: [],
 
                 venueList: [],
-                venueTestList: [],
+                venueTestList: [
+                    {
+                        prefix2: "conf/casdmkm/",
+                        venue: [
+                            {
+                                _key: "conf/casdmkm/2004",
+                                title: "Data Mining and Knowledge Management, Chinese Academy of Sciences Symposium, CASDMKM 2004, Beijing, China, July 12-14, 2004, Revised Papers",
+                                year: 2004,
+                                type: "proceedings",
+                                booktitle: "CASDMKM",
+                                type_xml: "proceedings"
+                            }
+                        ],
+                    },
+                ],
                 venueName: [],
 
                 webPage: true,
@@ -307,6 +321,9 @@
             getMatch(val) {
                 let str = this.searchTitle;
 
+                if(val == null)
+                    return
+
                 let copyVal = val.toLowerCase();
                 let copyStr = str.toLowerCase();
 
@@ -374,7 +391,7 @@
             } else {
                 this.webPage = false;
             }
-            if (this.$store.state.inputData != '') {
+            if (this.$store.state.inputData != null) {
                 this.searchTitle = this.$store.state.serchObj.title;
                 this.activeShow = true;
             } else {

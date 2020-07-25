@@ -44,6 +44,7 @@
                         // console.log(this.$store.state)
                     }
             },
+
             //作者结果标记
             '$store.state.showObj.authorflag':function () {
                 if(this.$store.state.showObj.authorflag)
@@ -62,9 +63,16 @@
             }
         },
 
+        mounted() {
+            if(this.$store.state.inputData != null){
+                this.activeShow = true
+            }
+        },
+
         created() {
             this.activeShow = this.$store.state.inputfalg
             this.$store.commit("incrementRadio",{newLabel: 0})
+
         }
     }
 </script>
