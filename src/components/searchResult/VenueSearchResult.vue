@@ -41,7 +41,7 @@
                                     </template>
                                     <!--                                    详细列表-->
                                     <ul class="bodyText">
-                                        <li v-for="titles in luckly.venueArr" :key="titles.title">
+                                        <li v-for="titles in luckly.venueArr" :key="titles.title + titles.booktitle">
                                             <router-link
                                                     class="name"
                                                     :to="{path:'/resVen',query: {venName:titles.title,cross:titles._key,book:titles.booktitle}}">
@@ -75,7 +75,7 @@
                                     </template>
                                     <ul class="bodyText">
                                         <!--                                        完整清单-->
-                                        <li v-for="titles in venue.venueArr" :key="titles.title">
+                                        <li v-for="titles in venue.venueArr" :key="titles.title + titles.booktitle">
                                             <router-link
                                                     class="name"
                                                     :to="{path:'/resVen',query: {venName:titles.title,cross:titles._key}}">
@@ -123,7 +123,7 @@
                                     </template>
                                     <!--                                    会议下的具体会议-->
                                     <ul class="bodyText">
-                                        <li v-for="titles in luckly.venueArr" :key="titles.title">
+                                        <li v-for="titles in luckly.venueArr" :key="titles.title + titles.booktitle">
                                             <router-link
                                                     class="name"
                                                     :to="{path:'/resVen',query: {venName:titles.title,cross:titles._key}}">
@@ -167,7 +167,7 @@
                                         </div>
                                     </template>
                                     <ul class="bodyText">
-                                        <li v-for="titles in venue.venueArr" :key="titles.title">
+                                        <li v-for="titles in venue.venueArr" :key="titles.title + titles.booktitle">
                                             <router-link
                                                     class="name"
                                                     :to="{path:'/resVen',query: {venName:titles.title,cross:titles._key}}">
@@ -348,22 +348,23 @@
 
         watch: {
             // 完整搜索标记
-            '$store.state.serchObj.title': function () {
-                if (this.$store.state.radioLabel === 2 || !this.webPage)
-                    if (this.$store.state.serchObj.title != '') {
-                        this.searchTitle = this.$store.state.serchObj.title;
-                        this.getVenueData();
-                        console.log("v3")
-                    }
-            },
-            // 碎片标记
-            // "$store.state.serchObj.conflag": function () {
-            //     if (this.$store.state.serchObj.conflag && this.$store.state.radioLabel === 0) {
-            //         this.searchName = this.$store.state.serchObj.title;
-            //         this.getVenueData();
-            //         console.log("v2")
-            //     }
+            // '$store.state.serchObj.title': function () {
+            //     if (this.$store.state.radioLabel == 2 || !this.webPage)
+            //         if (this.$store.state.serchObj.title != '') {
+            //             this.searchTitle = this.$store.state.serchObj.title;
+            //             this.getVenueData();
+            //             console.log(this.$store.state.radioLabel)
+            //             console.log("v3")
+            //         }
             // },
+            // 碎片标记
+            "$store.state.serchObj.conflag": function () {
+                if (this.$store.state.serchObj.conflag ) {
+                    this.searchName = this.$store.state.serchObj.title;
+                    this.getVenueData();
+                    console.log("v2")
+                }
+            },
 
             totalElements: function () {
                 if (this.totalElements > 0) {
@@ -384,6 +385,7 @@
             }
             if (this.activeShow) {
                 this.getVenueData();
+                console.log(1)
             }
         }
         ,

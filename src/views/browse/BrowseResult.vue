@@ -21,7 +21,7 @@
         },
 
         created() {
-
+            this.$store.commit("incrementRadio",{newLabel: 4});
         }
     }
 </script>
