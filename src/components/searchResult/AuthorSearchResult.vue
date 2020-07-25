@@ -26,7 +26,7 @@
                     </p>
                     <p v-show="luckflag">幸运匹配项</p>
                     <!--                        随机列表-->
-                    <ul v-show="luckList">
+                    <ul v-if="luckflag">
                         <li v-for="luckly in luckList" :key="luckly._VALUE">
                             <el-button type="text"  size="mini">
                                 <router-link :to="{path:'/resAut',query:{autName:luckly._VALUE}}"
@@ -46,7 +46,7 @@
                     <p v-else-if="totalElements > 0 && !loadFlag">所有{{totalElements}}条匹配项</p>
                     <p v-else v-show="!loadFlag">无匹配项</p>
 <!--                    结果列表-->
-                    <ul v-show="!loadFlag">
+                    <ul v-if="!loadFlag && totalElements > 0">
                         <li v-for="author in authorList" :key="author._VALUE">
                             <el-button type="text"  size="mini">
                                 <router-link :to="{path:'/resAut',query:{autName:author._VALUE}}"
@@ -80,7 +80,7 @@
                 </template>
                 <div class="body">
 <!--                    幸运匹配列表-->
-                    <ul v-show="luckList">
+                    <ul v-if="luckflag">
                         <li v-for="luckly in luckList" :key="luckly._VALUE">
                             <el-button type="text"  size="mini">
                                 <router-link :to="{path:'/resAut',query:{autName:luckly._VALUE}}"
@@ -103,7 +103,7 @@
                         </li>
                     </ul>
 <!--                    数量少显示全部结果-->
-                    <ul v-show="authorList.length <= 6 && !loadFlag">
+                    <ul v-if="authorList.length <= 6 && !loadFlag">
                         <li v-for="author in authorList" :key="author._VALUE">
                             <el-button type="text"  size="mini">
                                 <router-link :to="{path:'/resAut',query:{autName:author._VALUE}}"
@@ -239,21 +239,21 @@
 
         watch: {
             //监控搜索栏
-            '$store.state.serchObj.title': function () {
-                if((this.$store.state.radioLabel === 1  || !this.webPage)&& this.$store.state.serchObj.title != '' ){
-                    this.searchName = this.$store.state.serchObj.title;
-                    this.getAuthorData();
-                    console.log("a3")
-                }
-            },
-            //监控搜索标记
-            // "$store.state.serchObj.conflag": function () {
-            //     if (this.$store.state.serchObj.conflag) {
+            // '$store.state.serchObj.title': function () {
+            //     if((this.$store.state.radioLabel === 1  || !this.webPage)&& this.$store.state.serchObj.title != '' ){
             //         this.searchName = this.$store.state.serchObj.title;
             //         this.getAuthorData();
-            //         console.log("a2")
+            //         console.log("a3")
             //     }
             // },
+            //监控搜索标记
+            "$store.state.serchObj.conflag": function () {
+                if (this.$store.state.serchObj.conflag) {
+                    this.searchName = this.$store.state.serchObj.title;
+                    this.getAuthorData();
+                    console.log("a2")
+                }
+            },
             //通知组合搜索是否显示
             totalElements:function () {
                 if(this.totalElements > 0){
