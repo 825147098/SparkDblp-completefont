@@ -257,7 +257,7 @@
                 this.warnflag = false
                 this.luckflag = false;
                 this.luckList = []
-                axios.get(this.$store.state.host + "/venueGroups/search/findAllByVenue_BooktitleContainingIgnoreCase", {
+                axios.get(this.$store.state.host + "/venueGroups/search/findAllByTextReturnList", {
                     params: {
                         booktitle: this.searchTitle,
                     }
