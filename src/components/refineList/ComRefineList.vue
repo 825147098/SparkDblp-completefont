@@ -1,17 +1,17 @@
 <template>
     <el-aside class="asideCon">
         <el-collapse v-model="activeName" accordion @change="changeFalg">
-            <el-collapse-item name="1">
+            <el-collapse-item name="1" >
                 <template slot="title">
                     [{{flag}}] 搜索优化列表
                 </template>
-<!--                作者细化-->
+                <!--                作者细化-->
                 <RefineByAuthor name="作者"></RefineByAuthor>
-<!--                会议细化-->
+                <!--                会议细化-->
                 <RefineByVenue></RefineByVenue>
-<!--                类型细化-->
+                <!--                类型细化-->
                 <RefineByType></RefineByType>
-<!--                年份细化-->
+                <!--                年份细化-->
                 <RefineByYear></RefineByYear>
             </el-collapse-item>
         </el-collapse>
@@ -32,6 +32,7 @@
             return {
                 flag: '-',
                 activeName: '1',
+                toShow: false,
             }
         },
 
@@ -45,7 +46,20 @@
             },
         },
 
+        watch: {
+            "$store.state.serchObj.conflag": function () {
+                if (this.$store.state.serchObj.conflag) {
+                    // console.log(this.toShow)
+                    setTimeout(() => {
+                        this.toShow = true;
+                        // console.log(this.toShow)
+                    }, 2500)
+                }
+            },
+        },
 
+        created() {
+        }
     }
 </script>
 
