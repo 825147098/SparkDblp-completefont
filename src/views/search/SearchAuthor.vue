@@ -30,6 +30,7 @@
             //监视标记,手风琴标记为string格式
 
             '$store.state.inputfalg': function () {
+                // console.log(this.$store.state.radioLabel)
                 if(this.$store.state.radioLabel === 1){
                     this.activeShow = true;
                 }
@@ -39,7 +40,7 @@
         mounted() {
             if (this.$route.query.autName != null) {
                 // this.searchName = this.$route.query.autName;
-                console.log(this.activeShow)
+                // console.log(this.activeShow)
                 this.activeShow = true;
             }
         },

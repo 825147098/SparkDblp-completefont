@@ -123,10 +123,12 @@
                     this.waitList = res.data._embedded.onlyDocs;
                     this.pageDetail = res.data.page;
                     // this.waitList = testData.data().test
-                    this.loadFlag = false;
-                    this.dataFlag = true;
+
                     this.changeType();
                     this.pubSort()
+
+                    this.loadFlag = false;
+                    this.dataFlag = true;
 
                     this.$store.commit("incrementCleanFlag", {flag: "conflag"})
                     this.$store.commit("incrementCleanInputFlag");
@@ -147,10 +149,12 @@
                     this.pageDetail["totalElements"] = this.waitList.length;
                     console.log(this.waitList)
                     // this.waitList = testData.data().test
-                    this.loadFlag = false;
-                    this.dataFlag = true;
+
                     this.changeType();
                     this.pubSort()
+
+                    this.loadFlag = false;
+                    this.dataFlag = true;
                     // console.log(this.waitList)
                     this.$store.commit("incrementCleanFlag", {flag: "conflag"})
                     this.$store.commit("incrementCleanInputFlag");
