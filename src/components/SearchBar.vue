@@ -10,43 +10,43 @@
         <!--        </el-image>-->
         <div class="searchCon">
             <div style="justify-items: right">
-                <el-dropdown type="primary" >
+                <el-dropdown type="primary">
                     <el-button type="info">
                         {{drownArry[radio]}}<i class="el-icon-arrow-down el-icon--right"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>
-                            <div @click="changeRadioToCom">
-                                <router-link
-                                        :to="{path:'/search/complete'}" tag="span">
+                        <router-link
+                                :to="{path:'/search/complete'}" tag="span">
+                            <el-dropdown-item>
+                                <div @click="changeRadioToCom">
                                     组合搜素
-                                </router-link>
-                            </div>
-                        </el-dropdown-item>
-                        <el-dropdown-item>
-                            <div @click="changeRadioToAut">
-                                <router-link
-                                        :to="{path:'/search/author'}" tag="span">
+                                </div>
+                            </el-dropdown-item>
+                        </router-link>
+                        <router-link
+                                :to="{path:'/search/author'}" tag="span">
+                            <el-dropdown-item>
+                                <div @click="changeRadioToAut">
                                     作者搜索
-                                </router-link>
-                            </div>
-                        </el-dropdown-item>
-                        <el-dropdown-item>
-                            <div @click="changeRadioToVen">
-                                <router-link
-                                             :to="{path:'/search/venue'}" tag="span">
+                                </div>
+                            </el-dropdown-item>
+                        </router-link>
+                        <router-link
+                                :to="{path:'/search/venue'}" tag="span">
+                            <el-dropdown-item>
+                                <div @click="changeRadioToVen">
                                     会议搜索
-                                </router-link>
-                            </div>
-                        </el-dropdown-item>
-                        <el-dropdown-item>
-                            <div @click="changeRadioToPub">
-                                <router-link
-                                             :to="{path:'/search/publicat'}" tag="span">
+                                </div>
+                            </el-dropdown-item>
+                        </router-link>
+                        <router-link
+                                :to="{path:'/search/publicat'}" tag="span">
+                            <el-dropdown-item>
+                                <div @click="changeRadioToPub">
                                     出版物搜索
-                                </router-link>
-                            </div>
-                        </el-dropdown-item>
+                                </div>
+                            </el-dropdown-item>
+                        </router-link>
                     </el-dropdown-menu>
                 </el-dropdown>
                 <!--            路由选择-->
@@ -110,7 +110,7 @@
                 url: title_image,
                 radio: 4,
                 inputData: '',
-                drownArry:["组合搜素","作者搜素","会议搜素","出版物搜素","搜素模式"]
+                drownArry: ["组合搜素", "作者搜素", "会议搜素", "出版物搜素", "搜素模式"]
             }
         },
 
