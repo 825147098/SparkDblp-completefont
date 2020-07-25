@@ -256,66 +256,19 @@
 </script>
 
 <style scoped>
-    .headline {
-        position: relative;
-        clear: both;
-        background-color: #C1CBD7;
-        font-size: x-large;
-        color: #7d848a;
-        font-weight: 600;
-        text-align: left;
-        padding: 4px 24px;
-        margin-top: 0;
-    }
+    @import "../../style/public.css";
 
-    .header {
-        width: 100%;
-        min-width: 1000px;
-        margin: auto;
-        padding: 0;
-    }
-
-    .namePrefixCon {
-        display: inline;
-        display: flex;
-        margin: 0 0 0 0;
-        padding: 0 0 20px 20px;
-    }
 
     .drop-down-con > ul {
         padding: 0 0 0 15px;
         float: left;
     }
 
-    .buttonGrop {
-        text-align: left;
-        margin-left: 20px;
-        color: #606266;
-    }
-
-    .head-hide {
-        border-bottom: 2px #7d848a solid;
-        min-height: 27px;
-        padding: 0px 16px 0px 24px;
-        margin: 0;
-        text-align: left;
-    }
 
     .head-hide > h3 {
         margin: 0;
     }
 
-    .nameList {
-        display: table-cell;
-        padding: 0ex 0em;
-        margin: 0ex 0em;
-        min-width: 30%;
-        text-align: left;
-        color: #505b62;
-        font-family: 'Open Sans', sans-serif;
-        font-size: 11pt;
-        font-weight: 400;
-    }
 
     .router-link-text {
         text-decoration: none;

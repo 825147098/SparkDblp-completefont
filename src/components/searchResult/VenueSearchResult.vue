@@ -405,33 +405,7 @@
 </script>
 
 <style scoped>
-    .breadClass {
-        padding: 0 20px;
-    }
-
-    .head-hide {
-        border-bottom: 2px #7d848a solid;
-        min-height: 27px;
-        padding: 0 16px 0 24px;
-        text-align: left;
-        margin: 20px 0 0 0;
-    }
-
-    .body {
-        color: #505b62;
-        font-family: 'Open Sans', sans-serif;
-        font-size: 11pt;
-        font-weight: 400;
-        min-width: 768px;
-        margin: 0;
-        padding: 0;
-        height: auto;
-    }
-
-    .body > p {
-        text-align: left;
-        margin-left: 24px;
-    }
+    @import "../../style/public.css";
 
     .body > ul > div > li > div > div > div {
         height: auto;
@@ -463,12 +437,4 @@
         margin: 0;
     }
 
-    .mark {
-        display: inline;
-    }
-
-    .name {
-        color: #7d848a;
-        text-decoration: none;
-    }
 </style>

@@ -1,1 +1,200 @@
 /*bookTypeItem.css*/
+/*item图标*/
+.box {
+    display: table-cell;
+    padding: 0 2px;
+}
+/*链接图标*/
+.linkButton {
+    display: table-cell;
+}
+/*文章名*/
+.title {
+    color: #666666;
+    font-weight: 700;
+}
+/*人名*/
+.name {
+    color: #7d848a;
+    text-decoration: none;
+}
+/*item数据总体div*/
+.data {
+    display: table-cell;
+    font: inherit;
+    padding: 0 2px;
+    max-width: 800px;
+    text-align: left;
+}
+/*标记inline*/
+.mark{
+    display: inline;
+}
+
+/*refineList*/
+/*列表居右*/
+.asideCon {
+    float: right;
+    display: inline;
+    max-width: 280px;
+    background: #ffffff;
+    margin: 0;
+}
+
+/*refineListItem*/
+/*优化列表总体*/
+.refine-by {
+    margin: 0 0 2ex;
+    font-size: smaller;
+    text-align: left;
+}
+/*优化列表标签*/
+.refine-by > p {
+    margin: 0;
+    padding: 0;
+}
+/*优化列表列表样式*/
+.refine-by > ul {
+    margin: 0;
+    padding: 0;
+}
+/*优化列表元素*/
+.refine-by > ul > li {
+    display: block;
+    padding: 2px 4px 0 0;
+    margin: 0;
+    text-decoration: none;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+/*优化列表元素图标*/
+.refine-by > ul > li > .icon {
+    position: absolute;
+    margin: 3px -15px;
+}
+/*列表按钮普通样式*/
+.authorButton {
+    display: inline;
+    overflow: visible;
+    text-align: left;
+    color: #7d848a;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1em;
+    font-weight: 400;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    white-space: pre-line;
+}
+/*列表按钮选中样式*/
+.buttonSelect {
+    font-weight: 700;
+    font-style: italic;
+    padding-right: 4px
+}
+
+/*searchResult*/
+/*complete匹配结果总数*/
+.infoMatch {
+    margin: 1ex 0 1ex 24px;
+    padding: 0;
+    text-align: left;
+}
+/*面包头样式*/
+.breadClass {
+    padding: 0 20px;
+}
+/*标题*/
+.head-hide {
+    border-bottom: 2px #7d848a solid;
+    min-height: 27px;
+    padding: 0 16px 0 24px;
+    text-align: left;
+    margin: 20px 0 0 0;
+}
+/*author搜索结果警告*/
+.warning {
+    color: maroon;
+    font-style: italic;
+    text-align: left;
+    margin-left: 24px;
+}
+/*搜索结果主体样式*/
+.body {
+    color: #505b62;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11pt;
+    font-weight: 400;
+    min-width: 768px;
+    margin: 0;
+    padding: 0;
+}
+.body>p{
+    text-align: left;
+    margin-left: 24px;
+}
+.body>ul>li{
+    text-align: left;
+}
+
+.body>ul>li>button>span>p{
+    margin: 0;
+}
+/*搜素结果列表*/
+.putList {
+    margin: 1ex 0 1ex;
+    padding: 0;
+}
+
+.putList > li {
+    text-decoration: none;
+    display: table;
+    margin: 0 0 1ex;
+    padding: 0;
+}
+/*搜索栏下方标题*/
+.headline {
+    position: relative;
+    clear: both;
+    background-color: #C1CBD7;
+    font-size: x-large;
+    color: #7d848a;
+    font-weight: 600;
+    text-align: left;
+    padding: 4px 24px;
+    margin-top: 0;
+}
+/*el-header样式*/
+.header {
+    width: 100%;
+    min-width: 1000px;
+    margin: auto;
+    padding: 0;
+}
+/*搜索前缀栏*/
+.namePrefixCon {
+    display: flex;
+    margin: 0 0 0 0;
+    padding: 0 0 20px 20px;
+}
+/*浏览页面名单列表*/
+.nameList {
+    display: table-cell;
+    padding: 0 ;
+    margin: 0 ;
+    min-width: 30%;
+    text-align: left;
+    color: #505b62;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11pt;
+    font-weight: 400;
+}
+/*前后分页按钮组*/
+.buttonGrop {
+    text-align: left;
+    margin-left: 20px;
+    color: #606266;
+}

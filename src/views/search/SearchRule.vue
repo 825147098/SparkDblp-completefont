@@ -97,40 +97,9 @@
 </script>
 
 <style scoped>
+    @import "../../style/public.css";
     ul {
         list-style: none;
     }
 
-    .headline {
-        position: relative;
-        clear: both;
-        /*background: #606b70;*/
-        /*color: #ffffff;*/
-        background-color: #C1CBD7;
-        color: #7d848a;
-        font-size: x-large;
-        font-weight: 600;
-        text-align: left;
-        padding: 4px 24px;
-        margin: auto;
-    }
-
-    .header {
-        width: 100%;
-        min-width: 1000px;
-        margin: auto;
-        padding: 0;
-    }
-
-    .breadClass {
-        padding: 0 20px;
-    }
-
-    .head-hide {
-        border-bottom: 2px #7d848a solid;
-        min-height: 27px;
-        padding: 0 16px 0 24px;
-        text-align: left;
-        margin: 20px 0 0 0;
-    }
 </style>

@@ -55,26 +55,6 @@
 </script>
 
 <style scoped>
-    .headline {
-        position: relative;
-        clear: both;
-        /*background: #606b70;*/
-        /*background: #C1CBD7;*/
-        background-color: #C1CBD7;
-        color: #7d848a;
-        font-size: x-large;
-        font-weight: 600;
-        text-align: left;
-        padding: 4px 24px;
-        margin: auto;
-    }
-
-    .header {
-        width: 100%;
-        min-width: 1000px;
-        margin: auto;
-        padding: 0;
-        /*background-color: #C1CBD7;*/
-    }
+    @import "../../style/public.css";
 
 </style>

@@ -78,26 +78,7 @@
 </script>
 
 <style scoped>
-    .headline {
-        position: relative;
-        clear: both;
-        /*background: #606b70;*/
-        /*color: #ffffff;*/
-        background-color: #C1CBD7;
-        color: #7d848a;
-        font-size: x-large;
-        font-weight: 600;
-        text-align: left;
-        padding: 4px 24px;
-        margin-top: 0;
-    }
-
-    .header {
-        width: 100%;
-        min-width: 1000px;
-        margin: auto;
-        padding: 0;
-    }
+    @import "../../style/public.css";
 
     .autList{
         min-width: 300px;

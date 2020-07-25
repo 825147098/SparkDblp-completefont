@@ -354,34 +354,11 @@
 </script>
 
 <style scoped>
-    .infoMatch {
-        margin: 1ex 0 1ex 24px;
-        padding: 0;
-        text-align: left;
-    }
-
-    .putList {
-        margin: 1ex 0 1ex;
-        padding: 0;
-    }
-
-    .putList > li {
-        text-decoration: none;
-        display: table;
-        margin: 0 0 1ex;
-        padding: 0;
-    }
+    @import "../../style/public.css";
 
     .year {
         font-size: small;
         font-weight: 800;
     }
 
-    .head-hide {
-        border-bottom: 2px #7d848a solid;
-        min-height: 27px;
-        padding: 0 16px 0 24px;
-        text-align: left;
-        margin: 20px 0 0 0;
-    }
 </style>

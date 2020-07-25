@@ -230,57 +230,8 @@
 </script>
 
 <style scoped>
-    .refine-by {
-        margin: 0 0 2ex;
-        font-size: smaller;
-        text-align: left;
-    }
+    @import "../../style/public.css";
 
-    .refine-by > p {
-        margin: 0;
-        padding: 0;
-    }
 
-    .refine-by > ul {
-        margin: 0;
-        padding: 0;
-    }
-
-    .refine-by > ul > li {
-        display: block;
-        padding: 2px 4px 0 0;
-        margin: 0;
-        text-decoration: none;
-        word-wrap: break-word;
-        word-break: break-all;
-    }
-
-    .refine-by > ul > li > .icon {
-        position: absolute;
-        margin: 3px -15px;
-    }
-
-    .authorButton {
-        display: inline;
-        overflow: visible;
-        text-align: left;
-        color: #7d848a;
-        text-decoration: none;
-        border: none;
-        cursor: pointer;
-        font-family: 'Open Sans', sans-serif;
-        font-size: 1em;
-        font-weight: 400;
-        background-color: transparent;
-        margin: 0px;
-        padding: 0px;
-        white-space: pre-line;
-    }
-
-    .buttonSelect {
-        font-weight: 700;
-        font-style: italic;
-        padding-right: 4px
-    }
 </style>
 

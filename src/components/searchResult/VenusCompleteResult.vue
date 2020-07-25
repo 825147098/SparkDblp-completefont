@@ -185,35 +185,8 @@
 </script>
 
 <style scoped>
-    .infoMatch {
-        margin: 1ex 0 1ex 24px;
-        padding: 0;
-        text-align: left;
-    }
+    @import "../../style/public.css";
 
-    .putList {
-        margin: 3ex 0 1ex;
-        padding: 0;
-    }
-
-    .putList > li {
-        text-decoration: none;
-        display: table;
-        margin: 0 0 1ex;
-        padding: 0;
-    }
-
-    .breadClass {
-        padding: 0 20px;
-    }
-
-    .head-hide {
-        border-bottom: 2px #7d848a solid;
-        min-height: 27px;
-        padding: 0 16px 0 24px;
-        text-align: left;
-        margin: 20px 0 0 0;
-    }
     .head-hide>h2{
         display: inline;
         font-size: 1em;
