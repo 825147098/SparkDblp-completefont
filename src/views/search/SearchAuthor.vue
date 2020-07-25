@@ -30,6 +30,7 @@
             //监视标记,手风琴标记为string格式
 
             '$store.state.inputfalg': function () {
+                // console.log(this.$store.state.radioLabel)
                 if(this.$store.state.radioLabel === 1){
                     this.activeShow = true;
                 }
@@ -39,7 +40,7 @@
         mounted() {
             if (this.$route.query.autName != null) {
                 // this.searchName = this.$route.query.autName;
-                console.log(this.activeShow)
+                // console.log(this.activeShow)
                 this.activeShow = true;
             }
         },
@@ -54,24 +55,6 @@
 </script>
 
 <style scoped>
-    .headline {
-        position: relative;
-        clear: both;
-        background-color: #C1CBD7;
-        font-size: x-large;
-        color: #7d848a;
-        font-weight: 600;
-        text-align: left;
-        padding: 4px 24px;
-        margin: auto;
-    }
-
-    .header {
-        width: 100%;
-        min-width: 1000px;
-        margin: auto;
-        padding: 0;
-    }
-
+    @import "../../style/public.css";
 
 </style>

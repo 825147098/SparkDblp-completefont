@@ -982,51 +982,15 @@
 </script>
 
 <style scoped>
-    .infoMatch {
-        margin: 1ex 0 1ex 24px;
-        padding: 0;
-        text-align: left;
-    }
+    @import "../../style/public.css";
 
-    .putList {
-        margin: 1ex 0 1ex;
-        padding: 0;
-    }
 
-    .putList > li {
-        text-decoration: none;
-        display: table;
-        margin: 0 0 1ex;
-        padding: 0;
-    }
-
-    putList > li.year {
+    .putList > li.year {
         font-size: small;
         font-weight: 800;
     }
 
-    .asideCon {
-        float: right;
-        display: inline;
-        background: #ffffff;
-        margin: 0 20px 0 0;
-    }
 
-    .refine-by {
-        margin: 0 0 2ex;
-        font-size: smaller;
-        text-align: left;
-    }
-
-    .refine-by > p {
-        margin: 0;
-        padding: 0;
-    }
-
-    .refine-by > ul {
-        margin: 0;
-        padding: 0;
-    }
 
     .refine-by > ul > li {
         display: block;
@@ -1034,33 +998,6 @@
         margin: 0;
         text-decoration: none;
         max-width: 250px;
-    }
-
-    .refine-by > ul > li > .icon {
-        position: absolute;
-        margin: 3px -15px;
-    }
-
-    .authorButton {
-        display: inline;
-        overflow: visible;
-        text-align: left;
-        color: #7d848a;
-        text-decoration: none;
-        border: none;
-        cursor: pointer;
-        font-family: 'Open Sans', sans-serif;
-        font-weight: 400;
-        background-color: transparent;
-        margin: 0;
-        padding: 0;
-        white-space: pre-line;
-    }
-
-    .buttonSelect {
-        font-weight: 700;
-        font-style: italic;
-        padding-right: 4px;
     }
 
     .checkBox {

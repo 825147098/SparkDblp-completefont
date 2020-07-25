@@ -294,50 +294,6 @@
 </script>
 
 <style scoped>
-    .breadClass {
-        padding: 0 20px;
-    }
+    @import "../../style/public.css";
 
-    .head-hide {
-        border-bottom: 2px #7d848a solid;
-        min-height: 27px;
-        padding: 0 16px 0 24px;
-        text-align: left;
-        margin: 20px 0 0 0;
-    }
-
-    .warning {
-        color: maroon;
-        font-style: italic;
-        text-align: left;
-        margin-left: 24px;
-    }
-
-    .body {
-        color: #505b62;
-        font-family: 'Open Sans', sans-serif;
-        font-size: 11pt;
-        font-weight: 400;
-        min-width: 768px;
-        margin: 0;
-        padding: 0;
-    }
-    .body>p{
-        text-align: left;
-        margin-left: 24px;
-    }
-    .body>ul>li{
-        text-align: left;
-    }
-
-    .body>ul>li>button>span>p{
-        margin: 0;
-    }
-    .mark{
-        display: inline;
-    }
-    .name {
-        color: #7d848a;
-        text-decoration: none;
-    }
 </style>

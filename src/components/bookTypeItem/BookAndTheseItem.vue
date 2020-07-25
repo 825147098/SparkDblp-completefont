@@ -10,7 +10,7 @@
             </el-tooltip>
         </div>
 <!--        链接按钮-->
-        <div class="articelButton">
+        <div class="linkButton">
             <el-dropdown style="padding: 0 10px" :underline="false"
                          v-if="bookData.ee != null">
                     <span>
@@ -199,10 +199,7 @@
 </script>
 
 <style scoped>
-    .box {
-        display: table-cell;
-        padding: 0 2px;
-    }
+    @import "../../style/public.css";
 
     .box > div {
         width: 12px;
@@ -211,28 +208,5 @@
         background-color: #f8c91f;
     }
 
-    .articelButton {
-        display: table-cell;
-    }
 
-    .title {
-        color: #666666;
-        font-weight: 700;
-    }
-
-    .name {
-        color: #7d848a;
-        text-decoration: none;
-    }
-
-    .data {
-        display: table-cell;
-        font: inherit;
-        padding: 0 2px;
-        max-width: 800px;
-        text-align: left;
-    }
-    .mark{
-        display: inline;
-    }
 </style>

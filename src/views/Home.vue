@@ -1,7 +1,7 @@
 <template>
     <el-container style="width: 1100px">
         <div>
-            {{silkMouse()}}
+<!--            {{silkMouse()}}-->
         </div>
     </el-container>
 </template>

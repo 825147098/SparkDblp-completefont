@@ -10,31 +10,42 @@
         <!--        </el-image>-->
         <div class="searchCon">
             <div style="justify-items: right">
-
-                <el-dropdown type="primary">
+                <el-dropdown type="primary" >
                     <el-button type="info">
-                        搜索模式<i class="el-icon-arrow-down el-icon--right"></i>
+                        {{drownArry[radio]}}<i class="el-icon-arrow-down el-icon--right"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item @click="changeRadioToCom">
-                            <router-link :to="{path:'/search/complete'}" tag="span">
-                                组合搜素
-                            </router-link>
+                        <el-dropdown-item>
+                            <div @click="changeRadioToCom">
+                                <router-link
+                                        :to="{path:'/search/complete'}" tag="span">
+                                    组合搜素
+                                </router-link>
+                            </div>
                         </el-dropdown-item>
-                        <el-dropdown-item @click="changeRadioToAut">
-                            <router-link :to="{path:'/search/author'}" tag="span">
-                                作者搜索
-                            </router-link>
+                        <el-dropdown-item>
+                            <div @click="changeRadioToAut">
+                                <router-link
+                                        :to="{path:'/search/author'}" tag="span">
+                                    作者搜索
+                                </router-link>
+                            </div>
                         </el-dropdown-item>
-                        <el-dropdown-item @click="changeRadioToVen">
-                            <router-link :to="{path:'/search/venue'}" tag="span">
-                                会议搜索
-                            </router-link>
+                        <el-dropdown-item>
+                            <div @click="changeRadioToVen">
+                                <router-link
+                                             :to="{path:'/search/venue'}" tag="span">
+                                    会议搜索
+                                </router-link>
+                            </div>
                         </el-dropdown-item>
-                        <el-dropdown-item @click="changeRadioToPub">
-                            <router-link :to="{path:'/search/publicat'}" tag="span">
-                                出版物搜索
-                            </router-link>
+                        <el-dropdown-item>
+                            <div @click="changeRadioToPub">
+                                <router-link
+                                             :to="{path:'/search/publicat'}" tag="span">
+                                    出版物搜索
+                                </router-link>
+                            </div>
                         </el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -70,9 +81,9 @@
                      </el-menu>-->
                 <!--            搜索栏-->
                 <el-input
-                          class="searchInput"
-                          @keyup.enter.native="putInputData"
-                          v-model="inputData" clearable>
+                        class="searchInput"
+                        @keyup.enter.native="putInputData"
+                        v-model="inputData" clearable>
                 </el-input>
                 <el-button
                         @click="putInputData">
@@ -97,8 +108,9 @@
         data: function () {
             return {
                 url: title_image,
-                radio: 0,
+                radio: 4,
                 inputData: '',
+                drownArry:["组合搜素","作者搜素","会议搜素","出版物搜素","搜素模式"]
             }
         },
 
@@ -109,9 +121,9 @@
                     this.putInputData();
                 }
             },
-            "store.state.radioLabel": function () {
-                this.radio = this.$store.state.radioLabel
-            }
+            // "store.state.radioLabel": function () {
+            //     this.radio = this.$store.state.radioLabel
+            // }
         },
 
         methods: {
@@ -120,12 +132,13 @@
                 // if (this.radio == 0)
                 this.$store.commit("increment", {newInput: this.splitText(), newLabel: this.radio});
                 this.$store.commit("incrementInputData", {data: this.inputData});
-                // console.log(this.$store.state.serchObj.title)
+                // console.log(this.$store.state.inputfalg)
 
             },
             //设置搜索类型
             putRadioData() {
                 this.$store.commit("incrementRadio", {newLabel: this.radio})
+                // console.log(this.$store.state.radioLabel)
             },
             //选择组合搜索
             changeRadioToCom() {

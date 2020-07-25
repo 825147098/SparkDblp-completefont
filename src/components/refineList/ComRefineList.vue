@@ -50,11 +50,6 @@
 </script>
 
 <style scoped>
-    .asideCon {
-        float: right;
-        display: inline;
-        max-width: 250px;
-        background: #ffffff;
-        margin: 0;
-    }
+    @import "../../style/public.css";
+
 </style>
