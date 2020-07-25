@@ -13,7 +13,7 @@
                     <el-tooltip class="item"
                                 effect="dark"
                                 :content="item.type"
-                                placement="bottom-end">
+                                placement="right-end">
 
 
                         <el-button type="text"

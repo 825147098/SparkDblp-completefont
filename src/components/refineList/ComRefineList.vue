@@ -53,7 +53,7 @@
     .asideCon {
         float: right;
         display: inline;
-        max-width: 250px;
+        max-width: 280px;
         background: #ffffff;
         margin: 0;
     }

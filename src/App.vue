@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    {{silkMouse()}}
     <router-view/>
+<!--    {{silkMouse()}}-->
   </div>
 </template>
 <script>
