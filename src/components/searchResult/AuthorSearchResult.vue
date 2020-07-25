@@ -243,15 +243,17 @@
                 if((this.$store.state.radioLabel === 1  || !this.webPage)&& this.$store.state.serchObj.title != '' ){
                     this.searchName = this.$store.state.serchObj.title;
                     this.getAuthorData();
+                    console.log("a3")
                 }
             },
             //监控搜索标记
-            "$store.state.serchObj.conflag": function () {
-                if (this.$store.state.serchObj.conflag) {
-                    this.searchName = this.$store.state.serchObj.title;
-                    this.getAuthorData();
-                }
-            },
+            // "$store.state.serchObj.conflag": function () {
+            //     if (this.$store.state.serchObj.conflag) {
+            //         this.searchName = this.$store.state.serchObj.title;
+            //         this.getAuthorData();
+            //         console.log("a2")
+            //     }
+            // },
             //通知组合搜索是否显示
             totalElements:function () {
                 if(this.totalElements > 0){
