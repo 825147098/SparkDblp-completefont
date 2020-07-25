@@ -73,3 +73,7 @@ el-collapse的title由于内部内容太多无法换行
     align-self: flex-end;
     
 ```
+
+el-menu以及el-dropdown在item上直接添加@click以及内部标签添加无响应
+
+    对item下的内容包裹一层div添加@click即可
