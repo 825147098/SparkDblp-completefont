@@ -199,6 +199,7 @@
 </script>
 
 <style scoped>
+    @import "../../style/public.css";
     .box {
         display: table-cell;
         padding: 0 2px;
