@@ -8,7 +8,7 @@ import echarts from 'echarts'
 // 挂载到vue原型
 Vue.prototype.$echarts = echarts;
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 new Vue({
   router,

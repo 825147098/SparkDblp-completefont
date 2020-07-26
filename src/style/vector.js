@@ -98,8 +98,7 @@ CAV.Vector3 = {
         a[1] = b[1] * c[1];
         a[2] = b[2] * c[2];
         return this
-    }, multiplyScalar: function (a,
-                                 b) {
+    }, multiplyScalar: function (a, b) {
         a[0] *= b;
         a[1] *= b;
         a[2] *= b;
@@ -344,7 +343,7 @@ CAV.Plane = function (a, b, c, d) {
         c.push([]);
         for (b = 0; b <= this.slices; b++) d = new CAV.Vertex(e + a * this.segmentWidth, f - b * this.sliceHeight), c[a].push(d), this.vertices.push(d)
     }
-    let t0,t1;
+    let t0, t1;
     for (a = 0; a < this.segments; a++)
         for (b = 0; b < this.slices; b++)
             // eslint-disable-next-line no-undef
@@ -434,10 +433,11 @@ CAV.CanvasRenderer.prototype.render = function (a) {
     }
     return this
 };
+
 export default {
-    Victor(container, anitOut) {
-        if (!document.createElement("canvas").getContext) {
-            var t = {
+    method: {
+        Victor(container, anitOut) {
+            let t = {
                 width: 1.5,
                 height: 1.5,
                 depth: 10,
@@ -450,7 +450,7 @@ export default {
                 diffuse: "#FFFFFF",
                 speed: 0.0002
             };
-            var G = {
+            let G = {
                 count: 2,
                 xyScalar: 1,
                 zOffset: 100,
@@ -469,21 +469,21 @@ export default {
                 step: CAV.Vector3.create(Math.randomInRange(0.2, 1), Math.randomInRange(0.2, 1), Math.randomInRange(0.2, 1))
             };
 
-            var m = "canvas";
-            // var E = "svg";
-            var x = {
+            let m = "canvas";
+            // let E = "svg";
+            let x = {
                 renderer: m
             };
-            var i, n = Date.now();
-            var L = CAV.Vector3.create();
-            var k = CAV.Vector3.create();
-            var z = document.getElementById(container || "container");
-            var w = document.getElementById(anitOut || "anitOut");
-            var D, I, h, q, y;
-            var g;
-            // var r;
+            let i, n = Date.now();
+            let L = CAV.Vector3.create();
+            let k = CAV.Vector3.create();
+            let z = document.getElementById(container || "container");
+            let w = document.getElementById(anitOut || "anitOut");
+            let D, I, h, q, y;
+            let g;
 
-            // eslint-disable-next-line no-inner-declarations
+            // let r;
+
             function C() {
                 F();
                 p();
@@ -494,13 +494,12 @@ export default {
                 o()
             }
 
-            // eslint-disable-next-line no-inner-declarations
+
             function F() {
                 g = new CAV.CanvasRenderer();
                 H(x.renderer)
             }
 
-            // eslint-disable-next-line no-inner-declarations
             function H(N) {
                 if (D) {
                     w.removeChild(D.element)
@@ -514,12 +513,10 @@ export default {
                 w.appendChild(D.element)
             }
 
-            // eslint-disable-next-line no-inner-declarations
             function p() {
                 I = new CAV.Scene()
             }
 
-            // eslint-disable-next-line no-inner-declarations
             function s() {
                 I.remove(h);
                 D.clear();
@@ -527,7 +524,7 @@ export default {
                 y = new CAV.Material(t.ambient, t.diffuse);
                 h = new CAV.Mesh(q, y);
                 I.add(h);
-                var N, O;
+                let N, O;
                 for (N = q.vertices.length - 1; N >= 0; N--) {
                     O = q.vertices[N];
                     O.anchor = CAV.Vector3.clone(O.position);
@@ -536,9 +533,8 @@ export default {
                 }
             }
 
-            // eslint-disable-next-line no-inner-declarations
             function B() {
-                var O, N;
+                let O, N;
                 for (O = I.lights.length - 1; O >= 0; O--) {
                     N = I.lights[O];
                     I.remove(N)
@@ -556,14 +552,12 @@ export default {
                 }
             }
 
-            // eslint-disable-next-line no-inner-declarations
             function K(O, N) {
                 D.setSize(O, N);
                 CAV.Vector3.set(L, D.halfWidth, D.halfHeight);
                 s()
             }
 
-            // eslint-disable-next-line no-inner-declarations
             function o() {
                 i = Date.now() - n;
                 u();
@@ -571,7 +565,6 @@ export default {
                 requestAnimationFrame(o)
             }
 
-            // eslint-disable-next-line no-inner-declarations
             function u() {
                 var Q, P, O, R, T, V, U, S = t.depth / 2;
                 CAV.Vector3.copy(G.bounds, L);
@@ -603,23 +596,21 @@ export default {
                 q.dirty = true
             }
 
-            // eslint-disable-next-line no-inner-declarations
             function M() {
                 D.render(I)
             }
 
-            // eslint-disable-next-line no-inner-declarations,no-unused-vars
             function J(O) {
-                var Q, N, S = O;
+                let Q, N, S = O;
                 let l;
-                var P = function (T) {
+                let P = function (T) {
                     for (Q = 0, l = I.lights.length; Q < l; Q++) {
                         N = I.lights[Q];
                         N.ambient.set(T);
                         N.ambientHex = N.ambient.format()
                     }
                 };
-                var R = function (T) {
+                let R = function (T) {
                     for (Q = 0, l = I.lights.length; Q < l; Q++) {
                         N = I.lights[Q];
                         N.diffuse.set(T);
@@ -634,27 +625,29 @@ export default {
                 }
             }
 
-            // eslint-disable-next-line no-inner-declarations
             function v() {
                 window.addEventListener("resize", j)
             }
 
-            // eslint-disable-next-line no-inner-declarations,no-unused-vars
-            function A(N) {
-                CAV.Vector3.set(k, N.x, D.height - N.y);
-                CAV.Vector3.subtract(k, L)
-            }
+            // function A(N) {
+            //     CAV.Vector3.set(k, N.x, D.height - N.y);
+            //     CAV.Vector3.subtract(k, L)
+            // }
 
-            // eslint-disable-next-line no-inner-declarations,no-unused-vars
-            function j(N) {
+            function j() {
                 K(z.offsetWidth, z.offsetHeight);
                 M()
             }
 
+            // if (
+            document.createElement("canvas").getContext
+            // ) {
             C();
+            console.log(document.createElement("canvas").getContext)
+            // }
+            return J;
         }
-        // eslint-disable-next-line no-undef
-        return J;
     }
 }
+
 

@@ -1,5 +1,5 @@
 <template>
-    <el-container style="width: 1100px">
+    <el-container style="background-color: #409EFF">
         <div>
             <!--            {{silkMouse()}}-->
             <div id="container">
@@ -18,30 +18,31 @@
 <script>
     // @ is an alias to /src
     import $ from "jquery";
-    import Victor from "../style/vector.js";
+    import vic from "../style/vector.js";
     export default {
         name: 'Home',
         components: {},
 
         methods: {
+
         },
 
-        mounted() {
+        created() {
             $(function(){
                 // 初始化 传入dom id
-                var victor = Victor.Victor("container", "output");
-                var theme = [
+                let victor = vic.Victor("container", "output");
+                let theme = [
                     ["#002c4a", "#005584"],
                     ["#35ac03", "#3f4303"],
                     ["#ac0908", "#cd5726"],
                     ["#18bbff", "#00486b"]
                 ]
-                $(".color li").each(function(index) {
-                    var color = theme[index];
-                    $(this).mouseover(function(){
-                        victor(color).set();
-                    })
-                });
+                // $(".color li").each(function() {
+                    let color = theme[0];
+                //     $(this).mouseover(function(){
+                        victor.set(color);
+                //     })
+                // });
             })
         },
 
@@ -50,7 +51,7 @@
 <style scoped>
     *{margin: 0;padding: 0;}
     #container {
-        position: absolute;
+        /*position: absolute;*/
         height: 100%;
         width: 100%;
     }

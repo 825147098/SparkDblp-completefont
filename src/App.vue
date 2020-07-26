@@ -1,16 +1,17 @@
 <template>
   <div id="app">
-    <router-view/>
-    <div>
-      {{mouse()}}
-    </div>
+    <router-view>
+        <div>
+            <!--      {{this.mouse()}}-->
+        </div>
+    </router-view>
   </div>
 </template>
 <script>
-  import silkMouse from "./style/silkMouse";
+  // import silkMouse from "./style/silkMouse";
   export default {
     methods: {
-      mouse:silkMouse.silkMouse()
+      // mouse:silkMouse.silkMouse()
     },
   }
 </script>
