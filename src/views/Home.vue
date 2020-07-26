@@ -17,7 +17,7 @@
 
 <script>
     // @ is an alias to /src
-    import $ from "../style/jquery.min.js";
+    import $ from "jquery";
     import Victor from "../style/vector.js";
     export default {
         name: 'Home',
