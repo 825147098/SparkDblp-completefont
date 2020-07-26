@@ -2,7 +2,7 @@
   <div id="app">
     <router-view>
         <div>
-            <!--      {{this.mouse()}}-->
+<!--            {{this.mouse()}}-->
         </div>
     </router-view>
   </div>

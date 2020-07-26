@@ -77,3 +77,7 @@ el-collapse的title由于内部内容太多无法换行
 el-menu以及el-dropdown在item上直接添加@click以及内部标签添加无响应
 
     对item下的内容包裹一层div添加@click即可
+引入外部js插件不显示原因
+
+    组件显示canvas根据内容动态获取高度所以要直接设置高度或者先将内部进行填充
+
