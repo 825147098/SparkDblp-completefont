@@ -62,13 +62,15 @@
                 </el-link>
             </span>
 <!--            出版物-->
-            <span class="name">,{{editorData.publisher._VALUE}}</span>
+            <span class="name" v-if="editorData.publisher != null">
+                ,{{editorData.publisher._VALUE}}
+            </span>
             <span class="name">&nbsp;{{editorData.year}}</span>
 <!--            ISBN-->
             <span class="name" v-if="editorData.isbn != null">
                 ,ISBN
-                <span v-for="item in editorData.isbn" :key="item._VALUE">
-                    {{item._VALUE}}&nbsp;
+                <span v-for="item in editorData.isbn" :key="changIsbn(item)">
+                    {{changIsbn(item)}}
                 </span>
             </span>
             <span  v-if="editorData.series != null">
@@ -180,9 +182,16 @@
                     let re = new RegExp(str, "gim")
                     return val.replace(re, "<mark style='background-color: #fff8c6'>" + or + "</mark>")
                 }
-
-
             },
+
+            changIsbn(val){
+                if(typeof (val) == 'string') {
+                    let data = val.split("\"");
+                    return data[3];
+                } else {
+                    return val._VALUE
+                }
+            }
         },
 
         props: [
@@ -196,7 +205,7 @@
         mounted() {
             if (this.innerData != null)
                 this.editorData = this.innerData;
-            // console.log(this.innerData.isbn)
+            console.log(this.innerData)
         }
     }
 </script>

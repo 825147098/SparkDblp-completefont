@@ -98,6 +98,7 @@ export default {
             random_lines.push({
                 x: x,
                 y: y,
+
                 xa: xa,
                 ya: ya,
                 max: 6000 //沾附距离
