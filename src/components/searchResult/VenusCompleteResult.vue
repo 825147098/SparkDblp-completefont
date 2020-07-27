@@ -164,22 +164,33 @@
             },
         },
         //传入数据
-        props:["cross","texttitle"],
 
         watch:{
             //数据更新
-            cross:function () {
-                this.crossref = this.cross;
-                this.title = this.texttitle;
-                this.getVenPubData()
-            },
+            // cross:function () {
+            //     this.crossref = this.cross;
+            //     this.title = this.texttitle;
+            //     console.log(this.crossref)
+            //     this.getVenPubData()
+            // },
+            '$route.query.cross':function () {
+                if(this.$route.query.cross != this.crossref){
+                    this.title = this.$route.query.venName;
+                    this.crossref = this.$route.query.cross;
+                    console.log(this.$route.query.cross + " +" +this.crossref)
+                    this.getVenPubData()
+                }
+            }
 
         },
 
         created() {
-            this.crossref = this.cross;
-            this.title = this.texttitle;
-            this.getVenPubData()
+            if (this.$route.query.venName != null) {
+                this.title = this.$route.query.venName;
+                this.crossref = this.$route.query.cross;
+                this.getVenPubData()
+            }
+
         }
     }
 </script>

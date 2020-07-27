@@ -1,10 +1,9 @@
 <template>
   <div id="app">
-    <router-view>
-        <div>
-            {{mouse()}}
-        </div>
-    </router-view>
+    <router-view/>
+      <div style="z-index: 10">
+          {{mouse()}}
+      </div>
   </div>
 </template>
 <script>

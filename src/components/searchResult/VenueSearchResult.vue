@@ -41,7 +41,8 @@
                                     </template>
                                     <!--                                    详细列表-->
                                     <ul class="bodyText">
-                                        <li v-for="titles in luckly.venueArr" :key="titles.title + titles.booktitle">
+                                        <li v-for="titles in luckly.venueArr"
+                                            :key="titles.title + titles.booktitle + titles._key">
                                             <router-link
                                                     class="name"
                                                     :to="{path:'/resVen',query: {venName:titles.title,cross:titles._key,book:titles.booktitle}}">
@@ -75,7 +76,8 @@
                                     </template>
                                     <ul class="bodyText">
                                         <!--                                        完整清单-->
-                                        <li v-for="titles in venue.venueArr" :key="titles.title + titles.booktitle">
+                                        <li v-for="titles in venue.venueArr"
+                                            :key="titles.title + titles.booktitle + titles._key">
                                             <router-link
                                                     class="name"
                                                     :to="{path:'/resVen',query: {venName:titles.title,cross:titles._key}}">
@@ -123,7 +125,8 @@
                                     </template>
                                     <!--                                    会议下的具体会议-->
                                     <ul class="bodyText">
-                                        <li v-for="titles in luckly.venueArr" :key="titles.title + titles.booktitle">
+                                        <li v-for="titles in luckly.venueArr"
+                                            :key="titles.title + titles.booktitle + titles._key">
                                             <router-link
                                                     class="name"
                                                     :to="{path:'/resVen',query: {venName:titles.title,cross:titles._key}}">
@@ -167,7 +170,8 @@
                                         </div>
                                     </template>
                                     <ul class="bodyText">
-                                        <li v-for="titles in venue.venueArr" :key="titles.title + titles.booktitle">
+                                        <li v-for="titles in venue.venueArr"
+                                            :key="titles.title + titles.booktitle + titles._key">
                                             <router-link
                                                     class="name"
                                                     :to="{path:'/resVen',query: {venName:titles.title,cross:titles._key}}">
@@ -267,7 +271,7 @@
                     this.getCleanData();
                     this.venueList = this.venueTestList
                     // console.log(this.venueList[0].booktitles.toString())
-                    if (this.totalElements >= 20 )
+                    if (this.totalElements >= 20 || (this.totalElements > 6 && !this.webPage))
                         this.getLuckly();
                     if (this.totalElements > 300)
                         this.warnflag = true;
@@ -295,21 +299,35 @@
             //数据清洗
             getCleanData() {
                 let data = this.venueTestList;
+                let title = this.searchTitle.toLowerCase();
                 this.venueTestList = data.map(function (item) {
                     item.venue.sort(function (a, b) {
                         return b.year - a.year
                     });
                     let bookArr = [];
+                    let venArr = [];
                     for (let i = 0; i < item.venue.length; i++) {
                         if (bookArr.indexOf(item.venue[i].booktitle) === -1) {
-                            bookArr.push(item.venue[i].booktitle)
+                            let val = item.venue[i].booktitle.toLowerCase()
+                            if (val.indexOf(title) > -1){
+                                bookArr.push(item.venue[i].booktitle)
+                                venArr.push(item.venue[i]);
+                            }
+                        }
+                        let val = item.venue[i].title.toLowerCase();
+                        if(val.indexOf(title) > -1){
+                            if(bookArr.indexOf(item.venue[i].booktitle)  === -1){
+                                bookArr.push(item.venue[i].booktitle)
+                                venArr.push(item.venue[i]);
+                            }
                         }
                     }
+
 
                     return {
                         year: item.venue[0].year,
                         booktitles: bookArr,
-                        venueArr: item.venue,
+                        venueArr: venArr,
                         flag: item.prefix2
                     }
                 })
@@ -359,8 +377,9 @@
             // },
             // 碎片标记
             "$store.state.serchObj.conflag": function () {
-                if (this.$store.state.serchObj.conflag ) {
-                    this.searchName = this.$store.state.serchObj.title;
+                if (this.$store.state.serchObj.conflag) {
+                    this.searchTitle = this.$store.state.serchObj.title;
+                    // console.log(this.$store.state.serchObj.title)
                     this.getVenueData();
                     // console.log("v2")
                 }

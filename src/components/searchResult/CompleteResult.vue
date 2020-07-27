@@ -77,14 +77,19 @@
     import JournalItem from "../bookTypeItem/JournalItem";
     import ReferenceWorkItem from "../bookTypeItem/ReferenceWorkItem";
     import WithdrawnItem from "../bookTypeItem/WithdrawnItem";
-    // import PartInBookOrCollItem from "./bookTypeItem/PartInBookOrCollItem";
+    import PartInBookOrCollItem from "../bookTypeItem/PartInBookOrCollItem";
+
     export default {
         name: "CompleteResult",
         components: {
             WithdrawnItem,
             ReferenceWorkItem,
-            // PartInBookOrCollItem,
-            JournalItem, InformalPubItem, EditorShipItem, ConfAndWorkItem, BookAndTheseItem
+            PartInBookOrCollItem,
+            JournalItem,
+            InformalPubItem,
+            EditorShipItem,
+            ConfAndWorkItem,
+            BookAndTheseItem
         },
         data: function () {
             return {

@@ -186,7 +186,7 @@
                 }).then(res => {
                     this.authorList = res.data._embedded.authorses;
                     this.totalElements = res.data.page.totalElements;
-                    if(this.totalElements >= 20 )
+                    if(this.totalElements >= 20 || (this.totalElements > 6 && !this.webPage))
                         this.getLuckly();
                     if(this.totalElements > 300)
                         this.warnflag = true;
