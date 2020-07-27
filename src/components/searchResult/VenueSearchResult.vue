@@ -267,7 +267,7 @@
                     this.getCleanData();
                     this.venueList = this.venueTestList
                     // console.log(this.venueList[0].booktitles.toString())
-                    if (this.totalElements >= 20 || !this.webPage)
+                    if (this.totalElements >= 20 )
                         this.getLuckly();
                     if (this.totalElements > 300)
                         this.warnflag = true;
@@ -362,7 +362,7 @@
                 if (this.$store.state.serchObj.conflag ) {
                     this.searchName = this.$store.state.serchObj.title;
                     this.getVenueData();
-                    console.log("v2")
+                    // console.log("v2")
                 }
             },
 
@@ -385,7 +385,7 @@
             }
             if (this.activeShow) {
                 this.getVenueData();
-                console.log(1)
+                // console.log(1)
             }
         }
         ,

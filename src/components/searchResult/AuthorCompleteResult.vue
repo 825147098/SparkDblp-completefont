@@ -263,7 +263,6 @@
     import EditorShipItem from "../bookTypeItem/EditorShipItem";
     import InformalPubItem from "../bookTypeItem/InformalPubItem";
     import JournalItem from "../bookTypeItem/JournalItem";
-    import testData from "../../testData";
     import PartInBookOrCollItem from "../bookTypeItem/PartInBookOrCollItem";
     import ReferenceWorkItem from "../bookTypeItem/ReferenceWorkItem";
     import WithdrawnItem from "../bookTypeItem/WithdrawnItem";
@@ -356,7 +355,6 @@
                     }
                 }).then(res => {
                     this.waitList = res.data._embedded.onlyDocs;
-                // this.waitList = testData.data().test
                 this.filterList = this.waitList;
                 this.pageDetail = res.data.page;
                 // console.log(this.waitList)
@@ -481,7 +479,7 @@
                         }
                     }
                 }
-                let sort = testData.group_signal(arr, "_VALUE");
+                let sort = this.filterList.group_signal(arr, "_VALUE");
                 let arrlist = [];
 
                 for (let item in sort) {
@@ -583,7 +581,7 @@
                         arr.push({_VALUE: data[i].booktitle});
                     }
                 }
-                let sort = testData.group_signal(arr, "_VALUE");
+                let sort = this.filterList.group_signal(arr, "_VALUE");
                 let arrlist = [];
 
                 for (let item in sort) {

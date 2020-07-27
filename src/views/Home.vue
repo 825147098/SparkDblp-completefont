@@ -6,14 +6,17 @@
             <div class="homeInputGroup">
                 <el-input
                         class="homeInput"
+                        @keyup.enter.native="putInputData"
                         v-model="inputData" clearable>
                 </el-input>
                 <el-button
                         class="homeButton"
+                        @click="putInputData"
                 >
                     搜索
                 </el-button>
             </div>
+            <RuleCom class="rule"></RuleCom>
         </div>
     </el-container>
 </template>
@@ -23,16 +26,101 @@
     import $ from "jquery";
     import "../style/polygonizr";
     import MainPageMenu from "../components/MainPageMenu";
-    // import silkMouse from "../style/silkMouse";
+    import RuleCom from "../components/RuleCom";
+
 
     export default {
         name: 'Home',
-        components: {MainPageMenu},
+        components: {RuleCom, MainPageMenu},
 
         data: function () {
             return {
                 inputData: '',
             }
+        },
+
+        methods: {
+            //设置搜索条件
+            putInputData() {
+                // if (this.radio == 0)
+                this.$store.commit("increment", {newInput: this.splitText(), newLabel: 0});
+                this.$store.commit("incrementInputData", {data: this.inputData});
+
+                this.changePage()
+
+            },
+
+            splitText() {
+                let data = this.inputData.split("&");
+                let len = data.length;
+                for (let i = 0; i < len; i++) {
+                    let temp = data[i].toString();
+                    data[i] = temp.split(":");
+                }
+
+                let title = '';
+                let year = '';
+                let venue = '';
+                let author = [];
+                let type = '';
+                let titleFlag = false;
+
+
+                for (let i = 0; i < data.length; i++) {
+                    switch (data[i].length) {
+                        case 1:
+                            if (data[i][0] != ' ') {
+                                if (!titleFlag) {
+                                    titleFlag = true;
+                                    title = data[i][0]
+                                } else {
+                                    title += ' ' + data[i][0];
+                                }
+                            }
+                            break;
+                        default:
+                            if (data[i][0] == "year") {
+                                let yearData = data[i][1].split("..");
+                                if (yearData.length > 1) {
+                                    let starYear = Math.min(yearData[0], yearData[1]);
+                                    let endYear = Math.max(yearData[0], yearData[1]);
+                                    year = starYear;
+                                    for (let j = starYear + 1; j <= endYear; j++) {
+                                        year += ',' + j;
+                                    }
+                                } else {
+                                    year = yearData[0];
+                                }
+                            } else if (data[i][0] == "author") {
+                                let authorItem = data[i][1].split(",")
+                                for (let j = 0; j < authorItem.length; j++) {
+                                    author.push(authorItem[j])
+                                }
+                            } else if (data[i][0] == "venue") {
+                                venue = data[i][1];
+                            } else if (data[i][0] == "type") {
+                                type = data[i][1];
+                            } else {
+                                break;
+                            }
+                            break;
+                    }
+                }
+                // console.log(author)
+                return {
+                    title: title,
+                    author: author,
+                    year: year,
+                    venue: venue,
+                    type: type
+                }
+            },
+
+            changePage() {
+                this.$router.push({
+                    path: '/search/complete',
+                })
+            },
         },
 
         mounted() {
@@ -45,7 +133,7 @@
     @import "../style/normalize.css";
 
     #site-landing {
-        height: 985px;
+        height: calc(100vh);
         width: 100%;
         /*background-image: radial-gradient(circle 248px at center, #16d9e3 0%, #30c7ec 47%, #46aef7 100%);*/
         background-color: #409EFF;
@@ -103,9 +191,21 @@
         display: inline-block;
         zoom: 1;
         background: 0 0;
-        padding: 300px 0 0 0;
+        padding: 280px 0 0 0;
         vertical-align: top;
         width: 100%;
         justify-content: center;
+        z-index: 5;
+    }
+
+    .rule {
+        font-size: 16px;
+        text-align: left;
+        color: whitesmoke;
+        position: fixed;
+        padding: 360px 0 0 calc(50vw - 320px);
+        justify-content: center;
+        width: 750px;
+        height: 350px;
     }
 </style>

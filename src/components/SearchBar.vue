@@ -116,14 +116,16 @@
 
         watch: {
             "$store.state.inputfalg": function () {
+                this.concatText();
                 if (this.$store.state.inputfalg) {
-                    this.concatText();
                     this.putInputData();
                 }
             },
-            // "store.state.radioLabel": function () {
-            //     this.radio = this.$store.state.radioLabel
-            // }
+            "$store.state.inputData": function () {
+                if(this.$store.state.inputData != null){
+                    this.concatText();
+                }
+            }
         },
 
         methods: {

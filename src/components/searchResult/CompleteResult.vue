@@ -114,6 +114,7 @@
             getPubData() {
                 this.loadFlag = true;
                 this.dataFlag = false;
+                // this.setParams()
                 axios.get(this.$store.state.host + "/onlyDocs/search/findAllByText", {
                     params: {
                         title: this.title,
@@ -122,7 +123,6 @@
                 }).then(res => {
                     this.waitList = res.data._embedded.onlyDocs;
                     this.pageDetail = res.data.page;
-                    // this.waitList = testData.data().test
 
                     this.changeType();
                     this.pubSort()
@@ -147,8 +147,7 @@
                 }).then(res => {
                     this.waitList = res.data;
                     this.pageDetail["totalElements"] = this.waitList.length;
-                    console.log(this.waitList)
-                    // this.waitList = testData.data().test
+                    // console.log(this.waitList)
 
                     this.changeType();
                     this.pubSort()
@@ -283,25 +282,50 @@
             //设置过滤参数
             setParams() {
                 this.paramsObj = {};
-                if (this.$store.state.serchObj.title != '') {
-                    this.paramsObj["title"] = this.$store.state.serchObj.title;
-                }
-                if (this.$store.state.serchObj.year != '') {
-                    this.paramsObj["year"] = this.$store.state.serchObj.year;
-                }
-                if (this.$store.state.serchObj.venue != '') {
-                    this.paramsObj["venue"] = this.$store.state.serchObj.venue;
-                }
-                if (this.$store.state.serchObj.authors.length > 0) {
-                    let len = this.$store.state.serchObj.authors.length;
-                    let author = this.$store.state.serchObj.authors[0];
-                    for (let i = 1; i < len; i++) {
-                        author += ',' + this.$store.state.serchObj.authors[i];
+                // if(this.$route.query.title != null){
+                //     // console.log(this.$route.query.title)
+                //     if (this.$route.query.title != '') {
+                //         this.paramsObj["title"] = this.$route.query.title;
+                //     }
+                //     if (this.$route.query.year != '') {
+                //         this.paramsObj["year"] = this.$route.query.year;
+                //     }
+                //     if (this.$route.query.venue != '') {
+                //         this.paramsObj["venue"] = this.$route.query.venue;
+                //     }
+                //     if (this.$route.query.author != '') {
+                //         let len = this.$route.query.authors.length;
+                //         let author = this.$route.query.authors[0];
+                //         for (let i = 1; i < len; i++) {
+                //             author += ',' + this.$route.query.authors[i];
+                //         }
+                //         this.paramsObj["author"] = author;
+                //     }
+                //     if (this.$route.query.type != '') {
+                //         this.paramsObj["type"] = this.$route.query.type;
+                //     }
+                // } else
+                {
+                    if (this.$store.state.serchObj.title != '') {
+                        this.paramsObj["title"] = this.$store.state.serchObj.title;
                     }
-                    this.paramsObj["author"] = author;
-                }
-                if (this.$store.state.serchObj.type != '') {
-                    this.paramsObj["type"] = this.$store.state.serchObj.type;
+                    if (this.$store.state.serchObj.year != '') {
+                        this.paramsObj["year"] = this.$store.state.serchObj.year;
+                    }
+                    if (this.$store.state.serchObj.venue != '') {
+                        this.paramsObj["venue"] = this.$store.state.serchObj.venue;
+                    }
+                    if (this.$store.state.serchObj.authors.length > 0) {
+                        let len = this.$store.state.serchObj.authors.length;
+                        let author = this.$store.state.serchObj.authors[0];
+                        for (let i = 1; i < len; i++) {
+                            author += ',' + this.$store.state.serchObj.authors[i];
+                        }
+                        this.paramsObj["author"] = author;
+                    }
+                    if (this.$store.state.serchObj.type != '') {
+                        this.paramsObj["type"] = this.$store.state.serchObj.type;
+                    }
                 }
             },
             //标记检测是否含有筛选条件

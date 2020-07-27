@@ -40,18 +40,18 @@
 
         watch: {
             '$store.state.inputfalg': function () {
-                // console.log(this.$store.state)
-                if (this.$store.state.inputfalg && this.$store.state.radioLabel === 0) {
+                if ((this.$store.state.inputfalg || this.$store.state.serchObj.venflag) && this.$store.state.radioLabel === 0) {
+                    // console.log(2)
                     this.activeShow = true;
                     setTimeout(() => {
                         this.refineList = true;
-                    },1500)
+                    },1000)
                     setTimeout(() => {
-                        this.showAutList = true;
-                        // setTimeout(() => {
-                        //     this.showVenList = true
-                        // }, 1000)
+                        this.showVenList = true;
                     }, 1500)
+                    setTimeout(() => {
+                        this.showAutList = true
+                    }, 2000)
                 }
             },
 
