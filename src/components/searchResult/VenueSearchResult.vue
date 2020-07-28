@@ -276,6 +276,9 @@
                     if (this.totalElements > 300)
                         this.warnflag = true;
                     this.loadFlag = false;
+
+                    this.$store.commit("incrementCleanFlag", {flag: "conflag"})
+                    this.$store.commit("incrementCleanInputFlag");
                 }).catch(error => {
                     console.log(error);
                 })

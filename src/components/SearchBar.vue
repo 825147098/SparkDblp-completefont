@@ -139,7 +139,7 @@
                 // if (this.radio == 0)
                 this.$store.commit("increment", {newInput: this.splitText(), newLabel: this.radio});
                 this.$store.commit("incrementInputData", {data: this.inputData});
-                // console.log(this.$store.state.inputfalg)
+                console.log(this.$store.state.serchObj.conflag)
 
             },
             //设置搜索类型
