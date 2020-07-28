@@ -1,6 +1,6 @@
 <template>
     <el-container class="con">
-<!--        分辨图标-->
+        <!--        分辨图标-->
         <div class="box">
             <el-tooltip class="item"
                         effect="dark"
@@ -9,7 +9,7 @@
                 <div></div>
             </el-tooltip>
         </div>
-<!--        文章链接-->
+        <!--        文章链接-->
         <div class="linkButton">
             <el-dropdown style="padding: 0 10px" :underline="false"
                          v-if="jourData.ee != null">
@@ -33,7 +33,7 @@
             </el-tooltip>
         </div>
         <cite class="data">
-<!--            作者-->
+            <!--            作者-->
             <span v-if="jourData.author != null">
             <span v-for="authors in jourData.author" :key="authors._VALUE" class="name">
                 <router-link :to="{path:'/resAut',query:{autName:authors._VALUE}}"
@@ -56,15 +56,29 @@
                 </p>
             </span>
             <!--类型划分加链接-->
-            <span class="nameVolume name" v-show="showNameVolme">
-                <span class="name">
+<!--            <span class="nameVolume name" v-show="showNameVolme" v-if="jourData.prefix !=null">-->
+                <router-link
+                        :to="{path:'/resJou',query:{jourName:jourData.journal,prefix:jourData.prefix2,volume:parseInt(jourData.volume)}}"
+                        v-if="jourData.prefix2 != null" class="router-link-text">
+                    <span class="name">
                     <p class="mark" v-html="getMatch(jourData.journal)">
-                    {{jourData.journal}}
-                </p>
-                </span>
-                <span class="name">
-                    {{jourData.volume}}
-                </span>
+                        {{jourData.journal}}
+                    </p>
+                    </span>
+                    <span class="name">
+                        {{jourData.volume}}
+                    </span>
+                </router-link>
+<!--            </span>-->
+            <span class="nameVolume name" v-show="showNameVolme" v-else>
+                    <span class="name">
+                    <p class="mark" v-html="getMatch(jourData.journal)">
+                        {{jourData.journal}}
+                    </p>
+                    </span>
+                    <span class="name">
+                        {{jourData.volume}}
+                    </span>
             </span>
             <span class="name" v-if="jourData.pages != null">
                 {{jourData.pages}}
@@ -175,6 +189,7 @@
                 this.jourData = this.innerData;
             if (this.showFlag != null)
                 this.showNameVolme = this.showFlag;
+            // console.log(this.jourData)
 
         }
     }

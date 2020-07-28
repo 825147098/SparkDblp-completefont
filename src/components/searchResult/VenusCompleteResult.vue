@@ -1,25 +1,25 @@
 <template>
-    <el-main >
+    <el-main>
         <div>
-<!--            面包头-->
+            <!--            面包头-->
             <el-breadcrumb separator-class="el-icon-arrow-right" class="breadClass">
                 <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/search' }">搜索</el-breadcrumb-item>
                 <el-breadcrumb-item v-show="!loadFlag">{{publisher}}</el-breadcrumb-item>
             </el-breadcrumb>
-<!--            标题-->
+            <!--            标题-->
             <header class="head-hide">
                 <h2>
                     {{title}}
                 </h2>
             </header>
         </div>
-<!--        <el-collapse v-model="activeName" accordion @change="changeFalg">-->
-<!--            <el-collapse-item name="1">-->
+        <!--        <el-collapse v-model="activeName" accordion @change="changeFalg">-->
+        <!--            <el-collapse-item name="1">-->
         <ul v-show="dataFlag"
             class="putList"
         >
-<!--            文章列表-->
+            <!--            文章列表-->
             <li v-for="item in pubList" :key="item.title + item.type">
                 <BookAndTheseItem v-if="item.type == 'Book and Theses'"
                                   :inner-data="item"
@@ -47,10 +47,10 @@
                 </WithdrawnItem>
             </li>
         </ul>
-<!--        加载图标-->
+        <!--        加载图标-->
         <div v-show="loadFlag"
-            class="putList">
-            <div style="color: #409EFF">
+             class="putList">
+            <div class="resultLoad">
                 Loading
                 <el-icon class="el-icon-loading"
                          style="font-size: 20px "
@@ -69,12 +69,14 @@
     import JournalItem from "../bookTypeItem/JournalItem";
     import ReferenceWorkItem from "../bookTypeItem/ReferenceWorkItem";
     import WithdrawnItem from "../bookTypeItem/WithdrawnItem";
+    import PartInBookOrCollItem from "../bookTypeItem/PartInBookOrCollItem";
+
     export default {
         name: "VenusCompleteResult",
         components: {
             WithdrawnItem,
             ReferenceWorkItem,
-            // PartInBookOrCollItem,
+            PartInBookOrCollItem,
             JournalItem, InformalPubItem, EditorShipItem, ConfAndWorkItem, BookAndTheseItem
         },
         data: function () {
@@ -84,8 +86,8 @@
                 loadFlag: true,
                 dataFlag: false,
 
-                publisher:'',
-                title:'',
+                publisher: '',
+                title: '',
 
                 pubList: [],
                 waitList: [],
@@ -102,7 +104,7 @@
                 this.dataFlag = false;
                 axios.get(this.$store.state.host + "/onlyDocs/search/findAllByCrossref", {
                     params: {
-                        crossref:this.crossref
+                        crossref: this.crossref
                     }
                 }).then(res => {
                     this.waitList = res.data._embedded.onlyDocs;
@@ -165,7 +167,7 @@
         },
         //传入数据
 
-        watch:{
+        watch: {
             //数据更新
             // cross:function () {
             //     this.crossref = this.cross;
@@ -173,12 +175,22 @@
             //     console.log(this.crossref)
             //     this.getVenPubData()
             // },
-            '$route.query.cross':function () {
-                if(this.$route.query.cross != this.crossref){
+            '$route.query.cross': function () {
+                if (this.$route.query.cross != this.crossref) {
                     this.title = this.$route.query.venName;
                     this.crossref = this.$route.query.cross;
-                    console.log(this.$route.query.cross + " +" +this.crossref)
+                    // console.log(this.$route.query.cross + " +" + this.crossref)
                     this.getVenPubData()
+                } else {
+                    this.$alert('提示', '已在当前页面', {
+                        confirmButtonText: '确定',
+                        callback: action => {
+                            this.$message({
+                                type: 'info',
+                                message: `action: ${action}`
+                            });
+                        }
+                    });
                 }
             }
 
@@ -198,7 +210,7 @@
 <style scoped>
     @import "../../style/public.css";
 
-    .head-hide>h2{
+    .head-hide > h2 {
         display: inline;
         font-size: 1em;
         font-weight: 700;

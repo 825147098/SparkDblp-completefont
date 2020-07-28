@@ -125,6 +125,11 @@
                 if(this.$store.state.inputData != null){
                     this.concatText();
                 }
+            },
+            "$store.state.serchObj.title": function () {
+                if(this.$store.state.serchObj.title != ''){
+                    this.concatText();
+                }
             }
         },
 

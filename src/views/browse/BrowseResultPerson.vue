@@ -40,10 +40,10 @@
                 </el-button>
             </div>
             <header class="head-hide">
-                <h3 v-if="authorNameList[0]._VALUE != null">结果按照姓氏排序,从"{{authorNameList[0]._VALUE}}"开始</h3>
+                <h3 v-if="authorNameList[0]._VALUE != null && !loadFlag">结果按照姓氏排序,从"{{authorNameList[0]._VALUE}}"开始</h3>
             </header>
             <!--            三个列表显示作者-->
-            <div style="display: table-row">
+            <div style="display: table-row" v-show="!loadFlag">
                 <div class="nameList">
                     <ul v-show="showNameFlag0">
                         <li v-for="item in showNamelist0" :key="item._VALUE">
@@ -75,6 +75,15 @@
                     </ul>
                 </div>
             </div>
+            <div v-show="loadFlag"
+                 class="putList">
+                <div style="color: #409EFF">
+                    Loading
+                    <el-icon class="el-icon-loading"
+                             style="font-size: 20px "
+                    ></el-icon>
+                </div>
+            </div>
             <div class="buttonGrop">
                 <el-button type="text"
                            @click="getPreData"
@@ -103,6 +112,9 @@
                 namePrefix: 'A',//作者名参数
 
                 pageSize: 300,//页面作者数量
+
+
+                loadFlag:true,
 
                 authorNameList: [//列表格式
                     {
@@ -143,7 +155,6 @@
             remoteMethod(query) {
                 if (query !== '') {
                     this.loading = true;
-                    this.loading = false;
                     axios.get(this.$store.state.host + "/authorses/search/findBy_VALUEStartingWith", {
                         params: {
                             prefix: query,
@@ -151,11 +162,12 @@
                         }
                     }).then(res => {
                         this.nameList = res.data._embedded.authorses;
-                        console.log(res.data)
+                        // console.log(res.data)
                         this.nameOption = this.nameList.filter(item => {
                             return item._VALUE.substring(0, 1).toLocaleLowerCase();
                         });
-                        console.log(this.nameOption)
+                        this.loading = false;
+                        // console.log(this.nameOption)
                     }).catch(error => {
                         console.log(error);
                     })
@@ -163,6 +175,8 @@
             },
             //获取作者列表
             getAuthorData() {
+                this.loadFlag = true;
+                this.nextButton = true
                 axios.get(this.$store.state.host + "/authorses/search/findAllBy_VALUEContainingIgnoreCase", {
                     params: {
                         author: this.namePrefix,
@@ -172,6 +186,8 @@
                 }).then(res => {
                     this.authorNameList = res.data._embedded.authorses;
                     this.dividerList();
+                    this.loadFlag = false
+                    this.nextButton = false
                 }).catch(error => {
                     console.log(error);
                 })

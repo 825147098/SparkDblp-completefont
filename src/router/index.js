@@ -24,6 +24,12 @@ const routes = [
                 name: 'BroResPer',
                 component: () => import('../views/browse/BrowseResultPerson'),
 
+            },
+            {
+                path: '/brores/journals',
+                name: 'BroResJour',
+                component: () => import('../views/browse/BrowseResultJournal'),
+
             }
         ]
     },
@@ -68,6 +74,11 @@ const routes = [
         path: '/resVen',
         name:'resven',
         component: () => import('../views/Result/ResultVenue')
+    },
+    {
+        path: '/resJou',
+        name:'resjou',
+        component: () => import('../views/Result/ResultJournal')
     },
 ]
 

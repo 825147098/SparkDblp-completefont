@@ -4,20 +4,24 @@
     display: table-cell;
     padding: 0 2px;
 }
+
 /*链接图标*/
 .linkButton {
     display: table-cell;
 }
+
 /*文章名*/
 .title {
     color: #666666;
     font-weight: 700;
 }
+
 /*人名*/
 .name {
     color: #7d848a;
     text-decoration: none;
 }
+
 /*item数据总体div*/
 .data {
     display: table-cell;
@@ -26,8 +30,9 @@
     max-width: 800px;
     text-align: left;
 }
+
 /*标记inline*/
-.mark{
+.mark {
     display: inline;
 }
 
@@ -48,16 +53,19 @@
     font-size: smaller;
     text-align: left;
 }
+
 /*优化列表标签*/
 .refine-by > p {
     margin: 0;
     padding: 0;
 }
+
 /*优化列表列表样式*/
 .refine-by > ul {
     margin: 0;
     padding: 0;
 }
+
 /*优化列表元素*/
 .refine-by > ul > li {
     display: block;
@@ -67,11 +75,13 @@
     word-wrap: break-word;
     word-break: break-all;
 }
+
 /*优化列表元素图标*/
 .refine-by > ul > li > .icon {
     position: absolute;
     margin: 3px -15px;
 }
+
 /*列表按钮普通样式*/
 .authorButton {
     display: inline;
@@ -89,6 +99,7 @@
     padding: 0;
     white-space: pre-line;
 }
+
 /*列表按钮选中样式*/
 .buttonSelect {
     font-weight: 700;
@@ -103,10 +114,12 @@
     padding: 0;
     text-align: left;
 }
+
 /*面包头样式*/
 .breadClass {
     padding: 0 20px;
 }
+
 /*标题*/
 .head-hide {
     border-bottom: 2px #7d848a solid;
@@ -115,6 +128,7 @@
     text-align: left;
     margin: 20px 0 0 0;
 }
+
 /*author搜索结果警告*/
 .warning {
     color: maroon;
@@ -122,6 +136,7 @@
     text-align: left;
     margin-left: 24px;
 }
+
 /*搜索结果主体样式*/
 .body {
     color: #505b62;
@@ -132,17 +147,20 @@
     margin: 0;
     padding: 0;
 }
-.body>p{
+
+.body > p {
     text-align: left;
     margin-left: 24px;
 }
-.body>ul>li{
+
+.body > ul > li {
     text-align: left;
 }
 
-.body>ul>li>button>span>p{
+.body > ul > li > button > span > p {
     margin: 0;
 }
+
 /*搜素结果列表*/
 .putList {
     margin: 1ex 0 1ex;
@@ -155,6 +173,7 @@
     margin: 0 0 1ex;
     padding: 0;
 }
+
 /*搜索栏下方标题*/
 .headline {
     position: relative;
@@ -167,6 +186,7 @@
     padding: 4px 24px;
     margin-top: 0;
 }
+
 /*el-header样式*/
 .header {
     width: 100%;
@@ -174,17 +194,19 @@
     margin: auto;
     padding: 0;
 }
+
 /*搜索前缀栏*/
 .namePrefixCon {
     display: flex;
     margin: 0 0 0 0;
     padding: 0 0 20px 20px;
 }
+
 /*浏览页面名单列表*/
 .nameList {
     display: table-cell;
-    padding: 0 ;
-    margin: 0 ;
+    padding: 0;
+    margin: 0;
     min-width: 30%;
     text-align: left;
     color: #505b62;
@@ -192,9 +214,27 @@
     font-size: 11pt;
     font-weight: 400;
 }
+
 /*前后分页按钮组*/
 .buttonGrop {
     text-align: left;
     margin-left: 20px;
     color: #606266;
+}
+
+/*搜索折叠面板*/
+.broCollaps {
+    color: #7d848a;
+    text-align: left;
+    padding: 0 20px;
+}
+
+.broInput {
+    width: 200px;
+}
+
+.resultLoad {
+    color: #409EFF;
+    text-align: left;
+    margin: 20px 20px;
 }
