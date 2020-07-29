@@ -21,8 +21,10 @@
             <el-menu-item
                     route="/brores/journals"
                     index="browseJournals">期刊</el-menu-item>
-            <el-menu-item index="browseConferences">会议</el-menu-item>
-            <el-menu-item index="browseSeries">系列</el-menu-item>
+            <el-menu-item
+                    route="/brores/conf"
+                    index="browseConferences">会议</el-menu-item>
+<!--            <el-menu-item index="browseSeries">系列</el-menu-item>-->
         </el-submenu>
         <el-submenu index="search">
             <template slot="title">搜索</template>

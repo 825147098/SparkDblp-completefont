@@ -30,6 +30,12 @@ const routes = [
                 name: 'BroResJour',
                 component: () => import('../views/browse/BrowseResultJournal'),
 
+            },
+            {
+                path: '/brores/conf',
+                name: 'BroResConf',
+                component: () => import('../views/browse/BrowseResultConf'),
+
             }
         ]
     },
