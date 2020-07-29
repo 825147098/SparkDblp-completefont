@@ -31,11 +31,11 @@
                 </el-button>
             </div>
             <header class="head-hide">
-                <h3 v-if="confList[0].booktitles != null && !loadFlag">结果按照会议与研讨会前缀排序,从"{{confList[0].booktitles[0]}}"开始</h3>
+                <h3 v-if="confList[0].booktitles != null && !loadFlag && !errorFlag">结果按照会议与研讨会前缀排序,从"{{confList[0].booktitles[0]}}"开始</h3>
             </header>
             <!--            列表显示期刊-->
-            <div class="body">
-                <el-collapse v-model="activeNames" class="broCollaps" v-show="!loadFlag">
+            <div class="body" v-if="!errorFlag">
+                <el-collapse v-model="activeNames" class="broCollaps" v-if="!loadFlag">
                     <el-collapse-item v-for="(item,index) in confList" :key="item.prefix"
                                       :name="index">
                         <template slot="title">
@@ -74,6 +74,12 @@
                     ></el-icon>
                 </div>
             </div>
+            <div v-show="errorFlag && !loadFlag"
+                 class="putList">
+                <div>
+                    结果为空
+                </div>
+            </div>
             <div class="buttonGrop">
                 <el-button type="text"
                            @click="getPreData"
@@ -106,6 +112,8 @@
                 activeNames: ['-1'],
 
                 loadFlag: true,
+
+                pageDetail:null,
 
                 confList: [//列表格式
                     {
@@ -142,6 +150,8 @@
 
                 showNameFlag0: false,
 
+                errorFlag:false,
+
             }
         },
 
@@ -151,6 +161,7 @@
             //获取Conf列表
             getConfData() {
                 this.loadFlag = true;
+                this.nextButton = true;
                 axios.get(this.$store.state.host + "/venueGroups/search/findAllByBooktitleStartingWith", {
                     params: {
                         prefix: this.namePrefix,
@@ -159,30 +170,37 @@
                     }
                 }).then(res => {
                     this.confTestList = res.data._embedded.venueGroups;
-                    this.confTestList = this.confTestList.map(function (item) {
-                        item.venue.sort(function (a, b) {
-                            return b.year - a.year;
-                        })
+                    if(this.confTestList.length > 0){
+                        this.pageDetail = res.data.page;
+                        this.confTestList = this.confTestList.map(function (item) {
+                            item.venue.sort(function (a, b) {
+                                return b.year - a.year;
+                            })
 
-                        let bookArr = [];
-                        for (let i = 0; i < item.booktitle.length; i++) {
-                            if (bookArr.indexOf(item.booktitle[i]) === -1) {
-                                bookArr.push(item.booktitle[i]);
+                            let bookArr = [];
+                            for (let i = 0; i < item.booktitle.length; i++) {
+                                if (bookArr.indexOf(item.booktitle[i]) === -1) {
+                                    bookArr.push(item.booktitle[i]);
+                                }
                             }
-                        }
 
-                        bookArr.sort(function (a, b) {
-                            return a.length - b.length;
+                            bookArr.sort(function (a, b) {
+                                return a.length - b.length;
+                            })
+
+                            return {
+                                booktitles: bookArr,
+                                venueArr: item.venue,
+                                prefix: item.prefix2
+                            }
                         })
-
-                        return {
-                            booktitles: bookArr,
-                            venueArr: item.venue,
-                            prefix: item.prefix2
-                        }
-                    })
-                    console.log(this.confTestList)
-                    this.confList = this.confTestList
+                        // console.log(this.confTestList)
+                        this.confList = this.confTestList
+                        this.nextButton = false;
+                        this.errorFlag = false;
+                    } else {
+                        this.errorFlag = true;
+                    }
                     this.loadFlag = false;
                 }).catch(error => {
                     console.log(error);
@@ -218,10 +236,17 @@
                     this.preButton = true;
                 }
             },
-            // nameValue: function () {
-            //     this.namePrefix = this.nameValue;
-            //     this.getConfData();
-            // }
+            pageDetail:function () {
+                if(this.pageDetail != null){
+                    if(this.pageDetail.totalPages > this.nowPage + 1){
+                        this.nextButton = false
+                    } else {
+                        this.nextButton = true;
+                    }
+                } else {
+                    this.preButton = this.nextButton = true;
+                }
+            }
         },
 
         mounted() {

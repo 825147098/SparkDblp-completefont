@@ -31,11 +31,11 @@
                 </el-button>
             </div>
             <header class="head-hide">
-                <h3 v-if="journalList[0].journal != null && !loadFlag">结果按照期刊前缀排序,从"{{journalList[0].journal[0]}}"开始</h3>
+                <h3 v-if="journalList[0].journal != null && !loadFlag && !errorFlag">结果按照期刊前缀排序,从"{{journalList[0].journal[0]}}"开始</h3>
             </header>
             <!--            列表显示期刊-->
-                <div class="body">
-                    <el-collapse v-model="activeNames" class="broCollaps" v-show="!loadFlag">
+                <div class="body" v-if="!errorFlag">
+                    <el-collapse v-model="activeNames" class="broCollaps" v-if="!loadFlag">
                         <el-collapse-item v-for="(item,index) in journalList" :key="item.prefix"
                                           :name="index">
                             <template slot="title">
@@ -60,6 +60,12 @@
                     <el-icon class="el-icon-loading"
                              style="font-size: 20px "
                     ></el-icon>
+                </div>
+            </div>
+            <div v-show="errorFlag && !loadFlag"
+                class="putList">
+                <div>
+                    结果为空
                 </div>
             </div>
             <div class="buttonGrop">
@@ -94,6 +100,8 @@
                 activeNames: ['-1'],
 
                 loadFlag:true,
+
+                pageDetail:null,
 
                 journalList: [//列表格式
                     {
@@ -143,6 +151,8 @@
                 //显示列表和v-show值
                 showNamelist0: [],
 
+                errorFlag:false,
+
                 showNameFlag0: false,
 
             }
@@ -154,6 +164,7 @@
             //获取作者列表
             getJournalData() {
                 this.loadFlag = true;
+                this.nextButton = true;
                 axios.get(this.$store.state.host + "/journalIndexes/search/findAllByJournalContaining", {
                     params: {
                         journal: this.namePrefix,
@@ -162,17 +173,25 @@
                     }
                 }).then(res => {
                     this.journalTestList = res.data._embedded.journalIndexes;
-                    this.journalTestList = this.journalTestList.map(function (item) {
-                        item.volume.sort(function (a,b) {
-                            return b - a;
+                    if(this.journalTestList.length > 0){
+                        this.pageDetail = res.data.page;
+                        this.journalTestList = this.journalTestList.map(function (item) {
+                            item.volume.sort(function (a,b) {
+                                return b - a;
+                            })
+                            return {
+                                prefix:item.prefix2,
+                                volume:item.volume,
+                                journal:item.journal
+                            }
                         })
-                        return {
-                            prefix:item.prefix2,
-                            volume:item.volume,
-                            journal:item.journal
-                        }
-                    })
-                    this.journalList = this.journalTestList
+                        // console.log(this.journalTestList)
+                        this.journalList = this.journalTestList
+                        this.nextButton = false;
+                        this.errorFlag = false;
+                    } else {
+                        this.errorFlag = true;
+                    }
                     this.loadFlag = false;
                 }).catch(error => {
                     console.log(error);
@@ -208,10 +227,17 @@
                     this.preButton = true;
                 }
             },
-            // nameValue: function () {
-            //     this.namePrefix = this.nameValue;
-            //     this.getJournalData();
-            // }
+            pageDetail:function () {
+                if(this.pageDetail != null){
+                    if(this.pageDetail.totalPages > this.nowPage + 1){
+                        this.nextButton = false
+                    } else {
+                        this.nextButton = true;
+                    }
+                } else {
+                    this.preButton = this.nextButton = true;
+                }
+            }
         },
 
         mounted() {

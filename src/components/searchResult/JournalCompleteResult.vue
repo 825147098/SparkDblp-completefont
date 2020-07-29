@@ -9,48 +9,49 @@
             </el-breadcrumb>
         </div>
 <!--        有Number标记-->
-        <div v-show="dataFlag && this.numFlag"
-             v-for="num in numList" :key="num"
-        >
-            <!--            标题-->
-            <header class="head-hide">
-                <h3>
-                    Volumne {{volume}}, Number {{num}}
-                </h3>
-            </header>
-            <ul v-show="dataFlag"
-                class="putList"
+        <div v-if="dataFlag && this.numFlag">
+            <div v-for="num in numList" :key="num"
             >
-                <!--            文章列表-->
-                <li v-for="item in journalList[num]" :key="item.title + item.type">
-                    <BookAndTheseItem v-if="item.type == 'Book and Theses'"
-                                      :inner-data="item"
-                    ></BookAndTheseItem>
-                    <ConfAndWorkItem v-else-if="item.type == 'Conference and Workshop Papers'"
-                                     :inner-data="item"
-                    ></ConfAndWorkItem>
-                    <EditorShipItem v-else-if="item.type == 'Editorshop'"
-                                    :inner-data="item"
-                    ></EditorShipItem>
-                    <InformalPubItem v-else-if="item.type == 'Informal Publications'"
-                                     :inner-data="item"
-                    ></InformalPubItem>
-                    <PartInBookOrCollItem v-else-if="item.type == 'Parts in Books or Collections'"
+                <!--            标题-->
+                <header class="head-hide">
+                    <h3>
+                        Volumne {{volume}}, Number {{num}}
+                    </h3>
+                </header>
+                <ul v-show="dataFlag"
+                    class="putList"
+                >
+                    <!--            文章列表-->
+                    <li v-for="item in journalList[num]" :key="item.title + item.type">
+                        <BookAndTheseItem v-if="item.type == 'Book and Theses'"
                                           :inner-data="item"
-                    ></PartInBookOrCollItem>
-                    <JournalItem v-else-if="item.type == 'Journals Article'"
-                                 :inner-data="item"
-                    ></JournalItem>
-                    <ReferenceWorkItem v-else-if="item.type == 'Reference Works'"
+                        ></BookAndTheseItem>
+                        <ConfAndWorkItem v-else-if="item.type == 'Conference and Workshop Papers'"
+                                         :inner-data="item"
+                        ></ConfAndWorkItem>
+                        <EditorShipItem v-else-if="item.type == 'Editorshop'"
+                                        :inner-data="item"
+                        ></EditorShipItem>
+                        <InformalPubItem v-else-if="item.type == 'Informal Publications'"
+                                         :inner-data="item"
+                        ></InformalPubItem>
+                        <PartInBookOrCollItem v-else-if="item.type == 'Parts in Books or Collections'"
+                                              :inner-data="item"
+                        ></PartInBookOrCollItem>
+                        <JournalItem v-else-if="item.type == 'Journals Article'"
+                                     :inner-data="item"
+                        ></JournalItem>
+                        <ReferenceWorkItem v-else-if="item.type == 'Reference Works'"
+                                           :inner-data="item">
+                        </ReferenceWorkItem>
+                        <WithdrawnItem v-else-if="item.type == 'Withdrawn Item'"
                                        :inner-data="item">
-                    </ReferenceWorkItem>
-                    <WithdrawnItem v-else-if="item.type == 'Withdrawn Item'"
-                                   :inner-data="item">
-                    </WithdrawnItem>
-                </li>
-            </ul>
+                        </WithdrawnItem>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div v-show="dataFlag && !this.numFlag">
+        <div v-if="dataFlag && !this.numFlag">
             <header class="head-hide">
                 <h3>
                     Volumne {{volume}}

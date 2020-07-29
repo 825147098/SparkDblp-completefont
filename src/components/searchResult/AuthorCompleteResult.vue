@@ -479,7 +479,7 @@
                         }
                     }
                 }
-                let sort = this.filterList.group_signal(arr, "_VALUE");
+                let sort = this.group_signal(arr, "_VALUE");
                 let arrlist = [];
 
                 for (let item in sort) {
@@ -581,7 +581,7 @@
                         arr.push({_VALUE: data[i].booktitle});
                     }
                 }
-                let sort = this.filterList.group_signal(arr, "_VALUE");
+                let sort = this.group_signal(arr, "_VALUE");
                 let arrlist = [];
 
                 for (let item in sort) {
@@ -870,7 +870,7 @@
             getNode() {
                 let x = 400;
                 let y = 300;
-                let num = 360 / this.autTestList.length;
+                // let num = 360 / this.autTestList.length;
                 let cont = 0;
                 let aut = this.name
                 this.nodeList = this.autTestList.map(function (item) {
@@ -881,14 +881,11 @@
                             y: y,
                         }
                     } else {
-                        // x =
-                        // y = ;
                         cont ++;
-                        // console.log(x + ":" + y)
                         return {
                             name: item._VALUE,
-                            x: x + x * Math.cos(num * cont),
-                            y: y + y * Math.sin(num * cont),
+                            x: x + x * Math.cos(cont),
+                            y: y + y * Math.sin(cont),
                         }
                     }
                 })
