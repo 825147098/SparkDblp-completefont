@@ -253,17 +253,6 @@
         margin: 0;
     }
 
-    .nameList {
-        display: table-cell;
-        padding: 0;
-        margin: 0;
-        text-align: left;
-        color: #505b62;
-        font-family: 'Open Sans', sans-serif;
-        font-size: 11pt;
-        font-weight: 400;
-    }
-
     .router-link-text {
         text-decoration: none;
         color: #606266;
