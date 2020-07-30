@@ -7,7 +7,7 @@
         <el-main style="background-color:aliceblue;">
             <!--            搜索选择栏-->
             <div class="namePrefixCon">
-                <span>跳转到期刊前缀为&nbsp;：</span>
+                <span>跳转到会议与研讨会模糊匹配为&nbsp;：</span>
                 <el-input class="broInput"
                         v-model="nameValue"
                         size="mini"
@@ -31,7 +31,7 @@
                 </el-button>
             </div>
             <header class="head-hide">
-                <h3 v-if="journalList[0].journal != null && !loadFlag && !errorFlag">结果按照期刊前缀排序,从"{{journalList[0].journal[0]}}"开始</h3>
+                <h3 v-if="journalList[0].journal != null && !loadFlag && !errorFlag">结果按照期刊模糊匹配结果排序,从"{{journalList[0].journal[0]}}"开始</h3>
             </header>
             <!--            列表显示期刊-->
                 <div class="body" v-if="!errorFlag">
