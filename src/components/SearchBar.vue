@@ -138,13 +138,13 @@
             putInputData() {
                 // if (this.radio == 0)
                 let input = this.splitText()
-                if(input.title == ''){
+                if (input.title == '') {
                     this.$alert('搜索字段不包含title，请重新输入', '提示', {
                         confirmButtonText: '确定',
                         callback: action => {
                             this.$message({
                                 type: 'info',
-                                message: `action: ${ action }`
+                                message: `action: ${action}`
                             });
                         }
                     });
@@ -253,16 +253,16 @@
 
                 if (this.$store.state.serchObj.year != '') {
                     let year = this.$store.state.serchObj.year.split(',');
-                    if(year.length > 1){
+                    if (year.length > 1) {
                         year = year[0] + ".." + year[year.length - 1];
                     } else {
                         year = year[0];
                     }
                     // console.log(year)
                     if (text == '')
-                        text += "year:" + this.$store.state.serchObj.year;
+                        text += "year:" + year;
                     else
-                        text += "&year:" + this.$store.state.serchObj.year;
+                        text += "&year:" + year;
                 }
                 if (this.$store.state.serchObj.venue != '') {
                     if (text == '')
@@ -287,9 +287,9 @@
                     else
                         text += "&type:" + this.$store.state.serchObj.type;
                 }
-                // console.log(this.$store.state.serchObj)
-                this.inputData = text;
 
+                this.inputData = text;
+                // console.log(text)
             }
 
         },
