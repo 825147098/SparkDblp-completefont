@@ -34,6 +34,16 @@
             </el-menu-item>
             <!--                    <el-menu-item index="searchByID">搜索ID</el-menu-item>-->
         </el-submenu>
+<!--        <el-menu-item style="float: right">-->
+<!--            <template slot="title" style="float: left">-->
+<!--                背景特效开关-->
+<!--            </template>-->
+<!--            <el-switch-->
+<!--                    v-model="value"-->
+<!--                    active-color="#13ce66"-->
+<!--                    inactive-color="#ff4949">-->
+<!--            </el-switch>-->
+<!--        </el-menu-item>-->
         <!--                <el-submenu index="about">-->
         <!--                    <template slot="title">about</template>-->
         <!--                    <el-menu-item index="aboutFAQ">问题查找</el-menu-item>-->
@@ -46,35 +56,27 @@
         <!--                    &lt;!&ndash;//数据隐私政策&ndash;&gt;-->
         <!--                </el-submenu>-->
     </el-menu>
-    <!--
-    <el-main style="display: inline">
-        <el-dropdown>
-            <div class="el-dropdown-link">
-                下拉菜单<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
-            </div>
-            <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>黄金糕</el-dropdown-item>
-                <el-dropdown-item>狮子头</el-dropdown-item>
-                <el-dropdown-item>螺蛳粉</el-dropdown-item>
-                <el-dropdown-item disabled>双皮奶</el-dropdown-item>
-                <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
-            </el-dropdown-menu>
-        </el-dropdown>
-        <el-dropdown>
-            <span>首页</span>
-            <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>1</el-dropdown-item>
-                <el-dropdown-item>2</el-dropdown-item>
-            </el-dropdown-menu>
-        </el-dropdown>
-
-    </el-main>-->
-    <!--    </el-container>-->
 </template>
 
 <script>
     export default {
-        name: "MainPageMenu"
+        name: "MainPageMenu",
+
+        data:function () {
+            return{
+                value:true,
+            }
+        },
+
+        watch:{
+          value:function () {
+            if(this.value){
+                this.$store.commit("turnOnbackgroundEffect")
+            } else {
+                this.$store.commit("turnOffbackgroundEffect")
+            }
+          }
+        }
     }
 </script>
 

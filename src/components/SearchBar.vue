@@ -126,10 +126,16 @@
             //         this.concatText();
             //     }
             // },
-            "$store.state.serchObj.conflag": function () {
-                if (this.$store.state.serchObj.conflag) {
-                    this.concatText();
+            radio:function () {
+                if(this.radio != 4){
+                    this.concatText()
                 }
+            },
+
+            "$store.state.serchObj.conflag": function () {
+                // if (this.$store.state.serchObj.conflag) {
+                    this.concatText();
+                // }
             }
         },
 

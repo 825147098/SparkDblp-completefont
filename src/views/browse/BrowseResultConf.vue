@@ -7,7 +7,7 @@
         <el-main style="background-color:aliceblue;">
             <!--            搜索选择栏-->
             <div class="namePrefixCon">
-                <span>跳转到期刊模糊匹配为&nbsp;：</span>
+                <span>跳转到会议与研讨模糊匹配为&nbsp;：</span>
                 <el-input class="broInput"
                           v-model="nameValue"
                           size="mini"
@@ -33,7 +33,7 @@
             <header class="head-hide">
                 <h3 v-if="confList[0].booktitles != null && !loadFlag && !errorFlag">结果按照会议与研讨会模糊匹配排序,从"{{confList[0].booktitles[0]}}"开始</h3>
             </header>
-            <!--            列表显示期刊-->
+            <!--            列表显示会议与研讨-->
             <div class="body" v-if="!errorFlag">
                 <el-collapse v-model="activeNames" class="broCollaps" v-if="!loadFlag">
                     <el-collapse-item v-for="(item,index) in confList" :key="item.prefix"

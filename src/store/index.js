@@ -9,6 +9,8 @@ export default new Vuex.Store({
         inputfalg: false,
         inputData: null,
 
+        backgroundEffect:true,
+
         host: "http://192.168.3.5:8080",
 
         showObj:{
@@ -107,6 +109,12 @@ export default new Vuex.Store({
         incrementCleanSerchVen(state){
             state.showObj.venueflag = false
         },
+        turnOnbackgroundEffect(state){
+            state.backgroundEffect = true;
+        },
+        turnOffbackgroundEffect(state){
+            state.backgroundEffect = false;
+        }
 
 
     },
