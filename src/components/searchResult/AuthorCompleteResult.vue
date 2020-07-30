@@ -826,7 +826,7 @@
             //关系图
             setEchartsOption() {
                 var myChart = this.$echarts.init(document.getElementById('autGraph'),
-                    "walden"
+                    "light"
                 )
 
                 this.getNode();
