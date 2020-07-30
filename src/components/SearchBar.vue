@@ -121,13 +121,13 @@
                     this.putInputData();
                 }
             },
-            "$store.state.inputData": function () {
-                if(this.$store.state.inputData != null){
-                    this.concatText();
-                }
-            },
-            "$store.state.serchObj.title": function () {
-                if(this.$store.state.serchObj.title != ''){
+            // "$store.state.inputData": function () {
+            //     if (this.$store.state.inputData != null) {
+            //         this.concatText();
+            //     }
+            // },
+            "$store.state.serchObj.conflag": function () {
+                if (this.$store.state.serchObj.conflag) {
                     this.concatText();
                 }
             }
@@ -137,9 +137,22 @@
             //设置搜索条件
             putInputData() {
                 // if (this.radio == 0)
-                this.$store.commit("increment", {newInput: this.splitText(), newLabel: this.radio});
-                this.$store.commit("incrementInputData", {data: this.inputData});
-                console.log(this.$store.state.serchObj.conflag)
+                let input = this.splitText()
+                if(input.title == ''){
+                    this.$alert('搜索字段不包含title，请重新输入', '提示', {
+                        confirmButtonText: '确定',
+                        callback: action => {
+                            this.$message({
+                                type: 'info',
+                                message: `action: ${ action }`
+                            });
+                        }
+                    });
+                } else {
+                    this.$store.commit("increment", {newInput: input, newLabel: this.radio});
+                    this.$store.commit("incrementInputData", {data: this.inputData});
+                }
+                // console.log(this.$store.state.serchObj.conflag)
 
             },
             //设置搜索类型
@@ -239,10 +252,23 @@
                 let text = data.title;
 
                 if (this.$store.state.serchObj.year != '') {
-                    text += "&year:" + this.$store.state.serchObj.year;
+                    let year = this.$store.state.serchObj.year.split(',');
+                    if(year.length > 1){
+                        year = year[0] + ".." + year[year.length - 1];
+                    } else {
+                        year = year[0];
+                    }
+                    // console.log(year)
+                    if (text == '')
+                        text += "year:" + this.$store.state.serchObj.year;
+                    else
+                        text += "&year:" + this.$store.state.serchObj.year;
                 }
                 if (this.$store.state.serchObj.venue != '') {
-                    text += "&venue:" + this.$store.state.serchObj.venue;
+                    if (text == '')
+                        text += "venue:" + this.$store.state.serchObj.venue;
+                    else
+                        text += "&venue:" + this.$store.state.serchObj.venue;
                 }
                 if (this.$store.state.serchObj.authors.length > 0) {
                     let len = this.$store.state.serchObj.authors.length;
@@ -250,10 +276,16 @@
                     for (let i = 1; i < len; i++) {
                         author += ',' + this.$store.state.serchObj.authors[i];
                     }
-                    text += "&author:" + author;
+                    if (text == '')
+                        text += "author:" + author;
+                    else
+                        text += "&author:" + author;
                 }
                 if (this.$store.state.serchObj.type != '') {
-                    text += "&type:" + this.$store.state.serchObj.type;
+                    if (text == '')
+                        text += "type:" + this.$store.state.serchObj.type;
+                    else
+                        text += "&type:" + this.$store.state.serchObj.type;
                 }
                 // console.log(this.$store.state.serchObj)
                 this.inputData = text;

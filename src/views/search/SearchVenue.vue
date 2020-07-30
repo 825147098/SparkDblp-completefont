@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-header class="header" v-show="activeShow">
-            <h1 class="headline">搜索 Spark Dblp For 作者</h1>
+            <h1 class="headline">搜索 Spark Dblp For 会议</h1>
         </el-header>
 <!--        会议搜索结果-->
         <VenueSearchResult :search-venue="true" v-if="activeShow"></VenueSearchResult>

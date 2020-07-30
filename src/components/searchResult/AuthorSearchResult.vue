@@ -192,6 +192,7 @@
                         this.warnflag = true;
                     this.loadFlag = false;
 
+                    this.$store.commit("incrementCleanFlag", {flag: "conflag"})
                     this.$store.commit("incrementCleanInputFlag");
                 }).catch(error => {
                     console.log(error);
@@ -251,7 +252,7 @@
                 if (this.$store.state.serchObj.conflag) {
                     this.searchName = this.$store.state.serchObj.title;
                     this.getAuthorData();
-                    console.log("a2")
+                    // console.log("a2")
                 }
             },
             //通知组合搜索是否显示

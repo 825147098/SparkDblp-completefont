@@ -16,7 +16,7 @@
                     v-for="year in yearList" :key="year"
                 >
                     <li class="year">{{year}}</li>
-                    <li v-for="item in pubList[year]" :key="item.title + item.type">
+                    <li v-for="item in pubList[year]" :key="JSON.stringify(item)">
                         <BookAndTheseItem v-if="item.type == 'Book and Theses'"
                                           :inner-data="item"
                         ></BookAndTheseItem>
@@ -287,29 +287,6 @@
             //设置过滤参数
             setParams() {
                 this.paramsObj = {};
-                // if(this.$route.query.title != null){
-                //     // console.log(this.$route.query.title)
-                //     if (this.$route.query.title != '') {
-                //         this.paramsObj["title"] = this.$route.query.title;
-                //     }
-                //     if (this.$route.query.year != '') {
-                //         this.paramsObj["year"] = this.$route.query.year;
-                //     }
-                //     if (this.$route.query.venue != '') {
-                //         this.paramsObj["venue"] = this.$route.query.venue;
-                //     }
-                //     if (this.$route.query.author != '') {
-                //         let len = this.$route.query.authors.length;
-                //         let author = this.$route.query.authors[0];
-                //         for (let i = 1; i < len; i++) {
-                //             author += ',' + this.$route.query.authors[i];
-                //         }
-                //         this.paramsObj["author"] = author;
-                //     }
-                //     if (this.$route.query.type != '') {
-                //         this.paramsObj["type"] = this.$route.query.type;
-                //     }
-                // } else
                 {
                     if (this.$store.state.serchObj.title != '') {
                         this.paramsObj["title"] = this.$store.state.serchObj.title;

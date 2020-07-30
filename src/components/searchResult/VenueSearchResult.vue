@@ -267,14 +267,22 @@
                     }
                 }).then(res => {
                     this.venueTestList = res.data._embedded.venueGroups;
-                    this.totalElements = this.venueTestList.length;
+
                     this.getCleanData();
-                    this.venueList = this.venueTestList
-                    // console.log(this.venueList[0].booktitles.toString())
-                    if (this.totalElements >= 20 || (this.totalElements > 6 && !this.webPage))
-                        this.getLuckly();
-                    if (this.totalElements > 300)
-                        this.warnflag = true;
+                    this.totalElements = this.venueTestList.length;
+                    if(this.totalElements > 0){
+                        this.venueList = this.venueTestList
+
+                        if (this.totalElements >= 20 || (this.totalElements > 6 && !this.webPage))
+                            this.getLuckly();
+                        if (this.totalElements > 300)
+                            this.warnflag = true;
+                    } else {
+                        this.loadFlag = false;
+                        this.$store.commit("incrementCleanSerchVen")
+                    }
+
+
                     this.loadFlag = false;
 
                     this.$store.commit("incrementCleanFlag", {flag: "conflag"})
@@ -327,14 +335,28 @@
                     }
 
 
-                    return {
-                        year: item.venue[0].year,
-                        booktitles: bookArr,
-                        venueArr: venArr,
-                        flag: item.prefix2
+                    if(bookArr.length > 0){
+                        return {
+                            year: item.venue[0].year,
+                            booktitles: bookArr,
+                            venueArr: venArr,
+                            flag: item.prefix2
+                        }
+                    } else {
+                        return null
                     }
                 })
-                this.venueTestList.sort(function (a, b) {
+
+                let cleanArr = [];
+
+
+                for(let i = 0; i < this.venueTestList.length ;i ++){
+                    if( this.venueTestList[i] != null){
+                        cleanArr.push(this.venueTestList[i])
+                    }
+                }
+
+                this.venueTestList = cleanArr.sort(function (a, b) {
                     return b.year - a.year
                 })
             },

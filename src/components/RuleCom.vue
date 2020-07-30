@@ -1,9 +1,9 @@
 <template>
     <div style="font-size: 16px; text-align: left;">
         <ul>
-            <li>Title允许使用一个字符串作为输入。例如:</li>
+            <li>Title允许使用一个字符串作为输入(必选项)。例如:</li>
             <!--                        <li style="margin-left: 5%"></li><br>-->
-            <li style="margin-left: 5%">title:bigdata title中含有bigdata字符串的论文</li>
+            <li style="margin-left: 5%">bigdata title中含有bigdata字符串的论文</li>
             <li style="margin-left: 5%">注意：</li>
             <li style="margin-left: 5%">1）title大小写不敏感，这意味着输入BigData也会返回bigdata的数据</li>
             <li>Year允许输入一个整形数字，或者整形数字的Range。例如：</li>

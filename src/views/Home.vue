@@ -43,11 +43,23 @@
             //设置搜索条件
             putInputData() {
                 // if (this.radio == 0)
-                this.$store.commit("increment", {newInput: this.splitText(), newLabel: 0});
-                this.$store.commit("incrementInputData", {data: this.inputData});
+                let input = this.splitText()
+                if(input.title == ''){
+                    this.$alert('搜索字段不包含title，请重新输入', '提示', {
+                        confirmButtonText: '确定',
+                        callback: action => {
+                            this.$message({
+                                type: 'info',
+                                message: `action: ${ action }`
+                            });
+                        }
+                    });
+                } else {
+                    this.$store.commit("increment", {newInput: this.splitText(), newLabel: 0});
+                    this.$store.commit("incrementInputData", {data: this.inputData});
 
-                this.changePage()
-
+                    this.changePage()
+                }
             },
 
             splitText() {

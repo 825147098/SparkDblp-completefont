@@ -205,7 +205,7 @@
         mounted() {
             if (this.innerData != null)
                 this.editorData = this.innerData;
-            console.log(this.innerData)
+            // console.log(this.innerData)
         }
     }
 </script>

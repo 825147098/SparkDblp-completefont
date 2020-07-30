@@ -155,7 +155,7 @@
             remoteMethod(query) {
                 if (query !== '') {
                     this.loading = true;
-                    axios.get(this.$store.state.host + "/authorses/search/findBy_VALUEStartingWith", {
+                    axios.get(this.$store.state.host + "/authorses/search/findBy_VALUEStartingWithIgnoreCase", {
                         params: {
                             prefix: query,
                             size: 10
