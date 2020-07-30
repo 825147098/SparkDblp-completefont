@@ -1,5 +1,5 @@
 <template>
-<!--    人名精确搜素结果-->
+    <!--    人名精确搜素结果-->
     <el-container>
         <el-main style="padding-top: 0; max-width: 850px">
             <el-collapse v-model="activeName" accordion @change="changeFalg">
@@ -11,7 +11,7 @@
                         class="putList"
                         v-for="year in yearList" :key="year"
                     >
-<!--                        年份排序文章列表-->
+                        <!--                        年份排序文章列表-->
                         <li class="year">{{year}}</li>
                         <li v-for="item in pubList[year]" :key="item.title + item.type">
                             <BookAndTheseItem v-if="item.type == 'Book and Theses'"
@@ -40,7 +40,7 @@
                             </WithdrawnItem>
                         </li>
                     </ul>
-<!--                    加载图标-->
+                    <!--                    加载图标-->
                     <ul v-show="loadFlag"
                         class="putList">
                         <li style="color: #409EFF">
@@ -59,14 +59,14 @@
                 </el-collapse-item>
             </el-collapse>
         </el-main>
-<!--        右侧细化列表-->
+        <!--        右侧细化列表-->
         <el-aside class="asideCon">
             <el-collapse v-model="refineActiveName" accordion @change="changeRefineFalg">
                 <el-collapse-item name="1">
                     <template slot="title">
                         [{{flagRefine}}] 搜索优化列表
                     </template>
-<!--                    数量统计-->
+                    <!--                    数量统计-->
                     <div class="refine-by"
                          v-show="!loadFlag && dataFlag">
                         <em>
@@ -245,13 +245,13 @@
                 </el-collapse-item>
             </el-collapse>
         </el-aside>
-<!--        关系图弹窗-->
+        <!--        关系图弹窗-->
         <el-dialog
                 :visible.sync="dialogVisible"
                 width="70%"
                 center
         >
-            <div id="autGraph" style="height:600px;margin: auto;width: 800px"></div>
+            <div id="autGraph" class="autGraph"></div>
         </el-dialog>
     </el-container>
 </template>
@@ -351,17 +351,17 @@
                 axios.get(this.$store.state.host + "/onlyDocs/search/findAllByAuthor__VALUE", {
                     params: {
                         author: this.author,
-                        size:300
+                        size: 300
                     }
                 }).then(res => {
                     this.waitList = res.data._embedded.onlyDocs;
-                this.filterList = this.waitList;
-                this.pageDetail = res.data.page;
-                // console.log(this.waitList)
+                    this.filterList = this.waitList;
+                    this.pageDetail = res.data.page;
+                    // console.log(this.waitList)
 
-                this.changeType();
-                this.getData()
-                this.handleCheckAllChange()
+                    this.changeType();
+                    this.getData()
+                    this.handleCheckAllChange()
                 }).catch(error => {
                     console.log(error);
                 })
@@ -471,11 +471,11 @@
                 for (let i = 0; i < data.length; i++) {
                     if (data[i].author != null) {
                         for (let j = 0; j < data[i].author.length; j++) {
-                            arr.push({_VALUE: data[i].author[j]._VALUE});
+                            arr.push({_VALUE: data[i].author[j]._VALUE, title: data[i].title});
                         }
                     } else {
                         for (let j = 0; j < data[i].editor.length; j++) {
-                            arr.push({_VALUE: data[i].editor[j]._VALUE});
+                            arr.push({_VALUE: data[i].editor[j]._VALUE, title: data[i].title});
                         }
                     }
                 }
@@ -483,8 +483,10 @@
                 let arrlist = [];
 
                 for (let item in sort) {
-                    arrlist.push({_VALUE: item, num: sort[item].length})
+                    arrlist.push({_VALUE: item, num: sort[item].length, title: sort[item][0].title})
                 }
+
+                // console.log(arrlist)
                 //数据清洗
                 this.autTestList = arrlist.map(function (item) {
 
@@ -494,8 +496,13 @@
                         "index": cont++,
                         "show": false,
                         "num": item.num,
+                        "title": item.title
                     };
                 });
+
+                this.autTestList = this.autTestList.sort(function (a, b) {
+                    return b.num - a.num;
+                })
 
                 for (let i = 0; i < this.autTestList.length; i++) {
                     if (this.filterObj.authors.length == 0)
@@ -598,6 +605,10 @@
                     };
                 })
 
+                this.venTestList = this.venTestList.sort(function (a, b) {
+                    return b.num - a.num;
+                })
+
                 for (let i = 0; i < this.venTestList.length; i++) {
                     if (this.filterObj.venue == '')
                         break;
@@ -611,7 +622,7 @@
 
                 if (this.venArrCount + 10 <= this.venTestList.length) {
                     this.venueList = this.venTestList.slice(this.venArrCount, this.venArrCount + 10);
-                    this.autArrCount += 10;
+                    this.venArrCount += 10;
                 } else {
                     this.venueList = this.venTestList.slice(this.venArrCount);
                     this.venArrCount += this.venTestList.length;
@@ -634,7 +645,7 @@
                     this.venueList = this.venTestList;
                     this.venArrCount += this.venTestList.length;
                 }
-
+                // console.log(this.venTestList)
                 this.venLoadFlag = false;
             },
             //会议鼠标移入
@@ -821,38 +832,83 @@
                 this.getNode();
                 this.getLink();
 
+                var categories = [];
+
+                for (let i = 0; i < this.filterList.length; i++) {
+                    categories[i] = {
+                        name: this.filterList[i].title
+                    }
+                }
+
+                categories[this.filterList.length] = {
+                    name: this.name
+                }
+
+                // var option = {
+                //     title: {
+                //         text: "协作者关系"
+                //     },
+                //     tooltip: {},
+                //     animationDurationUpdate: 1500,
+                //     animationEasingUpdate: 'quinticInOut',
+                //     series: [
+                //         {
+                //             type: 'graph',
+                //             layout: 'none',
+                //             symbolSize: 50,
+                //             roam: true,
+                //             label: {
+                //                 show: true
+                //             },
+                //             edgeSymbol: ['circle', 'arrow'],
+                //             edgeSymbolSize: [0, 0],
+                //             edgeLabel: {
+                //                 fontSize: 12
+                //             },
+                //             data: this.nodeList,
+                //             links: this.linkList,
+                //             lineStyle: {
+                //                 opacity: 0.9,
+                //                 width: 2,
+                //                 symbolSize: [0,0],
+                //                 curveness: 0
+                //             }
+                //         }
+                //     ]
+                // }
                 var option = {
                     title: {
-                        text: "协作者关系"
+                        text: '协作者关系',
+                        subtext: 'Default layout',
+                        top: 'bottom',
+                        left: 'right'
                     },
                     tooltip: {},
-                    animationDurationUpdate: 1500,
-                    animationEasingUpdate: 'quinticInOut',
+                    legend: [{
+                        // selectedMode: 'single',
+                        data: categories.map(function (a) {
+                            return a.name;
+                        })
+                    }],
+                    animation: false,
                     series: [
                         {
+                            name: 'Les Miserables',
                             type: 'graph',
-                            layout: 'none',
-                            symbolSize: 50,
-                            roam: true,
-                            label: {
-                                show: true
-                            },
-                            edgeSymbol: ['circle', 'arrow'],
-                            edgeSymbolSize: [0, 0],
-                            edgeLabel: {
-                                fontSize: 12
-                            },
+                            layout: 'force',
                             data: this.nodeList,
                             links: this.linkList,
-                            lineStyle: {
-                                opacity: 0.9,
-                                width: 2,
-                                symbolSize: [0,0],
-                                curveness: 0
+                            categories: categories,
+                            roam: true,
+                            label: {
+                                position: 'right'
+                            },
+                            force: {
+                                repulsion: 100
                             }
                         }
                     ]
-                }
+                };
                 // 使用刚指定的配置项和数据显示图表。
                 myChart.setOption(option);
 
@@ -868,27 +924,38 @@
             },
             //关系图节点
             getNode() {
-                let x = 400;
-                let y = 300;
+                // let x = 400;
+                // let y = 300;
                 // let num = 360 / this.autTestList.length;
-                let cont = 0;
+                // let cont = 0;
                 let aut = this.name
                 this.nodeList = this.autTestList.map(function (item) {
-                    if(item._VALUE === aut){
+                    if (item._VALUE === aut) {
                         return {
                             name: item._VALUE,
-                            x: x,
-                            y: y,
+                            x: null,
+                            y: null,
+                            symbolSize: 20,
+                            value: item.num,
+                            itemStyle: null,
+                            draggable: true,
+                            category: item._VALUE,
                         }
                     } else {
-                        cont ++;
+                        // cont ++;
                         return {
                             name: item._VALUE,
-                            x: x + x * Math.cos(cont),
-                            y: y + y * Math.sin(cont),
+                            x: null,
+                            y: null,
+                            symbolSize: 10,
+                            value: item.num,
+                            category: item.title,
+                            itemStyle: null,
+                            draggable: true,
                         }
                     }
                 })
+                // console.log(this.nodeList)
             },
             //关系图连线
             getLink() {
@@ -955,7 +1022,7 @@
 
             },
 
-            name:function () {
+            name: function () {
                 this.author = this.name;
                 this.getPubData()
             }
@@ -986,7 +1053,6 @@
     }
 
 
-
     .refine-by > ul > li {
         display: block;
         padding: 2px 4px 0 0;
@@ -1003,5 +1069,11 @@
         font-size: smaller;
         text-align: left;
         padding: 0 20px;
+    }
+
+    .autGraph {
+        height: 600px;
+        margin: auto;
+        width: 800px
     }
 </style>
