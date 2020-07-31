@@ -248,10 +248,12 @@
         <!--        关系图弹窗-->
         <el-dialog
                 :visible.sync="dialogVisible"
-                width="70%"
+                fullscreen="true"
                 center
         >
-            <div id="autGraph" class="autGraph"></div>
+<!--            <div>-->
+                <div id="autGraph" class="autGraph"></div>
+<!--            </div>-->
         </el-dialog>
     </el-container>
 </template>
@@ -884,12 +886,15 @@
                         left: 'right'
                     },
                     tooltip: {},
-                    legend: [{
+                    legend: {
+                        type: 'scroll',
+                        orient: 'vertical',
+                        left: '20',
                         // selectedMode: 'single',
                         data: categories.map(function (a) {
                             return a.name;
                         })
-                    }],
+                    },
                     animation: false,
                     series: [
                         {
@@ -1072,8 +1077,8 @@
     }
 
     .autGraph {
-        height: 600px;
-        margin: auto;
-        width: 800px
+        height: 85vh;
+        /*margin: auto;*/
+        /*width: 100%;*/
     }
 </style>
