@@ -26,8 +26,12 @@
             }
         },
 
-        methods:{
-
+        watch:{
+            "$route.query.autName":function () {
+                if (this.$route.query.autName != this.authorName) {
+                    this.authorName = this.$route.query.autName;
+                }
+            }
         },
 
         mounted() {
