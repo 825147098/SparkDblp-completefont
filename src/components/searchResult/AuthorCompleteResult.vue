@@ -898,7 +898,7 @@
                     animation: false,
                     series: [
                         {
-                            name: 'Les Miserables',
+                            // name: 'Les Miserables',
                             type: 'graph',
                             layout: 'force',
                             data: this.nodeList,

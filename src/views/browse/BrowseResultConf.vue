@@ -7,7 +7,7 @@
         <el-main style="background-color:aliceblue;">
             <!--            搜索选择栏-->
             <div class="namePrefixCon">
-                <span>跳转到会议与研讨模糊匹配为&nbsp;：</span>
+                <span>会议与研讨会模糊匹配&nbsp;：</span>
                 <el-input class="broInput"
                           v-model="nameValue"
                           size="mini"

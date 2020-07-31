@@ -7,7 +7,7 @@
         <el-main style="background-color:aliceblue;">
             <!--            搜索选择栏-->
             <div class="namePrefixCon">
-                <span>跳转到期刊会模糊匹配为&nbsp;：</span>
+                <span>期刊模糊匹配&nbsp;：</span>
                 <el-input class="broInput"
                         v-model="nameValue"
                         size="mini"

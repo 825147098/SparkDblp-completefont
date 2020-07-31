@@ -190,22 +190,44 @@
                                 }
                             });
                         }
-                        axios.get(this.$store.state.host + "/onlyDocs/search/findAllByText", {
-                            params: {
-                                title: this.title,
-                                page: this.page
-                            }
-                        }).then(res => {
-                            this.waitList = this.waitList.concat(res.data._embedded.onlyDocs);
-                            this.changeType();
-                            this.pubSort();
-                            this.loadFlag = false;
+                        this.checkFlag();
+                        if(this.parmasFlag){
+                            this.setParams();
+                            axios.get(this.$store.state.host + "/onlyDoc/findAllByTextReturnList", {
+                                params: this.paramsObj
+                            }).then(res => {
+                                this.waitList = this.waitList.concat(res.data);
+                                this.pageDetail["totalElements"] = this.waitList.length;
+                                // console.log(this.waitList)
 
-                            this.$store.commit("incrementCleanFlag", {flag: "conflag"})
-                            this.$store.commit("incrementCleanInputFlag");
-                        }).catch(error => {
-                            console.log(error);
-                        })
+                                this.changeType();
+                                this.pubSort()
+
+                                this.loadFlag = false;
+                                // console.log(this.waitList)
+                                // this.$store.commit("incrementCleanFlag", {flag: "conflag"})
+                                // this.$store.commit("incrementCleanInputFlag");
+                            }).catch(error => {
+                                console.log(error);
+                            })
+                        } else {
+                            axios.get(this.$store.state.host + "/onlyDocs/search/findAllByText", {
+                                params: {
+                                    title: this.title,
+                                    page: this.page
+                                }
+                            }).then(res => {
+                                this.waitList = this.waitList.concat(res.data._embedded.onlyDocs);
+                                this.changeType();
+                                this.pubSort();
+                                this.loadFlag = false;
+
+                                // this.$store.commit("incrementCleanFlag", {flag: "conflag"})
+                                // this.$store.commit("incrementCleanInputFlag");
+                            }).catch(error => {
+                                console.log(error);
+                            })
+                        }
                     }, 2000)
                 }
             },
