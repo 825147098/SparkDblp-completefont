@@ -54,7 +54,7 @@
                     </li>
                 </ul>
                 <!--                加载按钮-->
-                <ul v-show="!loadFlag && !parmasFlag && this.page < this.pageDetail.totalPages - 1"
+                <ul v-show="!loadFlag && this.page < this.pageDetail.totalPages - 1"
                     class="putList">
                     <li>
                         <el-button type="text" @click="load">
@@ -150,9 +150,9 @@
                 axios.get(this.$store.state.host + "/onlyDoc/findAllByTextReturnList", {
                     params: this.paramsObj
                 }).then(res => {
-                    this.waitList = res.data;
-                    this.pageDetail["totalElements"] = this.waitList.length;
-                    // console.log(this.waitList)
+                    this.waitList = res.data._embedded.onlyDocs;
+                    this.pageDetail = res.data.page;
+                    console.log(res.data)
 
                     this.changeType();
                     this.pubSort()
@@ -196,15 +196,15 @@
                             axios.get(this.$store.state.host + "/onlyDoc/findAllByTextReturnList", {
                                 params: this.paramsObj
                             }).then(res => {
-                                this.waitList = this.waitList.concat(res.data);
-                                this.pageDetail["totalElements"] = this.waitList.length;
-                                // console.log(this.waitList)
+                                this.waitList = this.waitList.concat(res.data._embedded.onlyDocs);
+
 
                                 this.changeType();
                                 this.pubSort()
 
                                 this.loadFlag = false;
-                                // console.log(this.waitList)
+                                console.log(1)
+
                                 // this.$store.commit("incrementCleanFlag", {flag: "conflag"})
                                 // this.$store.commit("incrementCleanInputFlag");
                             }).catch(error => {
@@ -330,6 +330,7 @@
                     if (this.$store.state.serchObj.type != '') {
                         this.paramsObj["type"] = this.$store.state.serchObj.type;
                     }
+                    this.paramsObj["page"] = this.page
                 }
             },
             //标记检测是否含有筛选条件
@@ -357,7 +358,6 @@
             "$store.state.serchObj.conflag": function () {
                 if (this.$store.state.serchObj.conflag) {
                     this.title = this.$store.state.serchObj.title
-                    // console.log(1)
                     this.checkFlag();
                     if (this.parmasFlag)
                         this.getFilPubData()
@@ -375,12 +375,6 @@
                 this.getFilPubData()
             else
                 this.getPubData()
-            // this.$router.push({
-            //     path:'/search/complete',
-            //     query:{
-            //         title:this.title
-            //     }
-            // })
         }
     }
 </script>
