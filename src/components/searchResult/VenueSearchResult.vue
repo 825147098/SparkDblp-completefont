@@ -270,7 +270,7 @@
 
                     this.getCleanData();
                     this.totalElements = this.venueTestList.length;
-                    if(this.totalElements > 0){
+                    if (this.totalElements > 0) {
                         this.venueList = this.venueTestList
 
                         if (this.totalElements >= 20 || (this.totalElements > 6 && !this.webPage))
@@ -320,14 +320,14 @@
                     for (let i = 0; i < item.venue.length; i++) {
                         if (bookArr.indexOf(item.venue[i].booktitle) === -1) {
                             let val = item.venue[i].booktitle.toLowerCase()
-                            if (val.indexOf(title) > -1){
+                            if (val.indexOf(title) > -1) {
                                 bookArr.push(item.venue[i].booktitle)
                                 venArr.push(item.venue[i]);
                             }
                         }
                         let val = item.venue[i].title.toLowerCase();
-                        if(val.indexOf(title) > -1){
-                            if(bookArr.indexOf(item.venue[i].booktitle)  === -1){
+                        if (val.indexOf(title) > -1) {
+                            if (bookArr.indexOf(item.venue[i].booktitle) === -1) {
                                 bookArr.push(item.venue[i].booktitle)
                                 venArr.push(item.venue[i]);
                             }
@@ -335,7 +335,7 @@
                     }
 
 
-                    if(bookArr.length > 0){
+                    if (bookArr.length > 0) {
                         return {
                             year: item.venue[0].year,
                             booktitles: bookArr,
@@ -350,8 +350,8 @@
                 let cleanArr = [];
 
 
-                for(let i = 0; i < this.venueTestList.length ;i ++){
-                    if( this.venueTestList[i] != null){
+                for (let i = 0; i < this.venueTestList.length; i++) {
+                    if (this.venueTestList[i] != null) {
                         cleanArr.push(this.venueTestList[i])
                     }
                 }
@@ -403,10 +403,10 @@
             // 碎片标记
             "$store.state.serchObj.conflag": function () {
                 if (this.$store.state.serchObj.conflag) {
-                    this.searchTitle = this.$store.state.serchObj.title;
-                    // console.log(this.$store.state.serchObj.title)
-                    this.getVenueData();
-                    // console.log("v2")
+                    if (this.searchTitle != this.$store.state.serchObj.title) {
+                        this.searchTitle = this.$store.state.serchObj.title;
+                        this.getVenueData();
+                    }
                 }
             },
 

@@ -250,8 +250,10 @@
             //监控搜索标记
             "$store.state.serchObj.conflag": function () {
                 if (this.$store.state.serchObj.conflag) {
-                    this.searchName = this.$store.state.serchObj.title;
-                    this.getAuthorData();
+                    if(this.searchName != this.$store.state.serchObj.title){
+                        this.searchName = this.$store.state.serchObj.title;
+                        this.getAuthorData();
+                    }
                     // console.log("a2")
                 }
             },
