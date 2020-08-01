@@ -56,11 +56,14 @@
                 <!--                加载按钮-->
                 <ul v-show="!loadFlag && this.page < this.pageDetail.totalPages - 1"
                     class="putList">
-                    <li>
-                        <el-button type="text" @click="load">
+                    <li style="width: 100%">
+                        <el-button type="text" @click="load" style="float: left">
                             点击获取更多
                             <img src="https://dblp.uni-trier.de/img/waiting.anim.gif" alt="">
                         </el-button>
+                        <div style="display: inline; float: right">
+                            当前页码：{{page + 1}} / {{this.pageDetail.totalPages}}
+                        </div>
                     </li>
                 </ul>
             </el-collapse-item>
@@ -152,7 +155,7 @@
                 }).then(res => {
                     this.waitList = res.data._embedded.onlyDocs;
                     this.pageDetail = res.data.page;
-                    console.log(res.data)
+                    // console.log(res.data)
 
                     this.changeType();
                     this.pubSort()
@@ -359,6 +362,7 @@
                 if (this.$store.state.serchObj.conflag) {
                     this.title = this.$store.state.serchObj.title
                     this.checkFlag();
+                    this.page = 0
                     if (this.parmasFlag)
                         this.getFilPubData()
                     else
