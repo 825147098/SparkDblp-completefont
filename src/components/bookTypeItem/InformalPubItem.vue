@@ -37,6 +37,7 @@
             <span v-if="inforData.author != null">
             <span v-for="authors in inforData.author" :key="authors._VALUE" class="name">
                 <router-link :to="{path:'/resAut',query:{autName:authors._VALUE}}"
+                             target="_blank"
                              class="name">
                                 <p class="mark" v-html="getMatch(authors._VALUE)">{{authors._VALUE}}</p>
                             </router-link>

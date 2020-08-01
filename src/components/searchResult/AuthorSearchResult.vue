@@ -30,6 +30,7 @@
                         <li v-for="luckly in luckList" :key="luckly._VALUE">
                             <el-button type="text"  size="mini">
                                 <router-link :to="{path:'/resAut',query:{autName:luckly._VALUE}}"
+                                             target="_blank"
                                              class="name">
                                     <p class="mark" v-html="getMatch(luckly._VALUE)">{{getMatch(luckly._VALUE)}}</p>
                                 </router-link>
@@ -50,6 +51,7 @@
                         <li v-for="author in authorList" :key="author._VALUE">
                             <el-button type="text"  size="mini">
                                 <router-link :to="{path:'/resAut',query:{autName:author._VALUE}}"
+                                             target="_blank"
                                              class="name">
                                     <p  class="mark" v-html="getMatch(author._VALUE)">{{getMatch(author._VALUE)}}</p>
                                 </router-link>
@@ -84,6 +86,7 @@
                         <li v-for="luckly in luckList" :key="luckly._VALUE">
                             <el-button type="text"  size="mini">
                                 <router-link :to="{path:'/resAut',query:{autName:luckly._VALUE}}"
+                                             target="_blank"
                                              class="name">
                                     <p class="mark" v-html="getMatch(luckly._VALUE)">{{getMatch(luckly._VALUE)}}</p>
                                 </router-link>
@@ -95,7 +98,9 @@
                             </el-button>
                         </li>
                         <li v-show="!loadFlag && luckflag">
-                            <router-link :to="{path:'/search/author',query:{autName:searchName}}" class="name">
+                            <router-link :to="{path:'/search/author',query:{autName:searchName}}"
+                                         target="_blank"
+                                         class="name">
                                 <el-button size="small" type="text">
                                     显示所有{{totalElements}}条匹配项
                                 </el-button>
@@ -107,6 +112,7 @@
                         <li v-for="author in authorList" :key="author._VALUE">
                             <el-button type="text"  size="mini">
                                 <router-link :to="{path:'/resAut',query:{autName:author._VALUE}}"
+                                             target="_blank"
                                              class="name">
                                     <p  class="mark" v-html="getMatch(author._VALUE)">{{getMatch(author._VALUE)}}</p>
                                 </router-link>
@@ -239,14 +245,6 @@
         },
 
         watch: {
-            //监控搜索栏
-            // '$store.state.serchObj.title': function () {
-            //     if((this.$store.state.radioLabel === 1  || !this.webPage)&& this.$store.state.serchObj.title != '' ){
-            //         this.searchName = this.$store.state.serchObj.title;
-            //         this.getAuthorData();
-            //         console.log("a3")
-            //     }
-            // },
             //监控搜索标记
             "$store.state.serchObj.conflag": function () {
                 if (this.$store.state.serchObj.conflag) {

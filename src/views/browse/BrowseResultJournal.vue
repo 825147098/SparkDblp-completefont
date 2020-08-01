@@ -44,7 +44,9 @@
                             </template>
                             <ul>
                                 <li v-for="num in item.volume" :key="num">
-                                    <router-link :to="{path:'/resJou',query:{jourName:item.journal[0],prefix:item.prefix,volume:num}}"
+                                    <router-link
+                                            target="_blank"
+                                            :to="{path:'/resJou',query:{jourName:item.journal[0],prefix:item.prefix,volume:num}}"
                                             class="router-link-text">
                                         Volume : {{num}}
                                     </router-link>

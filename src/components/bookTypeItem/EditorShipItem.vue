@@ -36,7 +36,9 @@
             <!--            作者-->
             <span v-if="editorData.editor != null">
             <span v-for="editor in editorData.editor" :key="editor._VALUE" class="name">
-                <router-link :to="{path:'/resAut',query:{autName:editor._VALUE}}"
+                <router-link
+                        target="_blank"
+                        :to="{path:'/resAut',query:{autName:editor._VALUE}}"
                              class="name">
                                 <p class="mark" v-html="getMatch(editor._VALUE)">{{editor._VALUE}}</p>
                 </router-link>
@@ -57,7 +59,9 @@
              </span>
             <!--            链接要补-->
             <span v-if="editorData.series != null" class="name">
-                <el-link :href="editorData.series._href">
+                <el-link
+                        target="_blank"
+                        :href="editorData.series._href">
                     {{editorData.series._VALUE}}
                 </el-link>
             </span>
@@ -74,7 +78,7 @@
                 </span>
             </span>
             <span  v-if="editorData.series != null">
-                <el-link class="name" v-if="editorData.series.length > 0"
+                <el-link class="name" v-if="editorData.series.length > 0" target="_blank"
                          :href="'https://dblp.uni-trier.de/' + editorData.series[0]._href"
                 >
              [content]

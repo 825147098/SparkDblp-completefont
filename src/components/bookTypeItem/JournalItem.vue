@@ -37,6 +37,7 @@
             <span v-if="jourData.author != null">
             <span v-for="authors in jourData.author" :key="authors._VALUE" class="name">
                 <router-link :to="{path:'/resAut',query:{autName:authors._VALUE}}"
+                             target="_blank"
                              class="name">
                                 <p class="mark" v-html="getMatch(authors._VALUE)">{{authors._VALUE}}</p>
                     <el-tooltip class="item" effect="dark" :content=authors._orcid placement="bottom-end"
@@ -59,7 +60,9 @@
 <!--            <span class="nameVolume name" v-show="showNameVolme" v-if="jourData.prefix !=null">-->
                 <router-link
                         :to="{path:'/resJou',query:{jourName:jourData.journal,prefix:jourData.prefix2,volume:parseInt(jourData.volume)}}"
-                        v-if="jourData.prefix2 != null" class="router-link-text">
+                        v-if="jourData.prefix2 != null"
+                        target="_blank"
+                        class="router-link-text">
                     <span class="name">
                     <p class="mark" v-html="getMatch(jourData.journal)">
                         {{jourData.journal}}

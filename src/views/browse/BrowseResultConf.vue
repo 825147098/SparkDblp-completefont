@@ -56,6 +56,7 @@
                                 :key="titles.title + titles.booktitle + titles._key">
                                 <router-link
                                         class="name"
+                                        target="_blank"
                                         :to="{path:'/resVen',query: {venName:titles.title,cross:titles._key}}">
                                     {{titles.title}},
                                     {{titles.year}}

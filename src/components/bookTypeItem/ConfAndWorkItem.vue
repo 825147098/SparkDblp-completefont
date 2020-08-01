@@ -58,7 +58,9 @@
              </span>
             <!--            链接要补-->
 <!--            venue链接-->
-            <router-link class="name"
+            <router-link
+                    target="_blank"
+                    class="name"
                          :to="{path:'/resVen',query:{venName:confAndWorkData.title,cross:confAndWorkData.crossref,book:confAndWorkData.booktitle}}">
                 <p class="mark" v-html="getMatch(confAndWorkData.booktitle)">
                     {{confAndWorkData.booktitle}}

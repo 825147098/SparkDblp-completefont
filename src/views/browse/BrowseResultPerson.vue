@@ -48,6 +48,7 @@
                     <ul v-show="showNameFlag0">
                         <li v-for="item in showNamelist0" :key="item._VALUE">
                             <router-link :to="{path:'/resAut',query:{autName:item._VALUE}}"
+                                         target="_blank"
                                          class="router-link-text">
                                 {{item._VALUE}}
                             </router-link>
@@ -58,6 +59,7 @@
                     <ul v-show="showNameFlag1">
                         <li v-for="item in showNamelist1" :key="item._VALUE">
                             <router-link :to="{path:'/resAut',query:{autName:item._VALUE}}"
+                                         target="_blank"
                                          class="router-link-text">
                                 {{item._VALUE}}
                             </router-link>
@@ -68,6 +70,7 @@
                     <ul v-show="showNameFlag2">
                         <li v-for="item in showNamelist2" :key="item._VALUE">
                             <router-link :to="{path:'/resAut',query:{autName:item._VALUE}}"
+                                         target="_blank"
                                          class="router-link-text">
                                 {{item._VALUE}}
                             </router-link>

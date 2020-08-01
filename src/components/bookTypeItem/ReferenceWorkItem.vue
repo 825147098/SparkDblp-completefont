@@ -37,6 +37,7 @@
             <span v-if="referData.author != null">
                 <span v-for="authors in referData.author" :key="authors._VALUE" class="name">
                 <router-link :to="{path:'/resAut',query:{autName:authors._VALUE}}"
+                             target="_blank"
                              class="name">
                                 {{authors._VALUE}}
                             </router-link>

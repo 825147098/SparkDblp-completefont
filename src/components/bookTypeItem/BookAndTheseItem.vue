@@ -38,7 +38,9 @@
             <span v-if="bookData.author != null">
             <span v-for="authors in bookData.author" :key="authors._VALUE" class="name">
 <!--                人名精确搜索链接-->
-                <router-link :to="{path:'/resAut',query:{autName:authors._VALUE}}"
+                <router-link
+                        target="_blank"
+                        :to="{path:'/resAut',query:{autName:authors._VALUE}}"
                              class="name">
                                <p class="mark" v-html="getMatch(authors._VALUE)">{{authors._VALUE}}</p>
                 </router-link>

@@ -45,6 +45,7 @@
                                             :key="titles.title + titles.booktitle + titles._key">
                                             <router-link
                                                     class="name"
+                                                    target="_blank"
                                                     :to="{path:'/resVen',query: {venName:titles.title,cross:titles._key,book:titles.booktitle}}">
                                                 <p class="mark" v-html="getMatch(titles.title)">
                                                     {{getMatch(titles.title)}}</p>
@@ -80,6 +81,7 @@
                                             :key="titles.title + titles.booktitle + titles._key">
                                             <router-link
                                                     class="name"
+                                                    target="_blank"
                                                     :to="{path:'/resVen',query: {venName:titles.title,cross:titles._key}}">
                                                 <p class="mark" v-html="getMatch(titles.title)">
                                                     {{getMatch(titles.title)}}</p>
@@ -129,6 +131,7 @@
                                             :key="titles.title + titles.booktitle + titles._key">
                                             <router-link
                                                     class="name"
+                                                    target="_blank"
                                                     :to="{path:'/resVen',query: {venName:titles.title,cross:titles._key}}">
                                                 <p class="mark" v-html="getMatch(titles.title)">
                                                     {{getMatch(titles.title)}}</p>
@@ -146,7 +149,9 @@
                         </li>
                         <!--                        跳转按钮-->
                         <li v-show="!loadFlag && luckflag && luckList.length > 0" style="text-align: left">
-                            <router-link :to="{path:'/search/venue',query:{venName:searchTitle}}" class="name">
+                            <router-link :to="{path:'/search/venue',query:{venName:searchTitle}}"
+                                         target="_blank"
+                                         class="name">
                                 <el-button size="small" type="text">
                                     显示所有{{totalElements}}条匹配项
                                 </el-button>
@@ -174,6 +179,7 @@
                                             :key="titles.title + titles.booktitle + titles._key">
                                             <router-link
                                                     class="name"
+                                                    target="_blank"
                                                     :to="{path:'/resVen',query: {venName:titles.title,cross:titles._key}}">
                                                 <p class="mark" v-html="getMatch(titles.title)">
                                                     {{getMatch(titles.title)}}</p>
@@ -390,16 +396,6 @@
         },
 
         watch: {
-            // 完整搜索标记
-            // '$store.state.serchObj.title': function () {
-            //     if (this.$store.state.radioLabel == 2 || !this.webPage)
-            //         if (this.$store.state.serchObj.title != '') {
-            //             this.searchTitle = this.$store.state.serchObj.title;
-            //             this.getVenueData();
-            //             console.log(this.$store.state.radioLabel)
-            //             console.log("v3")
-            //         }
-            // },
             // 碎片标记
             "$store.state.serchObj.conflag": function () {
                 if (this.$store.state.serchObj.conflag) {

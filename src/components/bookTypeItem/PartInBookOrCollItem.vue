@@ -37,6 +37,7 @@
             <span v-if="PartData.author != null">
             <span v-for="authors in PartData.author" :key="authors._VALUE" class="name">
                 <router-link :to="{path:'/resAut',query:{autName:authors._VALUE}}"
+                             target="_blank"
                              class="name">
                                 <p class="mark" v-html="getMatch(authors._VALUE)">{{authors._VALUE}}</p>
                             </router-link>
@@ -57,6 +58,7 @@
              </span>
             <!--            链接要补-->
             <router-link class="name"
+                         target="_blank"
                          :to="{path:'/resVen',query:{venName:PartData.title,cross:PartData.crossref,book:PartData.booktitle}}">>
                 <span>
                      <p class="mark" v-html="getMatch(PartData.booktitle)">
