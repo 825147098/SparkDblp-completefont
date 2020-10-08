@@ -84,7 +84,7 @@
                 this.venArrCount = 0;
                 this.setParams()
 
-                axios.get(this.$store.state.host + "/onlyDoc/findAllByTitleMatchesTextPrefix2RefineList", {
+                axios.get(this.$store.state.host + "/onlyDocs/search/findAllByTitleMatchesTextPrefix2RefineList", {
                     params: this.paramsObj
                 }).then(res => {
                     //数据清洗

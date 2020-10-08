@@ -85,7 +85,7 @@
                 let cont = this.numCount;
                 this.yearArrCount = 0;
                 this.setParams()
-                axios.get(this.$store.state.host + "/onlyDoc/findAllByTitleMatchesTextYearRefineList", {
+                axios.get(this.$store.state.host + "/onlyDocs/search/findAllByTitleMatchesTextYearRefineList", {
                     params: this.paramsObj
                 }).then(res => {
                     //数据清洗
