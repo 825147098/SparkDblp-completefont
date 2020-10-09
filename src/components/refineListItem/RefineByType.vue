@@ -74,7 +74,7 @@
             getTypeData() {
                 this.loadFlag = true;
                 this.setParams()
-                axios.get(this.$store.state.host + "/onlyDoc/findAllByTitleMatchesTextTypeRefineList", {
+                axios.get(this.$store.state.host + "/onlyDocs/search/findAllByTitleMatchesTextTypeRefineList", {
                     params: this.paramsObj
                 }).then(res => {
                     //数据清洗

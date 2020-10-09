@@ -74,7 +74,7 @@
                 autNumCount: 0,
                 autArrCount: 0,
 
-                url: "/onlyDoc/findAllByTitleMatchesTextAuthorRefineList",
+                url: "/onlyDocs/search/findAllByTitleMatchesTextAuthorRefineList",
 
                 paramsObj: {}
 
