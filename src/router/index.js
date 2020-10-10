@@ -86,6 +86,11 @@ const routes = [
         name:'resjou',
         component: () => import('../views/Result/ResultJournal')
     },
+    {
+        path: '/charts',
+        name:'charts',
+        component: () => import('../views/charts/Charts')
+    },
 ]
 
 const router = new VueRouter({
