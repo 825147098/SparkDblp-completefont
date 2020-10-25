@@ -24,10 +24,10 @@
                     {
                         name: '文章',
                         type: 'line',
-                        symbol: 'trigger',
-                        symbolSize:8,
+                         symbol: 'line',
+                        symbolSize:0,
                         itemStyle: {
-                            borderWidth: 3,
+                            // borderWidth: 3,
                             borderColor: 'black',
                             color: 'gray'
                         },
@@ -69,21 +69,22 @@
                     //     },
                     //     data: [[1513, 6260], [2210, 149], [429, 114], [1346, 4250], [0, 45], [167, 672], [55, 176], [394, 2080], [1630, 6990], [21, 202], [2394, 5210], [344, 738], [1, 58], [582, 3320], [2927, 17110], [2996, 18330], [3459, 13930], [3303, 14010], [3349, 10430], [2394, 8940]]
                     // },
-                // ],
-                //
-                // seriesDataC: [
+                ],
+
+                seriesDataC: [
                     {
                         name: '文章_C',
                         type: 'line',
-                        symbol: 'triangle',
-                        symbolSize:8,
+                        symbol:'image://' + require('@/assets/dotted.jpg'),
+                        symbolSize:0,
                         itemStyle: {
-                            borderWidth: 3,
+                            // borderWidth: 3,
                             borderColor: 'black',
                             color: 'gray'
                         },
                         lineStyle: {
                             color: 'gray',
+                            type:'dashed',
                             width: 2,
                         },
                         data: [[9286, 161], [13009, 298], [777, 191.5], [3653, 311.5], [0, 35], [216, 177.5], [69, 93.5], [619, 139], [6420, 272], [24, 101.5], [15253, 251.5], [750, 92], [1, 43], [4971, 310], [20395, 563.5], [23301, 1190], [27833, 2030], [34466, 2755], [29683, 1780], [21997, 411.5]]
@@ -138,8 +139,31 @@
                         return a[0] - b[0]
                     })
 
+                    let a = 49.9;
+                    let b = 0.451;
                     item.data = item.data.map(function (item2) {
-                        return [Math.log(item2[0]), item2[1]]
+                        let ln = Math.log(item2[0]);
+                        let lny = b * ln;
+                        // console.log(lny)
+                        return [ln, a * Math.exp(lny)];
+                    })
+
+                    return {
+                        name: item.name,
+                        type: item.type,
+                        data: item.data
+                    }
+                })
+
+                this.seriesDataC.map(function (item) {
+                    item.data = item.data.sort(function (a, b) {
+                        return a[0] - b[0]
+                    })
+
+                    let a = 3.229E-7;
+                    let b = 2.176;
+                    item.data = item.data.map(function (item2) {
+                        return [Math.log(item2[0]), a * Math.exp(b * Math.log(item2[0]))];
                     })
 
                     return {
@@ -149,6 +173,7 @@
                     }
                 })
                 // console.log(this.seriesData)
+                this.seriesData.push(this.seriesDataC[0]);
                 var option = {
                     title: {
                         text: this.title + '对比'
@@ -188,69 +213,69 @@
 
             },
 
-            // setChartcs() {
-            //     var myChart = this.$echarts.init(document.getElementById('chartc'),
-            //         "light"
-            //     )
-            //
-            //
-            //     this.seriesDataC.map(function (item) {
-            //         item.data = item.data.sort(function (a, b) {
-            //             return a[0] - b[0]
-            //         })
-            //
-            //         item.data = item.data.map(function (item2) {
-            //             return [Math.log(item2[0]), item2[1]]
-            //         })
-            //
-            //         return {
-            //             name: item.name,
-            //             type: item.type,
-            //             data: item.data
-            //         }
-            //     })
-            //     // console.log(this.seriesData)
-            //     var option = {
-            //         title: {
-            //             text: this.title + '(有缓存)'
-            //         },
-            //         tooltip: {
-            //             trigger: 'axis'
-            //         },
-            //         legend: {
-            //             data: this.legend
-            //         },
-            //         grid: {
-            //             left: '5%',    // 组件离容器左侧的距离,百分比字符串或整型数字
-            //             right: '8%',
-            //             bottom: '3%',
-            //             containLabel: true
-            //         },
-            //         toolbox: {
-            //             feature: {
-            //                 saveAsImage: {}
-            //             }
-            //         },
-            //         xAxis: {
-            //             name: 'ln(N)',
-            //             min: 0,
-            //             max: 12,
-            //             step:0.5
-            //         },
-            //         yAxis: {
-            //             name: '时间/ms',
-            //         },
-            //         series: this.seriesDataC
-            //     };
-            //
-            //     myChart.setOption(option);
-            //
-            // }
+            setChartcs() {
+                var myChart = this.$echarts.init(document.getElementById('chartc'),
+                    "light"
+                )
+
+
+                this.seriesDataC.map(function (item) {
+                    item.data = item.data.sort(function (a, b) {
+                        return a[0] - b[0]
+                    })
+
+                    item.data = item.data.map(function (item2) {
+                        return [Math.log(item2[0]), item2[1]]
+                    })
+
+                    return {
+                        name: item.name,
+                        type: item.type,
+                        data: item.data
+                    }
+                })
+                // console.log(this.seriesData)
+                var option = {
+                    title: {
+                        text: this.title + '(有缓存)'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data: this.legend
+                    },
+                    grid: {
+                        left: '5%',    // 组件离容器左侧的距离,百分比字符串或整型数字
+                        right: '8%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    xAxis: {
+                        name: 'ln(N)',
+                        min: 0,
+                        max: 12,
+                        step:0.5
+                    },
+                    yAxis: {
+                        name: '时间/ms',
+                    },
+                    series: this.seriesDataC
+                };
+
+                myChart.setOption(option);
+
+            }
         },
 
         mounted() {
             this.setCharts()
-            // this.setChartcs()
+            this.setChartcs()
         },
 
     }
@@ -264,7 +289,7 @@
     }
 
     #chartc {
-        /*display: none;*/
+        display: none;
         height: 700px;
         width: 1000px;
     }
