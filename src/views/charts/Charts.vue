@@ -7,8 +7,8 @@
     <div id="chartc">
 
     </div>
-
-    <el-button @click="testAuthor(xml)">xml</el-button>
+    <el-input v-model="innerData" size="small" style="width: 200px"></el-input>
+    <el-button @click="test()">xml</el-button>
   </el-container>
 
 </template>
@@ -125,7 +125,9 @@ export default {
         //     },
         //     data: [[1513, 60.5], [2210, 108.5], [429, 110], [1346, 54.5], [0, 27], [167, 104.5], [55, 89], [394, 52], [1630, 196.5], [21, 50], [2394, 34.5], [344, 13], [1, 59], [582, 31], [2927, 79.5], [2996, 81], [3459, 100], [3303, 124], [3349, 50], [2394, 87.5]]
         // },
-      ]
+      ],
+
+      innerData:'',
 
 
     }
@@ -216,8 +218,20 @@ export default {
       myChart.setOption(option);
 
     },
+    test() {
+
+      let inner;
+      if(this.innerData !== '')
+          inner = this.innerData;
+      let that = this
+      for (let i = 0; i < 5; i++) {
+        setTimeout( function () {
+          that.testAuthor(inner);
+        },i *  2000)
+      }
+    },
+
     testAuthor(title) {
-      let param = title;
       axios.get(this.$store.state.host + "/onlyDocs/search/findAllByTitleMatchesTextAuthorRefineList", {
         params: {
           title: title
@@ -225,71 +239,76 @@ export default {
       }).then(res => {
         console.log(res);
       })
-    },
-    setChartcs() {
-      var myChart = this.$echarts.init(document.getElementById('chartc'),
-          "light"
-      )
-
-
-      this.seriesDataC.map(function (item) {
-        item.data = item.data.sort(function (a, b) {
-          return a[0] - b[0]
-        })
-
-        item.data = item.data.map(function (item2) {
-          return [Math.log(item2[0]), item2[1]]
-        })
-
-        return {
-          name: item.name,
-          type: item.type,
-          data: item.data
-        }
-      })
-      // console.log(this.seriesData)
-      var option = {
-        title: {
-          text: this.title + '(有缓存)'
-        },
-        tooltip: {
-          trigger: 'axis'
-        },
-        legend: {
-          data: this.legend
-        },
-        grid: {
-          left: '5%',    // 组件离容器左侧的距离,百分比字符串或整型数字
-          right: '8%',
-          bottom: '3%',
-          containLabel: true
-        },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
-        },
-        xAxis: {
-          name: 'ln(N)',
-          min: 0,
-          max: 12,
-          step: 0.5
-        },
-        yAxis: {
-          name: '时间/ms',
-        },
-        series: this.seriesDataC
-      };
-
-      myChart.setOption(option);
 
     }
-  },
 
-  mounted() {
-    this.setCharts()
-    this.setChartcs()
   },
+  setChartcs() {
+    var myChart = this.$echarts.init(document.getElementById('chartc'),
+        "light"
+    )
+
+
+    this.seriesDataC.map(function (item) {
+      item.data = item.data.sort(function (a, b) {
+        return a[0] - b[0]
+      })
+
+      item.data = item.data.map(function (item2) {
+        return [Math.log(item2[0]), item2[1]]
+      })
+
+      return {
+        name: item.name,
+        type: item.type,
+        data: item.data
+      }
+    })
+    // console.log(this.seriesData)
+    var option = {
+      title: {
+        text: this.title + '(有缓存)'
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      legend: {
+        data: this.legend
+      },
+      grid: {
+        left: '5%',    // 组件离容器左侧的距离,百分比字符串或整型数字
+        right: '8%',
+        bottom: '3%',
+        containLabel: true
+      },
+      toolbox: {
+        feature: {
+          saveAsImage: {}
+        }
+      },
+      xAxis: {
+        name: 'ln(N)',
+        min: 0,
+        max: 12,
+        step: 0.5
+      },
+      yAxis: {
+        name: '时间/ms',
+      },
+      series: this.seriesDataC
+    };
+
+    myChart.setOption(option);
+
+  }
+,
+
+mounted()
+{
+  this.setCharts()
+  this.setChartcs()
+}
+,
 
 }
 </script>
@@ -298,7 +317,7 @@ export default {
 #chart {
   height: 700px;
   width: 1000px;
-  /*display: none;*/
+  display: none;
 }
 
 #chartc {
