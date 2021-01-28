@@ -224,7 +224,7 @@ export default {
       if(this.innerData !== '')
           inner = this.innerData;
       let that = this
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 1; i++) {
         setTimeout( function () {
           that.testAuthor(inner);
         },i *  2000)

@@ -11,7 +11,8 @@ export default new Vuex.Store({
 
         backgroundEffect:true,
 
-        host: "http://192.168.100.44:8080",
+        // host: "http://192.168.100.44:8080",
+        host: "http://localhost:8080",
 
         showObj:{
             authorflag:true,
