@@ -34,27 +34,6 @@
             </el-menu-item>
             <!--                    <el-menu-item index="searchByID">搜索ID</el-menu-item>-->
         </el-submenu>
-<!--        <el-menu-item style="float: right">-->
-<!--            <template slot="title" style="float: left">-->
-<!--                背景特效开关-->
-<!--            </template>-->
-<!--            <el-switch-->
-<!--                    v-model="value"-->
-<!--                    active-color="#13ce66"-->
-<!--                    inactive-color="#ff4949">-->
-<!--            </el-switch>-->
-<!--        </el-menu-item>-->
-        <!--                <el-submenu index="about">-->
-        <!--                    <template slot="title">about</template>-->
-        <!--                    <el-menu-item index="aboutFAQ">问题查找</el-menu-item>-->
-        <!--                    &lt;!&ndash;//Frequently Asked Questions&ndash;&gt;-->
-        <!--                    <el-menu-item index="aboutTeam">团队</el-menu-item>-->
-        <!--                    &lt;!&ndash;//项目团队&ndash;&gt;-->
-        <!--                    <el-menu-item index="aboutLicense">许可</el-menu-item>-->
-        <!--                    &lt;!&ndash;//版权，许可，使用条款，免责声明&ndash;&gt;-->
-        <!--                    <el-menu-item index="aboutPrivacy">隐私</el-menu-item>-->
-        <!--                    &lt;!&ndash;//数据隐私政策&ndash;&gt;-->
-        <!--                </el-submenu>-->
     </el-menu>
 </template>
 

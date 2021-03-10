@@ -7,17 +7,18 @@ export default new Vuex.Store({
     state: {
         radioLabel: 0,
         inputfalg: false,
-        inputData: null,
 
-        backgroundEffect:true,
+        backgroundEffect: true,
 
         // host: "http://192.168.100.44:8080",
         host: "http://localhost:8080",
 
-        showObj:{
-            authorflag:true,
-            venueflag:true,
+        showObj: {
+            authorflag: true,
+            venueflag: true,
         },
+
+        returnList: [],
 
         serchObj: {
             year: '',
@@ -25,6 +26,7 @@ export default new Vuex.Store({
             type: '',
             authors: [],
             title: '',
+            filter: '',
             yearflag: false,
             autflag: false,
             typeflag: false,
@@ -34,6 +36,9 @@ export default new Vuex.Store({
 
     },
     mutations: {
+        setReturnList(state, payload) {
+            state.returnList = payload
+        },
         increment(state, payload) {
             state.serchObj.title = '';
             state.serchObj.venue = '';
@@ -43,10 +48,11 @@ export default new Vuex.Store({
 
             state.radioLabel = payload.newLabel;
             state.serchObj.title = payload.newInput.title;
-            state.serchObj.venue = payload.newInput.venue;
-            state.serchObj.type = payload.newInput.type;
-            state.serchObj.authors = payload.newInput.author;
-            state.serchObj.year = payload.newInput.year;
+            state.serchObj.filter = payload.newInput.filter;
+            // state.serchObj.venue = payload.newInput.venue;
+            // state.serchObj.type = payload.newInput.type;
+            // state.serchObj.authors = payload.newInput.author;
+            // state.serchObj.year = payload.newInput.year;
             state.serchObj.yearflag = true;
             state.serchObj.autflag = true;
             state.serchObj.typeflag = true;
@@ -98,22 +104,22 @@ export default new Vuex.Store({
         incrementInputData(state, payload) {
             state.inputData = payload.data;
         },
-        incrementSetSerchAut(state){
+        incrementSetSerchAut(state) {
             state.showObj.authorflag = true
         },
-        incrementCleanSerchAut(state){
+        incrementCleanSerchAut(state) {
             state.showObj.authorflag = false
         },
-        incrementSetSerchVen(state){
+        incrementSetSerchVen(state) {
             state.showObj.venueflag = true
         },
-        incrementCleanSerchVen(state){
+        incrementCleanSerchVen(state) {
             state.showObj.venueflag = false
         },
-        turnOnbackgroundEffect(state){
+        turnOnbackgroundEffect(state) {
             state.backgroundEffect = true;
         },
-        turnOffbackgroundEffect(state){
+        turnOffbackgroundEffect(state) {
             state.backgroundEffect = false;
         }
 
