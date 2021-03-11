@@ -6,17 +6,16 @@
         <template slot="title" class="head-hide">
           [{{ flag }}] 出版物搜索结果
         </template>
-        <p v-show="dataFlag"
-           class="infoMatch"
-        >
-          匹配到{{ pageDetail.totalElements }}条结果</p>
+        <!--        <p v-show="dataFlag"
+                   class="infoMatch">
+                  匹配到{{ pageDetail.totalElements }}条结果
+                </p>-->
         <!--                出版物列表-->
-        <ul v-show="dataFlag"
-            class="putList"
-            v-for="year in yearList" :key="year"
-        >
-          <li class="year">{{ year }}</li>
-          <li v-for="item in pubList[year]" :key="JSON.stringify(item)">
+        <div class="putList"
+             v-for="(value,year,index) in pubList"
+             :key="index">
+          <li class="year">{{ -year }}</li>
+          <li v-for="item in value" :key="JSON.stringify(item)">
             <BookAndTheseItem v-if="item.type == 'Book and Theses'"
                               :inner-data="item"
             ></BookAndTheseItem>
@@ -42,7 +41,8 @@
                            :inner-data="item">
             </WithdrawnItem>
           </li>
-        </ul>
+
+        </div>
         <!--                加载图标-->
         <ul v-show="loadFlag"
             class="putList">
@@ -96,6 +96,8 @@ import PartInBookOrCollItem from "../bookTypeItem/PartInBookOrCollItem";
   ["reference", 'Reference Works'],
   ["withdrawn", 'Withdrawn Item']
 ])*/
+import _ from 'lodash'
+// let Array = import('lodash/array');
 export default {
   name: "CompleteResult",
   components: {
@@ -110,10 +112,10 @@ export default {
   },
   data: function () {
     return {
-      queryObj: {
+      /*queryObj: {
         title: '',
         filter: ''
-      },
+      },*/
       title: '',
       page: 0,
       size: '',
@@ -124,9 +126,9 @@ export default {
       loadFlag: true,
       dataFlag: false,
 
-      pubList: [],
-      waitList: [],
-      yearList: [],
+      // pubList: [],
+      // waitList: [],
+      // yearList: [],
 
       parmasObj: {},
       parmasFlag: false
@@ -135,8 +137,6 @@ export default {
 
 
   methods: {
-
-
     //修改折叠板标记
     changeFalg() {
       if (this.flag === '-')
@@ -217,33 +217,7 @@ export default {
             }, 2000)
           }
         },*/
-    //分组函数
-    group_signal(data, key) {
-      return data.reduce(function (prev, cur) {
-        (prev[cur[key]] = prev[cur[key]] || []).push(cur);
-        return prev;
-      }, {});
-    },
-    //按照年份分组
-    groupBy() {
-      if (this.pubList.length > 0) {
-        this.pubList.splice(0, this.pubList);
-      }
-      this.pubList = this.group_signal(this.waitList, "year");
-      // console.log(this.pubList)
-    },
-    //年份提取排序
-    sortYear(data) {
-      this.yearList = data.sort((it1, it2) => {
-        let year1 = it1.year
-        let year2 = it2.year
-        if (year1 == null) year1 = 0;
-        if (year2 == null) year1 = 0;
 
-        year1 - year2
-      });
-      // console.log(this.yearList)
-    },
 
     changeType() {
       console.log("发生已废弃的changeType的引用")
@@ -251,12 +225,32 @@ export default {
 
   },
 
-
-  watch: {
-    "$store.state.returnList": function () {
-      this.waitList = this.$store.state.returnList
+  computed: {
+    pubList() {
+      let t = this.$store.state.returnList;
+      /*let sorted = t.sort((it1, it2) => {
+        let year1 = it1.year
+        let year2 = it2.year
+        if (year1 == null) year1 = 0;
+        if (year2 == null) year1 = 0;
+        return year2 - year1
+        // return year1 - year2
+      })
+*/
+      //加个负号是为了方便排序，显示的时候记得去掉
+      return _.groupBy(t, it => -it.year)
     }
   },
+  /*  watch: {
+      "$store.state.returnList"(newVal, oldVal) {
+        console.log(newVal);
+        console.log(oldVal);
+        this.waitList = this.$store.state.returnList
+        // let sorted = this.sortByYear(this.waitList);
+        // this.pubList = this.groupByYear(sorted);
+        // console.log(this.pubList);
+      }
+    },*/
   /*
     mounted() {
       this.title = this.$store.state.serchObj.title;

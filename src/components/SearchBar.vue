@@ -148,6 +148,7 @@ export default {
       if (qObj.title == '') {
         this.$message.warning('空白的输入')
       } else {
+        this.$store.commit("setQueryObj", qObj);
         // eslint-disable-next-line no-unused-vars
         this.getList(qObj)
       }

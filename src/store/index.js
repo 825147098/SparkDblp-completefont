@@ -20,6 +20,10 @@ export default new Vuex.Store({
 
         returnList: [],
 
+        queryObj: {
+            title: '',
+            filter: '',
+        },
         serchObj: {
             year: '',
             venue: '',
@@ -36,6 +40,9 @@ export default new Vuex.Store({
 
     },
     mutations: {
+        setQueryObj(state, payload) {
+            state.queryObj = payload
+        },
         setReturnList(state, payload) {
             state.returnList = payload
         },

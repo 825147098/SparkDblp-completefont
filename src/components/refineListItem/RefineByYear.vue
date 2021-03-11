@@ -73,20 +73,20 @@
 
                 numCount: 0,
                 yearArrCount: 0,
-
-                paramsObj: {}
+              url:'/onlyDocs/search/findYearRefineByRSQL',
+              paramsObj: {}
             }
         },
 
         methods: {
             //获取数据
-            getYearData() {
+            getYearData(qObj) {
                 this.loadFlag = true;
                 let cont = this.numCount;
                 this.yearArrCount = 0;
-                this.setParams()
-                axios.get(this.$store.state.host + "/onlyDocs/search/findAllByTitleMatchesTextYearRefineList", {
-                    params: this.paramsObj
+                // this.setParams()
+                axios.get(this.$store.state.host + this.url, {
+                    params: qObj
                 }).then(res => {
                     //数据清洗
                     this.yearTestList = res.data.map(function (item) {
@@ -185,7 +185,7 @@
                 return result;
             },
             //设置axios参数
-            setParams() {
+/*            setParams() {
                 this.paramsObj = {};
                 if (this.$store.state.serchObj.title != '') {
                     this.paramsObj["title"] = this.$store.state.serchObj.title;
@@ -207,15 +207,15 @@
                 if (this.$store.state.serchObj.type != '') {
                     this.paramsObj["type"] = this.$store.state.serchObj.type;
                 }
-            }
+            }*/
 
         },
 
         watch: {
             //监控标记
-            '$store.state.serchObj.yearflag': function () {
-                if (this.$store.state.serchObj.yearflag) {
-                    this.getYearData();
+            '$store.state.returnList': function () {
+                if (this.$store.state.queryObj) {
+                    this.getYearData(this.$store.state.queryObj);
                     //     this.$store.commit("incrementCleanFlag")
                 }
             }

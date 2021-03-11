@@ -370,22 +370,22 @@ export default {
       })
     },
     //分组函数
-    group_signal(data, key) {
+/*    group_signal(data, key) {
       return data.reduce(function (prev, cur) {
         (prev[cur[key]] = prev[cur[key]] || []).push(cur);
         return prev;
       }, {});
-    },
+    },*/
     //列表按照年份分组
-    groupBy() {
+/*    groupBy() {
       if (this.pubList.length > 0) {
         this.pubList.splice(0, this.pubList);
       }
       this.pubList = this.group_signal(this.filterList, "year");
       // console.log(this.pubList)
-    },
+    },*/
     //年份分组排序
-    sortYear() {
+/*    sortYear() {
       if (this.yearList.length > 0) {
         this.yearList.splice(0, this.yearList.length);
       }
@@ -402,7 +402,7 @@ export default {
       });
       this.yearList = yearArr;
       // console.log(this.yearList)
-    },
+    },*/
     //列表调用
     pubSort() {
       this.groupBy();
