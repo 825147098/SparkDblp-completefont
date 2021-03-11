@@ -26,7 +26,14 @@ export default new Vuex.Store({
 
         //出版物搜索返回的列表
         returnList: [],
-
+        //作者refineList
+        authorRefineList: [],
+        //type refineList
+        typeRefineList: [],
+        //YearRefineList
+        yearRefineList: [],
+        //venueRefineList
+        venueRefineList: [],
         serchObj: {
             year: '',
             venue: '',
@@ -48,6 +55,18 @@ export default new Vuex.Store({
         },
         setReturnList(state, payload) {
             state.returnList = payload
+        },
+        setTypeRefineList(state, payload) {
+            state.typeRefineList = payload
+        },
+        setYearRefineList(state, payload) {
+            state.yearRefineList = payload
+        },
+        setVenueRefineList(state, payload) {
+            state.venueRefineList = payload
+        },
+        setAuthorRefineList(state, payload) {
+            state.authorRefineList = payload
         },
         increment(state, payload) {
             state.serchObj.title = '';

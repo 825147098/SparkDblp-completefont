@@ -48,7 +48,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 
 export default {
   name: "RefineByType",
@@ -58,7 +57,7 @@ export default {
       typeList: [],
 
       loadFlag: true,
-      url: "/onlyDocs/search/findTypeRefineByRSQL",
+      // url: "/onlyDocs/search/findTypeRefineByRSQL",
       sqlSize: 0,
 
       typeTestList: [],
@@ -70,8 +69,43 @@ export default {
   },
 
   methods: {
+    transformTypeData(data) {
+      //数据清洗
+      this.typeTestList = data.map(function (item) {
+        // item.num = this.toThousands(item.num);
+        return {
+          "_VALUE": item.group,
+          "type": item.group,
+          "img": "el-icon-circle-plus",
+          "show": false,
+          "num": item.count
+        };
+      });
+      // console.log(res.data)
+      //类型映射
+      this.changeType()
+      //类型选中
+      for (let i = 0; i < this.typeTestList.length; i++) {
+        if (this.$store.state.serchObj.type === '')
+          break;
+        else {
+          if (this.$store.state.serchObj.type == this.typeTestList[i].type) {
+            this.typeTestList[i].show = true;
+            this.typeTestList[i].img = "el-icon-remove";
+          }
+        }
+      }
+
+      this.typeList = this.typeTestList
+      //结果全部数量
+      this.sqlSize = this.typeTestList.length
+      this.loadFlag = false;
+      //加载完成删除标记
+      this.$store.commit("incrementCleanFlag", {flag: "typeflag"})
+      this.$store.commit("incrementCleanInputFlag");
+    },
     //获取数据
-    getTypeData(qObj) {
+/*    getTypeData(qObj) {
       this.loadFlag = true;
       // this.setParams()
       axios.get(this.$store.state.host + this.url, {
@@ -113,7 +147,7 @@ export default {
       }).catch(error => {
         console.log(error)
       })
-    },
+    },*/
     //鼠标移入
     mouseEnter(index) {
       if (this.typeList[index].img === "el-icon-circle-plus")
@@ -215,17 +249,17 @@ export default {
 
   watch: {
     //标记监控
-    '$store.state.returnList': function () {
-      if (this.$store.state.queryObj) {
-        this.getTypeData(this.$store.state.queryObj);
-        //     this.$store.commit("incrementCleanFlag")
-      }
+    '$store.state.typeRefineList': function () {
+      // if (this.$store.state.queryObj) {
+      this.transformTypeData(this.$store.state.typeRefineList);
+      //     this.$store.commit("incrementCleanFlag")
+      // }
     }
   },
 
-  created() {
-    this.getTypeData();
-  }
+  /*  created() {
+      this.getTypeData();
+    }*/
 }
 </script>
 

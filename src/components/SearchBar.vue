@@ -23,26 +23,25 @@
                             </div>
                           </el-dropdown-item>
                         </router-link>-->
-            <router-link
-                :to="{path:'/search/author'}" tag="span">
+            <!--            <router-link
+                            :to="{path:'/search/author'}" tag="span">
+                          <el-dropdown-item>
+                            <div @click="changeRadio(1);putInputData(inputData)">
+                              作者搜索
+                            </div>
+                          </el-dropdown-item>
+                        </router-link>
+                        <router-link
+                            :to="{path:'/search/venue'}" tag="span">
+                          <el-dropdown-item>
+                            <div @click="changeRadio(2);putInputData(inputData)">
+                              会议搜索
+                            </div>
+                          </el-dropdown-item>
+                        </router-link>-->
+            <router-link :to="{path:'/search/publicat'}" tag="span">
               <el-dropdown-item>
-                <div @click="changeRadio(1);putInputData(inputData)">
-                  作者搜索
-                </div>
-              </el-dropdown-item>
-            </router-link>
-            <router-link
-                :to="{path:'/search/venue'}" tag="span">
-              <el-dropdown-item>
-                <div @click="changeRadio(2);putInputData(inputData)">
-                  会议搜索
-                </div>
-              </el-dropdown-item>
-            </router-link>
-            <router-link
-                :to="{path:'/search/publicat'}" tag="span">
-              <el-dropdown-item>
-                <div @click="changeRadio(3);putInputData(inputData)">
+                <div @click="publicationSearch(inputData)">
                   出版物搜索
                 </div>
               </el-dropdown-item>
@@ -53,13 +52,17 @@
         <!--            搜索栏-->
         <el-input
             class="searchInput"
-            @keyup.enter.native="putInputData(inputData)"
             v-model="inputData" clearable>
         </el-input>
-        <el-button
-            @click="putInputData(inputData)">
-          Search
-        </el-button>
+        <!--        <el-input
+                    class="searchInput"
+                    @keyup.enter.native="putInputData(inputData)"
+                    v-model="inputData" clearable>
+                </el-input>-->
+        <!--        <el-button
+                    @click="putInputData(inputData)">
+                  Search
+                </el-button>-->
       </div>
     </div>
   </div>
@@ -70,18 +73,7 @@ import title_image from "../assets/title_2.png";
 import MainPageMenu from "../components/MainPageMenu";
 import axios from "axios";
 
-let typeMap = new Map([
-  ["inproceedings", 'Conference and Workshop Papers'],
-  ["inproceedings", 'Conference and Workshop Papers'],
-  ["book and thesis", 'Book and Theses'],
-  ['series', 'Book and Theses'],
-  ['proceedings', 'Editorshop'],
-  ["informal", 'Informal Publications'],
-  ["incollection", 'Parts in Books or Collections'],
-  ["journals article", 'Journals Article'],
-  ["reference", 'Reference Works'],
-  ["withdrawn", 'Withdrawn Item']
-])
+
 export default {
   name: "SearchBar",
   // eslint-disable-next-line no-undef
@@ -120,39 +112,85 @@ export default {
 
   methods: {
     //设置搜索条件
-    getList(qObj) {
-      // eslint-disable-next-line no-unused-vars
-      let list = [];
-
-      /* qObj={
-         title:'',
-         filter: ''
-       }*/
-      axios.get(this.$store.state.host + "/onlyDocs/search/findAllByRSQL", {
-        params: qObj
-      }).then(res => {
-        list = res.data._embedded.onlyDocs.map(it => {
-          let t = it
-          t.type = typeMap.get(it.type)
-          return t
-        });
-        this.$store.commit("setReturnList", list);
-      }).catch(error => {
-        console.log(error);
-      })
-
-    },
-    putInputData(data) {
+    publicationSearch(data) {
       // if (this.radio == 0)
-      let qObj = this.splitText(data)
+      let splitText = (data) => {
+        // eslint-disable-next-line no-unused-vars
+        let filter;
+        let re = new RegExp(/{.*}/)
+
+        if (data.match(re) != null) {
+          filter = data
+              .match(re)[0]
+              .replace("{", "")
+              .replace("}", "")
+        }
+        // if (tmp[0] != null) temp = tmp[0].replaceAll("[\\{\\}]", "")
+        let title = data.replace(re, "")
+        return {
+          title: title,
+          filter: filter
+        }
+      };
+      let getList = (qObj) => {
+        let typeMap = new Map([
+          ["inproceedings", 'Conference and Workshop Papers'],
+          ["inproceedings", 'Conference and Workshop Papers'],
+          ["book and thesis", 'Book and Theses'],
+          ['series', 'Book and Theses'],
+          ['proceedings', 'Editorshop'],
+          ["informal", 'Informal Publications'],
+          ["incollection", 'Parts in Books or Collections'],
+          ["journals article", 'Journals Article'],
+          ["reference", 'Reference Works'],
+          ["withdrawn", 'Withdrawn Item']
+        ])
+
+        let commitRefineList = (qObj, url, storeF) => {
+          axios.get(this.$store.state.host + url, {
+            params: qObj
+          }).then(res => {
+            let data = res.data;
+            this.$store.commit(storeF, data);
+          }).catch(error => {
+            console.log(error)
+          })
+        }
+        /* qObj={
+           title:'',
+           filter: ''
+         }*/
+        axios.get(this.$store.state.host + "/onlyDocs/search/findAllByRSQL", {
+          params: qObj
+        }).then(res => {
+
+          //refineList
+          commitRefineList(qObj,"/onlyDocs/search/findAuthorRefineByRSQL",'setAuthorRefineList')
+          commitRefineList(qObj,"/onlyDocs/search/findYearRefineByRSQL",'setYearRefineList')
+          commitRefineList(qObj,"/onlyDocs/search/findPrefix2RefineByRSQL",'setVenueRefineList')
+          commitRefineList(qObj,"/onlyDocs/search/findTypeRefineByRSQL",'setTypeRefineList')
+          // getAuthorData(qObj);
+          // getYearData(qObj);
+
+          let list = res.data._embedded.onlyDocs.map(it => {
+            let t = it
+            t.type = typeMap.get(it.type)
+            return t
+          });
+          this.$store.commit("setReturnList", list);
+        }).catch(error => {
+          console.log(error);
+        })
+
+      };
+      let qObj = splitText(data)
       if (qObj.title == '') {
         this.$message.warning('空白的输入')
       } else {
         this.$store.commit("setQueryObj", qObj);
         // eslint-disable-next-line no-unused-vars
-        this.getList(qObj)
+        getList(qObj)
       }
-
     },
 
     //选择组合搜索
@@ -168,29 +206,9 @@ export default {
       this.$store.commit("incrementRadio", radio)
     },
     //信息切割
-    splitText(data) {
-      // eslint-disable-next-line no-unused-vars
-      let filter;
-      let re = new RegExp(/{.*}/)
 
-      if (data.match(re) != null) {
-        filter = data
-            .match(re)[0]
-            .replace("{", "")
-            .replace("}", "")
-      }
-      // if (tmp[0] != null) temp = tmp[0].replaceAll("[\\{\\}]", "")
-      let title = data.replace(re, "")
-      return {
-        title: title,
-        filter: filter
-      }
-    },
   },
 
-  /*mounted() {
-    this.radio = this.$store.state.radioLabel;
-  }*/
 }
 </script>
 

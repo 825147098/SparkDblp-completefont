@@ -1,7 +1,8 @@
 <template>
   <!--    组合搜索结果-->
   <el-main style="padding-top: 0; max-width: 850px">
-    <el-collapse v-model="activeName" accordion @change="changeFalg">
+    <el-collapse v-model="activeName" accordion>
+      <!--    <el-collapse v-model="activeName" accordion @change="changeFalg">-->
       <el-collapse-item name="1">
         <template slot="title" class="head-hide">
           [{{ flag }}] 出版物搜索结果
@@ -57,7 +58,8 @@
         <ul v-show="!loadFlag && this.page < this.pageDetail.totalPages - 1"
             class="putList">
           <li style="width: 100%">
-            <el-button type="text" @click="load" style="float: left">
+            <!--            <el-button type="text" @click="load" style="float: left">-->
+            <el-button type="text" style="float: left">
               点击获取更多
               <img src="https://dblp.uni-trier.de/img/waiting.anim.gif" alt="">
             </el-button>
@@ -136,94 +138,7 @@ export default {
   },
 
 
-  methods: {
-    //修改折叠板标记
-    changeFalg() {
-      if (this.flag === '-')
-        this.flag = '+';
-      else
-        this.flag = '-';
-    },
-    //获得更多的加载函数
-    load() {
-      console.log("已废弃的函数load的引用");
-    },
-
-    /*    load() {
-          if (this.dataFlag) {
-            this.loadFlag = true;
-            setTimeout(() => {
-              this.page++;
-              if (this.page > this.pageDetail.totalPages) {
-                this.$alert('没有下一页了', '温馨提示', {
-                  confirmButtonText: '确定',
-                  callback: action => {
-                    this.$message({
-                      type: 'info',
-                      message: `action: ${action}`
-                    });
-                  }
-                });
-              }
-              this.checkFlag();
-              if (this.parmasFlag) {
-                this.setParams();
-                axios.get(this.$store.state.host + "/onlyDoc/findAllByText", {
-                  params: this.paramsObj
-                }).then(res => {
-
-                  let newList = res.data._embedded.onlyDocs
-                      .map(it => {
-                        let t = it
-                        t.type = typeMap.get(it.type)
-                        return t
-                      });
-                  this.waitList = this.waitList.concat(newList);
-
-
-                  this.pubSort()
-
-                  this.loadFlag = false;
-                  console.log(1)
-
-                  // this.$store.commit("incrementCleanFlag", {flag: "conflag"})
-                  // this.$store.commit("incrementCleanInputFlag");
-                }).catch(error => {
-                  console.log(error);
-                })
-              } else {
-                axios.get(this.$store.state.host + "/onlyDocs/search/findAllByText", {
-                  params: {
-                    title: this.title,
-                    page: this.page
-                  }
-                }).then(res => {
-                  let newList = res.data._embedded.onlyDocs
-                      .map(it => {
-                        let t = it
-                        t.type = typeMap.get(it.type)
-                        return t
-                      });
-                  this.waitList = this.waitList.concat(newList);
-                  this.pubSort();
-                  this.loadFlag = false;
-
-                  // this.$store.commit("incrementCleanFlag", {flag: "conflag"})
-                  // this.$store.commit("incrementCleanInputFlag");
-                }).catch(error => {
-                  console.log(error);
-                })
-              }
-            }, 2000)
-          }
-        },*/
-
-
-    changeType() {
-      console.log("发生已废弃的changeType的引用")
-    },
-
-  },
+  methods: {},
 
   computed: {
     pubList() {

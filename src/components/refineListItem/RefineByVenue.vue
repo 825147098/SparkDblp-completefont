@@ -54,7 +54,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 
 export default {
   name: "RefineByVenue",
@@ -71,14 +70,55 @@ export default {
 
       venArrCount: 0,
       venNumCount: 0,
-      url: "/onlyDocs/search/findPrefix2RefineByRSQL",
+      // url: "/onlyDocs/search/findPrefix2RefineByRSQL",
       paramsObj: {}
     }
   },
 
   methods: {
+    transformVenueData(data) {
+      let count = 0;
+      //数据清洗
+      this.venTestList = data.map(function (item) {
+        return {
+          "_VALUE": item.property,
+          "img": "el-icon-circle-plus",
+          "show": false,
+          "venue": item.group,
+          "num": item.count
+        };
+      })
+      //选中结果
+      for (let i = 0; i < this.venTestList.length; i++) {
+        if (this.$store.state.serchObj.venue === '')
+          break;
+        else {
+          if (this.$store.state.serchObj.venue == this.venTestList[i].venue) {
+            this.venTestList[i].show = true;
+            this.venTestList[i].img = "el-icon-remove";
+          }
+        }
+      }
+
+      if (this.venArrCount + 10 <= this.venTestList.length) {
+        this.venueList = this.venTestList.slice(this.venArrCount, this.venArrCount + 10);
+        this.venArrCount += 10;
+      } else {
+        this.venueList = this.venTestList.slice(this.venArrCount);
+        this.venArrCount += this.venTestList.length;
+      }
+
+      this.sqlSize = this.venTestList.length;
+
+      this.venNumCount = count
+      this.loadFlag = false;
+      //加载完成清洗标记
+      this.$store.commit("incrementCleanFlag", {flag: "venflag"})
+      this.$store.commit("incrementCleanInputFlag");
+    },
+
     //获取数据
-    getVenueData(qObj) {
+/*    getVenueData(qObj) {
       this.loadFlag = true;
       let cont = 0;
       this.venArrCount = 0;
@@ -128,7 +168,7 @@ export default {
         console.log(error)
       })
 
-    },
+    },*/
     //点击获取更多数据
     getMoreVenData() {
       this.loadFlag = true;
@@ -184,46 +224,46 @@ export default {
       return result;
     },
     //设置axios参数
-/*    setParams() {
-      this.paramsObj = {};
-      if (this.$store.state.serchObj.title != '') {
-        this.paramsObj["title"] = this.$store.state.serchObj.title;
-      }
-      if (this.$store.state.serchObj.year != '') {
-        this.paramsObj["year"] = this.$store.state.serchObj.year;
-      }
-      if (this.$store.state.serchObj.venue != '') {
-        this.paramsObj["venue"] = this.$store.state.serchObj.venue;
-      }
-      if (this.$store.state.serchObj.authors.length > 0) {
-        let len = this.$store.state.serchObj.authors.length;
-        let author = this.$store.state.serchObj.authors[0];
-        for (let i = 1; i < len; i++) {
-          author += ',' + this.$store.state.serchObj.authors[i];
-        }
-        this.paramsObj["author"] = author;
-      }
-      if (this.$store.state.serchObj.type != '') {
-        this.paramsObj["type"] = this.$store.state.serchObj.type;
-      }
-      // this.$store.commit("incrementCleanFlag")
-    }*/
+    /*    setParams() {
+          this.paramsObj = {};
+          if (this.$store.state.serchObj.title != '') {
+            this.paramsObj["title"] = this.$store.state.serchObj.title;
+          }
+          if (this.$store.state.serchObj.year != '') {
+            this.paramsObj["year"] = this.$store.state.serchObj.year;
+          }
+          if (this.$store.state.serchObj.venue != '') {
+            this.paramsObj["venue"] = this.$store.state.serchObj.venue;
+          }
+          if (this.$store.state.serchObj.authors.length > 0) {
+            let len = this.$store.state.serchObj.authors.length;
+            let author = this.$store.state.serchObj.authors[0];
+            for (let i = 1; i < len; i++) {
+              author += ',' + this.$store.state.serchObj.authors[i];
+            }
+            this.paramsObj["author"] = author;
+          }
+          if (this.$store.state.serchObj.type != '') {
+            this.paramsObj["type"] = this.$store.state.serchObj.type;
+          }
+          // this.$store.commit("incrementCleanFlag")
+        }*/
 
   },
 
   watch: {
     //监控标记
-    '$store.state.returnList': function () {
-      if (this.$store.state.queryObj) {
-        this.getVenueData(this.$store.state.queryObj);
-        //     this.$store.commit("incrementCleanFlag")
-      }
+    '$store.state.venueRefineList': function () {
+      // if (this.$store.state.queryObj) {
+      this.transformVenueData(this.$store.state.venueRefineList);
+      //     this.$store.commit("incrementCleanFlag")
+      // }
     }
   },
-/*
-  created() {
-    this.getVenueData();
-  }*/
+  /*
+    created() {
+      this.getVenueData();
+    }*/
 }
 </script>
 
