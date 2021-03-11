@@ -18,12 +18,15 @@ export default new Vuex.Store({
             venueflag: true,
         },
 
-        returnList: [],
-
+        //出版物搜索的搜索条件
         queryObj: {
             title: '',
             filter: '',
         },
+
+        //出版物搜索返回的列表
+        returnList: [],
+
         serchObj: {
             year: '',
             venue: '',

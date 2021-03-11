@@ -1,14 +1,15 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+// import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
     {
         path: '/',
-        name: 'Home',
-        component: Home
+        // name: 'Home',
+        redirect: '/search',
+        // component: Home
     },
     {
         path: '/brores',
@@ -16,7 +17,7 @@ const routes = [
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/browse/BrowseResult.vue'),
+        component: () => import('../views/browse/BrowseResult.vue'),
 
         children: [
             {
@@ -47,7 +48,7 @@ const routes = [
             //默认页面
             {
                 path: '/',
-                redirect: '/search/complete'
+                redirect: '/search/publicat'
             }, {
                 path: '/search/rules',
                 name: 'rule',

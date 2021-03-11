@@ -29,7 +29,7 @@
         <el-submenu index="search">
             <template slot="title">搜索</template>
             <el-menu-item
-                    route="/search/complete"
+                    route="/search"
                     index="searchDblp">搜索dblp
             </el-menu-item>
             <!--                    <el-menu-item index="searchByID">搜索ID</el-menu-item>-->

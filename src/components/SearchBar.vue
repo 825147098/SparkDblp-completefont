@@ -15,14 +15,14 @@
             {{ drownArry[radio] }}<i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown">
-            <router-link
-                :to="{path:'/search/complete'}" tag="span">
-              <el-dropdown-item>
-                <div @click="changeRadio(0);putInputData(inputData)">
-                  组合搜素
-                </div>
-              </el-dropdown-item>
-            </router-link>
+            <!--            <router-link
+                            :to="{path:'/search/complete'}" tag="span">
+                          <el-dropdown-item>
+                            <div @click="changeRadio(0);putInputData(inputData)">
+                              组合搜素
+                            </div>
+                          </el-dropdown-item>
+                        </router-link>-->
             <router-link
                 :to="{path:'/search/author'}" tag="span">
               <el-dropdown-item>
