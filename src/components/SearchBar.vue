@@ -18,7 +18,7 @@
             <router-link
                 :to="{path:'/search/complete'}" tag="span">
               <el-dropdown-item>
-                <div @click="changeRadio(0)">
+                <div @click="changeRadio(0);putInputData(inputData)">
                   组合搜素
                 </div>
               </el-dropdown-item>
@@ -26,7 +26,7 @@
             <router-link
                 :to="{path:'/search/author'}" tag="span">
               <el-dropdown-item>
-                <div @click="changeRadio(1)">
+                <div @click="changeRadio(1);putInputData(inputData)">
                   作者搜索
                 </div>
               </el-dropdown-item>
@@ -34,7 +34,7 @@
             <router-link
                 :to="{path:'/search/venue'}" tag="span">
               <el-dropdown-item>
-                <div @click="changeRadio(2)">
+                <div @click="changeRadio(2);putInputData(inputData)">
                   会议搜索
                 </div>
               </el-dropdown-item>
@@ -42,7 +42,7 @@
             <router-link
                 :to="{path:'/search/publicat'}" tag="span">
               <el-dropdown-item>
-                <div @click="changeRadio(3)">
+                <div @click="changeRadio(3);putInputData(inputData)">
                   出版物搜索
                 </div>
               </el-dropdown-item>
