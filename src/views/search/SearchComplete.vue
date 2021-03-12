@@ -1,8 +1,5 @@
 <template>
   <div>
-    <el-header class="header" v-show="activeShow">
-      <h1 class="headline">搜索 Spark Dblp</h1>
-    </el-header>
     <!--        作者会议碎片结果-->
     <el-container v-show="activeShow">
       <AuthorSearchResult v-if="showAutList" :search-author=false class="autList"></AuthorSearchResult>
@@ -12,7 +9,9 @@
       <!--            出版物结果-->
       <CompleteResult></CompleteResult>
       <!--            搜索结果细化栏-->
-      <ComRefineList></ComRefineList>
+      <el-aside>
+        <ComRefineList></ComRefineList>
+      </el-aside>
     </el-container>
     <!--        <SearchRule v-else></SearchRule>-->
   </div>

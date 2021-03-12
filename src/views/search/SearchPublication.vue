@@ -1,14 +1,13 @@
 <template>
   <el-container>
-    <el-header class="header" v-show="activeShow">
-      <h1 class="headline">搜索 Spark Dblp For 出版物 </h1>
+    <el-header class="header">
+      <h1 class="headline">出版物</h1>
     </el-header>
-    <el-container >
+    <el-container>
       <!--            出版物搜索结果-->
       <CompleteResult></CompleteResult>
       <ComRefineList></ComRefineList>
     </el-container>
-<!--    <SearchRule v-else></SearchRule>-->
   </el-container>
 </template>
 

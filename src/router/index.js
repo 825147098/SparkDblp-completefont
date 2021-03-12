@@ -48,7 +48,7 @@ const routes = [
             //默认页面
             {
                 path: '/',
-                redirect: '/search/publicat'
+                redirect: '/search/rules'
             }, {
                 path: '/search/rules',
                 name: 'rule',

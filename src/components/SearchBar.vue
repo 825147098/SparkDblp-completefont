@@ -3,11 +3,6 @@
   <div class="searchBarMain">
     <!--            导航栏-->
     <MainPageMenu class="searchBarMenu"></MainPageMenu>
-    <!--        图标-->
-    <!--        <el-image :src=url-->
-    <!--                  class="searchBarImg"-->
-    <!--                  fit="cover">-->
-    <!--        </el-image>-->
     <div class="searchCon">
       <div style="justify-items: right">
         <el-dropdown type="primary">
@@ -15,30 +10,21 @@
             {{ drownArry[radio] }}<i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown">
-            <!--            <router-link
-                            :to="{path:'/search/complete'}" tag="span">
-                          <el-dropdown-item>
-                            <div @click="changeRadio(0);putInputData(inputData)">
-                              组合搜素
-                            </div>
-                          </el-dropdown-item>
-                        </router-link>-->
-            <!--            <router-link
-                            :to="{path:'/search/author'}" tag="span">
-                          <el-dropdown-item>
-                            <div @click="changeRadio(1);putInputData(inputData)">
-                              作者搜索
-                            </div>
-                          </el-dropdown-item>
-                        </router-link>
-                        <router-link
-                            :to="{path:'/search/venue'}" tag="span">
-                          <el-dropdown-item>
-                            <div @click="changeRadio(2);putInputData(inputData)">
-                              会议搜索
-                            </div>
-                          </el-dropdown-item>
-                        </router-link>-->
+            <router-link :to="{path:'/search/author'}" tag="span">
+              <el-dropdown-item>
+                <div @click="changeRadio(1);putInputData(inputData)">
+                  作者搜索
+                </div>
+              </el-dropdown-item>
+            </router-link>
+            <router-link
+                :to="{path:'/search/venue'}" tag="span">
+              <el-dropdown-item>
+                <div @click="changeRadio(2);putInputData(inputData)">
+                  会议搜索
+                </div>
+              </el-dropdown-item>
+            </router-link>
             <router-link :to="{path:'/search/publicat'}" tag="span">
               <el-dropdown-item>
                 <div @click="publicationSearch(inputData)">
@@ -48,12 +34,19 @@
             </router-link>
           </el-dropdown-menu>
         </el-dropdown>
-        <!--            路由选择-->
         <!--            搜索栏-->
         <el-input
             class="searchInput"
             v-model="inputData" clearable>
         </el-input>
+        <!--            <router-link
+                :to="{path:'/search/complete'}" tag="span">
+              <el-dropdown-item>
+                <div @click="changeRadio(0);putInputData(inputData)">
+                  组合搜素
+                </div>
+              </el-dropdown-item>
+            </router-link>-->
         <!--        <el-input
                     class="searchInput"
                     @keyup.enter.native="putInputData(inputData)"
@@ -136,6 +129,7 @@ export default {
         let typeMap = new Map([
           ["inproceedings", 'Conference and Workshop Papers'],
           ["inproceedings", 'Conference and Workshop Papers'],
+          ["conference and workshop", 'Conference and Workshop Papers'],
           ["book and thesis", 'Book and Theses'],
           ['series', 'Book and Theses'],
           ['proceedings', 'Editorshop'],
@@ -165,10 +159,10 @@ export default {
         }).then(res => {
 
           //refineList
-          commitRefineList(qObj,"/onlyDocs/search/findAuthorRefineByRSQL",'setAuthorRefineList')
-          commitRefineList(qObj,"/onlyDocs/search/findYearRefineByRSQL",'setYearRefineList')
-          commitRefineList(qObj,"/onlyDocs/search/findPrefix2RefineByRSQL",'setVenueRefineList')
-          commitRefineList(qObj,"/onlyDocs/search/findTypeRefineByRSQL",'setTypeRefineList')
+          commitRefineList(qObj, "/onlyDocs/search/findAuthorRefineByRSQL", 'setAuthorRefineList')
+          commitRefineList(qObj, "/onlyDocs/search/findYearRefineByRSQL", 'setYearRefineList')
+          commitRefineList(qObj, "/onlyDocs/search/findPrefix2RefineByRSQL", 'setVenueRefineList')
+          commitRefineList(qObj, "/onlyDocs/search/findTypeRefineByRSQL", 'setTypeRefineList')
           // getAuthorData(qObj);
           // getYearData(qObj);
 
