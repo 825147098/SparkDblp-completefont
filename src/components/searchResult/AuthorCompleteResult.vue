@@ -249,8 +249,7 @@
     <el-dialog
         :visible.sync="dialogVisible"
         fullscreen="true"
-        center
-    >
+        center>
       <!--            <div>-->
       <div id="autGraph" class="autGraph"></div>
       <!--            </div>-->
@@ -369,40 +368,6 @@ export default {
         console.log(error);
       })
     },
-    //分组函数
-/*    group_signal(data, key) {
-      return data.reduce(function (prev, cur) {
-        (prev[cur[key]] = prev[cur[key]] || []).push(cur);
-        return prev;
-      }, {});
-    },*/
-    //列表按照年份分组
-/*    groupBy() {
-      if (this.pubList.length > 0) {
-        this.pubList.splice(0, this.pubList);
-      }
-      this.pubList = this.group_signal(this.filterList, "year");
-      // console.log(this.pubList)
-    },*/
-    //年份分组排序
-/*    sortYear() {
-      if (this.yearList.length > 0) {
-        this.yearList.splice(0, this.yearList.length);
-      }
-      let yearArr = [];
-      let length = this.filterList.length;
-      for (let i = 0; i < length; i++) {
-        // console.log(this.waitList[i].type)
-        if (yearArr.indexOf(this.filterList[i].year) == -1) {
-          yearArr.push(this.filterList[i].year);
-        }
-      }
-      yearArr = yearArr.sort(function (a, b) {
-        return b - a;
-      });
-      this.yearList = yearArr;
-      // console.log(this.yearList)
-    },*/
     //列表调用
     pubSort() {
       this.groupBy();

@@ -6,26 +6,24 @@
     <div class="searchCon">
       <div style="justify-items: right">
         <el-dropdown type="primary">
-          <el-button type="info">
+          <el-button type="info" @click="handleInput(radio,inputData)">
             {{ dropDownArray[radio].show }}<i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown">
-            <router-link v-for="(it, index) in dropDownArray"
-                         :key="index"
-                         tag="span">
-              <el-dropdown-item>
-                <div @click="handleInput(index,inputData)">
-                  {{ it.show }}
-                </div>
-              </el-dropdown-item>
-            </router-link>
+            <el-dropdown-item v-for="(it, index) in dropDownArray"
+                              :key="index"
+                              tag="span">
+              <div @click="handleInput(index,inputData)">
+                {{ it.show }}
+              </div>
+            </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         <!--            搜索栏-->
-        <el-input
-            class="searchInput"
-            @keyup.enter.native="handleInput(this.radio,inputData)"
-            v-model="inputData" clearable>
+        <el-input class="searchInput"
+                  @keyup.enter.native="handleInput(radio,inputData)"
+                  v-model="inputData"
+                  clearable>
         </el-input>
       </div>
     </div>
@@ -75,8 +73,8 @@ export default {
     }
   },
   methods: {
-    handleInput(radio,input) {
-      if (this.input == '') {
+    handleInput(radio, input) {
+      if (input == '') {
         this.$message.warning('请重新输入')
       } else {
         /*
@@ -85,10 +83,14 @@ export default {
          会议搜索 2
         */
         this.radio = radio;
+        let path = this.dropDownArray[radio].routerPath
+        if (this.$route.path !== path) {
+          this.$router.push({path: path});
+        }
         if (this.dropDownArray[radio].show === "出版物搜素") this.publicationSearch(input)
         if (this.dropDownArray[radio].show === "作者搜素") this.authorSearch(input)
         if (this.dropDownArray[radio].show === "会议搜素") this.venueSearch(input)
-        this.$router.push({ path: this.dropDownArray[radio].routerPath })
+
         // this.$store.commit("incrementRadio", radio)
       }
     },
@@ -174,10 +176,12 @@ export default {
       }
     },
 
+    // eslint-disable-next-line no-unused-vars
     authorSearch(data) {
 
     },
 
+    // eslint-disable-next-line no-unused-vars
     VenueSearch(data) {
 
     }

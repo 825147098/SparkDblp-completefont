@@ -1,102 +1,15 @@
 <template>
-  <!--    组合搜索结果-->
-  <el-main>
-    <div class="putList"
-         v-for="(value,year,index) in pubList"
-         :key="index">
-      <li class="year">{{ -year }}</li>
-      <li v-for="item in value" :key="JSON.stringify(item)">
-        <BookAndTheseItem v-if="item.type == 'Book and Theses'"
-                          :inner-data="item">
-        </BookAndTheseItem>
-        <ConfAndWorkItem v-else-if="item.type == 'Conference and Workshop Papers'"
-                         :inner-data="item"
-        ></ConfAndWorkItem>
-        <EditorShipItem v-else-if="item.type == 'Editorshop'"
-                        :inner-data="item"
-        ></EditorShipItem>
-        <InformalPubItem v-else-if="item.type == 'Informal Publications'"
-                         :inner-data="item"
-        ></InformalPubItem>
-        <PartInBookOrCollItem v-else-if="item.type == 'Parts in Books or Collections'"
-                              :inner-data="item"
-        ></PartInBookOrCollItem>
-        <JournalItem v-else-if="item.type == 'Journals Article'"
-                     :inner-data="item"
-        ></JournalItem>
-        <ReferenceWorkItem v-else-if="item.type == 'Reference Works'"
-                           :inner-data="item">
-        </ReferenceWorkItem>
-        <WithdrawnItem v-else-if="item.type == 'Withdrawn Item'"
-                       :inner-data="item">
-        </WithdrawnItem>
-      </li>
-    </div>
-    <!--                加载图标-->
-<!--    <ul v-show="loadFlag"
-        class="putList">
-      <li style="color: #409EFF">
-        Loading
-        <el-icon class="el-icon-loading"
-                 style="font-size: 20px "
-        ></el-icon>
-      </li>
-    </ul>-->
-    <!--                加载按钮-->
-<!--    <ul v-show="!loadFlag && this.page < this.pageDetail.totalPages - 1"
-        class="putList">
-      <li style="width: 100%">
-        &lt;!&ndash;            <el-button type="text" @click="load" style="float: left">&ndash;&gt;
-        <el-button type="text" style="float: left">
-          点击获取更多
-          <img src="https://dblp.uni-trier.de/img/waiting.anim.gif" alt="">
-        </el-button>
-        <div style="display: inline; float: right">
-          当前页码：{{ page + 1 }} / {{ this.pageDetail.totalPages }}
-        </div>
-      </li>
-    </ul>-->
-  </el-main>
+  <PublicationList :plist="pubList"/>
 </template>
 
 <script>
-// eslint-disable-next-line no-unused-vars
-import axios from 'axios';
-import BookAndTheseItem from "../bookTypeItem/BookAndTheseItem";
-import ConfAndWorkItem from "../bookTypeItem/ConfAndWorkItem";
-import EditorShipItem from "../bookTypeItem/EditorShipItem";
-import InformalPubItem from "../bookTypeItem/InformalPubItem";
-import JournalItem from "../bookTypeItem/JournalItem";
-import ReferenceWorkItem from "../bookTypeItem/ReferenceWorkItem";
-import WithdrawnItem from "../bookTypeItem/WithdrawnItem";
-import PartInBookOrCollItem from "../bookTypeItem/PartInBookOrCollItem";
-//onlydoc.type的映射规则
-// eslint-disable-next-line no-unused-vars
-/*let typeMap = new Map([
-  ["inproceedings", 'Conference and Workshop Papers'],
-  ["inproceedings", 'Conference and Workshop Papers'],
-  ["book and thesis", 'Book and Theses'],
-  ['series', 'Book and Theses'],
-  ['proceedings', 'Editorshop'],
-  ["informal", 'Informal Publications'],
-  ["incollection", 'Parts in Books or Collections'],
-  ["journals article", 'Journals Article'],
-  ["reference", 'Reference Works'],
-  ["withdrawn", 'Withdrawn Item']
-])*/
 import _ from 'lodash'
-// let Array = import('lodash/array');
+import PublicationList from "@/components/searchResult/PublicationList";
+
 export default {
   name: "CompleteResult",
   components: {
-    WithdrawnItem,
-    ReferenceWorkItem,
-    PartInBookOrCollItem,
-    JournalItem,
-    InformalPubItem,
-    EditorShipItem,
-    ConfAndWorkItem,
-    BookAndTheseItem
+    PublicationList
   },
   data: function () {
     return {
@@ -163,12 +76,3 @@ export default {
 }
 </script>
 
-<style scoped>
-@import "../../style/public.css";
-
-.year {
-  font-size: small;
-  font-weight: 800;
-}
-
-</style>
