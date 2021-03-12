@@ -12,43 +12,19 @@
           <el-dropdown-menu slot="dropdown">
             <router-link v-for="(it, index) in dropDownArray"
                          :key="index"
-                         :to="{path:it.routerPath}"
                          tag="span">
               <el-dropdown-item>
-                <div @click="handleInput(index)">
+                <div @click="handleInput(index,inputData)">
                   {{ it.show }}
                 </div>
               </el-dropdown-item>
             </router-link>
-            <!--
-                        <router-link :to="{path:'/search/publicat'}" tag="span">
-                          <el-dropdown-item>
-                            <div @click="publicationSearch(inputData)">
-                              出版物搜索
-                            </div>
-                          </el-dropdown-item>
-                        </router-link>
-                        <router-link :to="{path:'/search/author'}" tag="span">
-                          <el-dropdown-item>
-                            <div @click="changeRadio(1);putInputData(inputData)">
-                              作者搜索
-                            </div>
-                          </el-dropdown-item>
-                        </router-link>
-                        <router-link :to="{path:'/search/venue'}" tag="span">
-                          <el-dropdown-item>
-                            <div @click="changeRadio(2);putInputData(inputData)">
-                              会议搜索
-                            </div>
-                          </el-dropdown-item>
-                        </router-link>
-            -->
-
           </el-dropdown-menu>
         </el-dropdown>
         <!--            搜索栏-->
         <el-input
             class="searchInput"
+            @keyup.enter.native="handleInput(this.radio,inputData)"
             v-model="inputData" clearable>
         </el-input>
       </div>
@@ -93,37 +69,31 @@ export default {
       inputData: '',
       dropDownArray: [
         {show: "出版物搜素", routerPath: "/search/publicat"},
-        {show: "会议搜素", routerPath: "/search/venue"},
         {show: "作者搜素", routerPath: "/search/author"},
+        {show: "会议搜素", routerPath: "/search/venue"},
       ]
     }
   },
-
-  /*  watch: {
-      "$store.state.inputfalg": function () {
-        this.concatText();
-        if (this.$store.state.inputfalg) {
-          this.putInputData();
-        }
-      },
-      radio: function () {
-        if (this.radio != 4) {
-          this.concatText()
-        }
-      },
-
-      "$store.state.serchObj.conflag": function () {
-        // if (this.$store.state.serchObj.conflag) {
-        this.concatText();
-        // }
-      }
-    },*/
-
   methods: {
-
+    handleInput(radio,input) {
+      if (this.input == '') {
+        this.$message.warning('请重新输入')
+      } else {
+        /*
+         出版物搜索 0
+         作者搜索 1
+         会议搜索 2
+        */
+        this.radio = radio;
+        if (this.dropDownArray[radio].show === "出版物搜素") this.publicationSearch(input)
+        if (this.dropDownArray[radio].show === "作者搜素") this.authorSearch(input)
+        if (this.dropDownArray[radio].show === "会议搜素") this.venueSearch(input)
+        this.$router.push({ path: this.dropDownArray[radio].routerPath })
+        // this.$store.commit("incrementRadio", radio)
+      }
+    },
     //设置搜索条件
     publicationSearch(data) {
-      // if (this.radio == 0)
       let splitText = (data) => {
         // eslint-disable-next-line no-unused-vars
         let filter;
@@ -203,18 +173,15 @@ export default {
         getList(qObj)
       }
     },
-    handleInput(radio) {
-      /*
-       组合搜素 0
-       作者搜索 1
-       会议搜索 2
-       出版物搜索 3
-      */
-      this.radio = radio;
 
-      // this.$store.commit("incrementRadio", radio)
+    authorSearch(data) {
+
     },
-    //信息切割
+
+    VenueSearch(data) {
+
+    }
+
 
   },
 

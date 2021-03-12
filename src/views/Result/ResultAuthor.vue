@@ -1,7 +1,6 @@
 <template>
     <el-container style="width: 80%; margin: auto; max-width: 1150px">
        <el-header class="header" height="auto">
-           <SearchBar></SearchBar>
            <h3 class="headline">
                {{authorName}}
            </h3>
@@ -14,11 +13,11 @@
 </template>
 
 <script>
-    import SearchBar from "../../components/SearchBar";
+    // import SearchBar from "../../components/SearchBar";
     import AuthorCompleteResult from "../../components/searchResult/AuthorCompleteResult";
     export default {
         name: "resultAuthor",
-        components: {AuthorCompleteResult, SearchBar},
+        components: {AuthorCompleteResult},
         data: function () {
             return{
                 da:[]  ,
