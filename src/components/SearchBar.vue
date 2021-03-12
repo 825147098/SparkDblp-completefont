@@ -7,31 +7,43 @@
       <div style="justify-items: right">
         <el-dropdown type="primary">
           <el-button type="info">
-            {{ drownArry[radio] }}<i class="el-icon-arrow-down el-icon--right"></i>
+            {{ dropDownArray[radio].show }}<i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown">
-            <router-link :to="{path:'/search/author'}" tag="span">
+            <router-link v-for="(it, index) in dropDownArray"
+                         :key="index"
+                         :to="{path:it.routerPath}"
+                         tag="span">
               <el-dropdown-item>
-                <div @click="changeRadio(1);putInputData(inputData)">
-                  作者搜索
+                <div @click="handleInput(index)">
+                  {{ it.show }}
                 </div>
               </el-dropdown-item>
             </router-link>
-            <router-link
-                :to="{path:'/search/venue'}" tag="span">
-              <el-dropdown-item>
-                <div @click="changeRadio(2);putInputData(inputData)">
-                  会议搜索
-                </div>
-              </el-dropdown-item>
-            </router-link>
-            <router-link :to="{path:'/search/publicat'}" tag="span">
-              <el-dropdown-item>
-                <div @click="publicationSearch(inputData)">
-                  出版物搜索
-                </div>
-              </el-dropdown-item>
-            </router-link>
+            <!--
+                        <router-link :to="{path:'/search/publicat'}" tag="span">
+                          <el-dropdown-item>
+                            <div @click="publicationSearch(inputData)">
+                              出版物搜索
+                            </div>
+                          </el-dropdown-item>
+                        </router-link>
+                        <router-link :to="{path:'/search/author'}" tag="span">
+                          <el-dropdown-item>
+                            <div @click="changeRadio(1);putInputData(inputData)">
+                              作者搜索
+                            </div>
+                          </el-dropdown-item>
+                        </router-link>
+                        <router-link :to="{path:'/search/venue'}" tag="span">
+                          <el-dropdown-item>
+                            <div @click="changeRadio(2);putInputData(inputData)">
+                              会议搜索
+                            </div>
+                          </el-dropdown-item>
+                        </router-link>
+            -->
+
           </el-dropdown-menu>
         </el-dropdown>
         <!--            搜索栏-->
@@ -39,26 +51,26 @@
             class="searchInput"
             v-model="inputData" clearable>
         </el-input>
-        <!--            <router-link
-                :to="{path:'/search/complete'}" tag="span">
-              <el-dropdown-item>
-                <div @click="changeRadio(0);putInputData(inputData)">
-                  组合搜素
-                </div>
-              </el-dropdown-item>
-            </router-link>-->
-        <!--        <el-input
-                    class="searchInput"
-                    @keyup.enter.native="putInputData(inputData)"
-                    v-model="inputData" clearable>
-                </el-input>-->
-        <!--        <el-button
-                    @click="putInputData(inputData)">
-                  Search
-                </el-button>-->
       </div>
     </div>
   </div>
+  <!--            <router-link
+        :to="{path:'/search/complete'}" tag="span">
+      <el-dropdown-item>
+        <div @click="changeRadio(0);putInputData(inputData)">
+          组合搜素
+        </div>
+      </el-dropdown-item>
+    </router-link>-->
+  <!--        <el-input
+              class="searchInput"
+              @keyup.enter.native="putInputData(inputData)"
+              v-model="inputData" clearable>
+          </el-input>-->
+  <!--        <el-button
+              @click="putInputData(inputData)">
+            Search
+          </el-button>-->
 </template>
 
 <script>
@@ -77,9 +89,13 @@ export default {
   data: function () {
     return {
       url: title_image,
-      radio: 4,
+      radio: 0,
       inputData: '',
-      drownArry: ["组合搜素", "作者搜素", "会议搜素", "出版物搜素", "搜素模式"]
+      dropDownArray: [
+        {show: "出版物搜素", routerPath: "/search/publicat"},
+        {show: "会议搜素", routerPath: "/search/venue"},
+        {show: "作者搜素", routerPath: "/search/author"},
+      ]
     }
   },
 
@@ -104,6 +120,7 @@ export default {
     },*/
 
   methods: {
+
     //设置搜索条件
     publicationSearch(data) {
       // if (this.radio == 0)
@@ -186,10 +203,7 @@ export default {
         getList(qObj)
       }
     },
-
-    //选择组合搜索
-
-    changeRadio(radio) {
+    handleInput(radio) {
       /*
        组合搜素 0
        作者搜索 1
@@ -197,7 +211,8 @@ export default {
        出版物搜索 3
       */
       this.radio = radio;
-      this.$store.commit("incrementRadio", radio)
+
+      // this.$store.commit("incrementRadio", radio)
     },
     //信息切割
 
