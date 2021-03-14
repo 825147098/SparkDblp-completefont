@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>total {{ total }}</div>
+    <div class="infoMatch">总共匹配到{{ total }}条记录</div>
     <div v-for="(value,year,index) in plist"
          :key="index"
          class="putList">
