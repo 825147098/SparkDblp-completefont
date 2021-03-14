@@ -97,21 +97,20 @@ export default {
     //设置搜索条件
     publicationSearch(data) {
       let splitText = (data) => {
-        // eslint-disable-next-line no-unused-vars
-        let filter;
         let re = new RegExp(/{.*}/)
-
+        // eslint-disable-next-line no-unused-vars
+        /*let filter;
         if (data.match(re) != null) {
           filter = data
               .match(re)[0]
               .replace("{", "")
               .replace("}", "")
-        }
+        }*/
         // if (tmp[0] != null) temp = tmp[0].replaceAll("[\\{\\}]", "")
         let title = data.replace(re, "")
         return {
           title: title,
-          filter: filter
+          filter: null
         }
       };
       // eslint-disable-next-line no-unused-vars

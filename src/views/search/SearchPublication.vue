@@ -17,6 +17,7 @@
       </el-main>
       <el-aside>
         <RefineList show-name="按照作者细化"
+
                     :item-show-function="it=>`${it._VALUE}(${it.num})`"
                     :limit-init="10"
                     v-loading="loadFlag.author"
@@ -39,7 +40,6 @@
                     :limit-init="10"
                     v-loading="loadFlag.venue"
                     :list="venueList"/>
-        <!--        <ComRefineList/>-->
       </el-aside>
     </el-container>
   </el-container>
