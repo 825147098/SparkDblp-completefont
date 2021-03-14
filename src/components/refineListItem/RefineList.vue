@@ -9,10 +9,11 @@
     <ul v-else>
       <li v-for="(item,index) in list.slice(0, limit)"
           :key="index">
-        <el-button type="text"
-                   size="small"
-                   @click="itemClickCallback(item,index)"
-                   style="padding: 0">
+        <el-button class="authorButton"
+            type="text"
+            size="small"
+            @click="itemClickCallback(item,index)"
+            style="padding: 0">
           {{ itemShowFunction(item) }}
         </el-button>
       </li>
