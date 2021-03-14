@@ -17,7 +17,6 @@
       </el-main>
       <el-aside>
         <RefineList show-name="按照作者细化"
-
                     :item-show-function="it=>`${it._VALUE}(${it.num})`"
                     :limit-init="10"
                     v-loading="loadFlag.author"
@@ -30,6 +29,7 @@
                     :list="typeList"/>
         <!--年份细化-->
         <RefineList show-name="按照年份细化"
+                    :item-click-callback="f"
                     :item-show-function="it=>`${it._VALUE}(${it.num})`"
                     :limit-init="10"
                     v-loading="loadFlag.year"
@@ -73,6 +73,12 @@ export default {
 
   data: function () {
     return {
+      f: it => {
+        let qObj = this.$store.state.queryObj;
+        qObj.filter = `year==${it._VALUE}`
+        this.$store.commit('setQueryObj', qObj)
+        this.initialize(qObj)
+      },
       authorListTemp: [],
       typeListTemp: [],
       yearListTemp: [],
@@ -87,7 +93,7 @@ export default {
         type: true,
         venue: true
       }
-    }
+    };
   },
   methods: {
     initialize(qObj) {

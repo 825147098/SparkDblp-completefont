@@ -10,12 +10,13 @@
       <li v-for="(item,index) in list.slice(0, limit)"
           :key="index">
         <i></i>
-        <el-button class="authorButton"
+        <el-button
+            :class="['authorButton' ,item.isSelected ? 'el-icon-circle-check' : '']"
                    type="text"
                    size="small"
                    @click="itemClick(item,index)"
                    style="padding: 0">
-          <i v-if="item.isSelected" class="el-icon-circle-check"/>
+<!--          <i v-if="item.isSelected" class="el-icon-circle-check"/>-->
           {{ itemShowFunction(item) }}
         </el-button>
         <!--        <el-button v-show="item.isSelected"
