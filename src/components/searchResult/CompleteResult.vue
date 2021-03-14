@@ -1,3 +1,4 @@
+<!--已经废弃，由PublicationList实现相同功能-->
 <template>
   <PublicationList :plist="pubList"/>
 </template>

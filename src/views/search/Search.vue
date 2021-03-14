@@ -1,7 +1,7 @@
 <template>
   <!--    搜索主页-->
   <div style="width: 80%;margin: auto; max-width: 1150px">
-    <div height="auto" style="padding: 0;display: flex;flex-direction: column">
+    <div style="padding: 0;display: flex;flex-direction: column">
       <SearchBar></SearchBar>
     </div>
     <!--        子路由-->

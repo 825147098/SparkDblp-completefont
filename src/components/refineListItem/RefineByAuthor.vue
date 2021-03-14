@@ -1,3 +1,7 @@
+<!--
+  已经废弃
+  由RefineList实现相同功能
+-->
 <template>
   <el-main style="padding: 0">
     <div class="refine-by">
