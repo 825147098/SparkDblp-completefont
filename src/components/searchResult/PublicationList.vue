@@ -1,5 +1,6 @@
 <template>
-  <el-main>
+  <div>
+    <div>total {{ total }}</div>
     <div v-for="(value,year,index) in plist"
          :key="index"
          class="putList">
@@ -8,7 +9,7 @@
         <PublicationComponent :item="item"/>
       </li>
     </div>
-  </el-main>
+  </div>
 </template>
 <script>
 import PublicationComponent from "@/components/bookTypeItem/PublicationComponent"
@@ -17,7 +18,8 @@ export default {
   name: 'PublicationList',
   components: {PublicationComponent},
   props: {
-    plist: {}
+    plist: Object,
+    total: Number
   }
 }
 </script>

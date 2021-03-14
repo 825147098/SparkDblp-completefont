@@ -31,13 +31,14 @@
 import RefineList from "@/components/refineListItem/RefineList";
 import axios from "axios";
 
-let getRefineList = (qObj, url) => {
-  return axios.get(this.$store.state.host + url, {
+// eslint-disable-next-line no-unused-vars
+let getRefineList = (qObj, url) =>
+   axios.get(this.$store.state.host + url, {
     params: qObj
   }).catch(error => {
     console.log(error)
   })
-}
+
 export default {
   name: "ComRefineList",
   components: {RefineList},

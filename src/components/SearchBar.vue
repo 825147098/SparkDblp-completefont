@@ -50,7 +50,7 @@
 <script>
 import title_image from "../assets/title_2.png";
 import MainPageMenu from "../components/MainPageMenu";
-import axios from "axios";
+// import axios from "axios";
 
 
 export default {
@@ -88,8 +88,8 @@ export default {
           this.$router.push({path: path});
         }
         if (this.dropDownArray[radio].show === "出版物搜素") this.publicationSearch(input)
-        if (this.dropDownArray[radio].show === "作者搜素") this.authorSearch(input)
-        if (this.dropDownArray[radio].show === "会议搜素") this.venueSearch(input)
+        // if (this.dropDownArray[radio].show === "作者搜素") this.authorSearch(input)
+        // if (this.dropDownArray[radio].show === "会议搜素") this.venueSearch(input)
 
         // this.$store.commit("incrementRadio", radio)
       }
@@ -114,7 +114,8 @@ export default {
           filter: filter
         }
       };
-      let getList = (qObj) => {
+      // eslint-disable-next-line no-unused-vars
+/*      let getList = (qObj) => {
         let typeMap = new Map([
           ["inproceedings", 'Conference and Workshop Papers'],
           ["inproceedings", 'Conference and Workshop Papers'],
@@ -139,10 +140,10 @@ export default {
             console.log(error)
           })
         }
-        /* qObj={
+        /!* qObj={
            title:'',
            filter: ''
-         }*/
+         }*!/
         axios.get(this.$store.state.host + "/onlyDocs/search/findAllByRSQL", {
           params: qObj
         }).then(res => {
@@ -165,14 +166,14 @@ export default {
           console.log(error);
         })
 
-      };
+      };*/
       let qObj = splitText(data)
       if (qObj.title == '') {
         this.$message.warning('空白的输入')
       } else {
         this.$store.commit("setQueryObj", qObj);
         // eslint-disable-next-line no-unused-vars
-        getList(qObj)
+        // getList(qObj)
       }
     },
 

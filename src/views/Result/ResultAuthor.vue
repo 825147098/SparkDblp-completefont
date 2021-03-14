@@ -1,10 +1,8 @@
 <template>
     <el-container style="width: 80%; margin: auto; max-width: 1150px">
-       <el-header class="header" height="auto">
-           <h3 class="headline">
-               {{authorName}}
-           </h3>
-       </el-header>
+      <el-header>
+        <PageHeader :head-name="authorName"/>
+      </el-header>
         <el-container>
 <!--            作者详细结果-->
             <AuthorCompleteResult :name=authorName></AuthorCompleteResult>
@@ -15,9 +13,10 @@
 <script>
     // import SearchBar from "../../components/SearchBar";
     import AuthorCompleteResult from "../../components/searchResult/AuthorCompleteResult";
+    import PageHeader from "@/views/search/PageHeader";
     export default {
         name: "resultAuthor",
-        components: {AuthorCompleteResult},
+        components: {PageHeader, AuthorCompleteResult},
         data: function () {
             return{
                 da:[]  ,

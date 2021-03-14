@@ -1,5 +1,5 @@
 <template>
-  <div class="refine-by" v-loading="loading">
+  <div class="refine-by">
     <p><b>{{ showName }}</b></p>
     <!--空提示-->
     <ul v-if="list.length <= 0" class="putList">
@@ -41,7 +41,7 @@ export default {
   },
   props: {
     showName: String,
-    loading: Boolean,
+    // loading: Boolean,
     itemShowFunction: Function,
     itemClickCallback: Function,
     list: Array,
