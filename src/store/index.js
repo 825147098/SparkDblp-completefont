@@ -21,7 +21,7 @@ export default new Vuex.Store({
         //出版物搜索的搜索条件
         queryObj: {
             title: '',
-            filter: '',
+            RSQLArray: [],
         },
 
         //出版物搜索返回的列表

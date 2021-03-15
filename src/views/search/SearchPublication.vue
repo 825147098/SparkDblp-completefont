@@ -16,26 +16,34 @@
         </el-button>
       </el-main>
       <el-aside>
+        <RefineList show-name="已经使用的过滤器"
+                    :item-click-callback="it=>removeFilter(it)"
+                    :item-show-function="it=>it"
+                    :limit-init="30"
+                    :list="RSQLArrayList"/>
         <RefineList show-name="按照作者细化"
+                    :item-click-callback="it=>commitAndRefresh(`author._VALUE==\'${it._VALUE}\'`)"
                     :item-show-function="it=>`${it._VALUE}(${it.num})`"
                     :limit-init="10"
                     v-loading="loadFlag.author"
                     :list="authorList"/>
         <!--类型细化-->
         <RefineList show-name="按照类型细化"
+                    :item-click-callback="it=>commitAndRefresh(`type==\'${it._VALUE}\'`)"
                     :item-show-function="it=>`${it.show}(${it.num})`"
                     :limit-init="10"
                     v-loading="loadFlag.type"
                     :list="typeList"/>
         <!--年份细化-->
         <RefineList show-name="按照年份细化"
-                    :item-click-callback="f"
+                    :item-click-callback="it=>commitAndRefresh(`year==\'${it._VALUE}\'`)"
                     :item-show-function="it=>`${it._VALUE}(${it.num})`"
                     :limit-init="10"
                     v-loading="loadFlag.year"
                     :list="yearList"/>
         <!--会议细化-->
         <RefineList show-name="按照会议细化"
+                    :item-click-callback="it=>commitAndRefresh(`prefix2==\'${it._VALUE}\'`)"
                     :item-show-function="it=>`${it.prefix2 ? it.prefix2 : it._VALUE}(${it.num})`"
                     :limit-init="10"
                     v-loading="loadFlag.venue"
@@ -73,10 +81,19 @@ export default {
 
   data: function () {
     return {
-      f: it => {
+      removeFilter: removeF => {
         let qObj = this.$store.state.queryObj;
-        qObj.filter = `year==${it._VALUE}`
-        this.$store.commit('setQueryObj', qObj)
+        qObj.RSQLArray = _(qObj.RSQLArray).remove(it=>it!==removeF).value()
+        if (qObj.RSQLArray.length === 0) {
+          qObj.RSQLArray = null;
+        }
+        this.$store.commit('setQueryObj', qObj);
+        this.initialize(qObj)
+      },
+      commitAndRefresh: filter => {
+        let qObj = this.$store.state.queryObj;
+        qObj.RSQLArray = _(qObj.RSQLArray).push(filter).uniq().value()
+        this.$store.commit('setQueryObj', qObj);
         this.initialize(qObj)
       },
       authorListTemp: [],
@@ -108,6 +125,12 @@ export default {
           .catch(error => {
             console.log(error)
           })
+      let qObjWrapper = qObj => {
+        return {
+          title: qObj.title,
+          filter: qObj.RSQLArray.join(";") === '' ? null : qObj.RSQLArray.join(";")
+        }
+      }
       /* qObj={
          title:'',
          filter: ''
@@ -117,34 +140,35 @@ export default {
       this.loadFlag.year = true;
       this.loadFlag.venue = true;
       this.loadFlag.type = true;
+      // console.log(qObjWrapper(qObj));
       axios.get(this.$store.state.host + "/onlyDocs/search/findAllByRSQL", {
-        params: qObj
+        params: qObjWrapper(qObj)
       }).then(res => {
 
         this.loadFlag.publication = false;
         //refineList
 
-        getRefineList(qObj, "/onlyDocs/search/findAuthorRefineByRSQL")
+        getRefineList(qObjWrapper(qObj), "/onlyDocs/search/findAuthorRefineByRSQL")
             .then(res => {
               this.authorListTemp = res.data
               this.loadFlag.author = false;
             });
 
 
-        getRefineList(qObj, "/onlyDocs/search/findYearRefineByRSQL")
+        getRefineList(qObjWrapper(qObj), "/onlyDocs/search/findYearRefineByRSQL")
             .then(res => {
               this.yearListTemp = res.data
               this.loadFlag.year = false;
             });
 
 
-        getRefineList(qObj, "/onlyDocs/search/findPrefix2RefineByRSQL")
+        getRefineList(qObjWrapper(qObj), "/onlyDocs/search/findPrefix2RefineByRSQL")
             .then(res => {
               this.venueListTemp = res.data
               this.loadFlag.venue = false;
             });
 
-        getRefineList(qObj, "/onlyDocs/search/findTypeRefineByRSQL")
+        getRefineList(qObjWrapper(qObj), "/onlyDocs/search/findTypeRefineByRSQL")
             .then(res => {
               this.typeListTemp = res.data
               this.loadFlag.type = false;
@@ -184,6 +208,9 @@ export default {
     }
   },
   computed: {
+    RSQLArrayList() {
+      return this.$store.state.queryObj.RSQLArray;
+    },
     authorList() {
       return this.authorListTemp
           .map(item => {
@@ -255,7 +282,7 @@ export default {
     }
 
   },
-  created() {
+  mounted() {
     this.initialize(this.$store.state.queryObj)
   }
 }
