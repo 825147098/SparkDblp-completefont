@@ -83,10 +83,7 @@ export default {
     return {
       removeFilter: removeF => {
         let qObj = this.$store.state.queryObj;
-        qObj.RSQLArray = _(qObj.RSQLArray).remove(it=>it!==removeF).value()
-        if (qObj.RSQLArray.length === 0) {
-          qObj.RSQLArray = null;
-        }
+        qObj.RSQLArray = _(qObj.RSQLArray).remove(it => it !== removeF).value()
         this.$store.commit('setQueryObj', qObj);
         this.initialize(qObj)
       },
@@ -118,6 +115,7 @@ export default {
       this.size = 30;
     },
     getList(qObj) {
+      console.log(qObj)
       let getRefineList = (qObj, url) => axios
           .get(this.$store.state.host + url, {
             params: qObj
@@ -175,11 +173,17 @@ export default {
             });
 
         this.total = res.data.page.totalElements
-        this.pubListTemp = res.data._embedded.onlyDocs.map(it => {
-          let t = it
-          t.type = typeMap.get(it.type)
-          return t
-        })
+        if (_(res.data).has("_embedded.onlyDocs")) {
+          this.pubListTemp = res.data._embedded.onlyDocs.map(it => {
+            let t = it
+            t.type = typeMap.get(it.type)
+            return t
+          });
+        } else {
+          this.pubListTemp = null;
+        }
+
+
       }).catch(error => {
         console.log(error);
       })
@@ -201,7 +205,8 @@ export default {
           let t = it
           t.type = typeMap.get(it.type)
           return t
-        })
+        });
+        console.log(this.pubListTemp)
       }).catch(error => {
         console.log(error);
       })
