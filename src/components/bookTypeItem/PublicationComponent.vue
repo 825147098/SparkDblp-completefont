@@ -1,28 +1,20 @@
 <template>
-  <BookAndTheseItem v-if="item.type == 'Book and Theses'"
-                    :inner-data="item">
-  </BookAndTheseItem>
-  <ConfAndWorkItem v-else-if="item.type == 'Conference and Workshop Papers'"
-                   :inner-data="item"
-  ></ConfAndWorkItem>
-  <EditorShipItem v-else-if="item.type == 'Editorshop'"
-                  :inner-data="item"
-  ></EditorShipItem>
-  <InformalPubItem v-else-if="item.type == 'Informal Publications'"
-                   :inner-data="item"
-  ></InformalPubItem>
-  <PartInBookOrCollItem v-else-if="item.type == 'Parts in Books or Collections'"
-                        :inner-data="item"
-  ></PartInBookOrCollItem>
-  <JournalItem v-else-if="item.type == 'Journals Article'"
-               :inner-data="item"
-  ></JournalItem>
-  <ReferenceWorkItem v-else-if="item.type == 'Reference Works'"
-                     :inner-data="item">
-  </ReferenceWorkItem>
-  <WithdrawnItem v-else-if="item.type == 'Withdrawn Item'"
-                 :inner-data="item">
-  </WithdrawnItem>
+  <BookAndTheseItem v-if="item.type === 'Book and Theses'"
+                    :inner-data="item"/>
+  <ConfAndWorkItem v-else-if="item.type === 'Conference and Workshop Papers'"
+                   :inner-data="item"/>
+  <EditorShipItem v-else-if="item.type === 'Editorshop'"
+                  :inner-data="item"/>
+  <InformalPubItem v-else-if="item.type === 'Informal Publications'"
+                   :inner-data="item"/>
+  <PartInBookOrCollItem v-else-if="item.type === 'Parts in Books or Collections'"
+                        :inner-data="item"/>
+  <JournalItem v-else-if="item.type === 'Journals Article'"
+               :inner-data="item"/>
+  <ReferenceWorkItem v-else-if="item.type === 'Reference Works'"
+                     :inner-data="item"/>
+  <WithdrawnItem v-else-if="item.type === 'Withdrawn Item'"
+                 :inner-data="item"/>
 </template>
 <script>
 import BookAndTheseItem from "@/components/bookTypeItem/BookAndTheseItem"
