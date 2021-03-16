@@ -2,7 +2,7 @@
   <div>
     <!--        作者会议碎片结果-->
     <el-container v-show="activeShow">
-      <AuthorSearchResult v-if="showAutList" :search-author=false class="autList"></AuthorSearchResult>
+      <AuthorList v-if="showAutList" :search-author=false class="autList"></AuthorList>
       <VenueSearchResult v-if="showVenList" :search-venue="false"></VenueSearchResult>
     </el-container>
     <el-container>
@@ -21,13 +21,13 @@
 import CompleteResult from "../../components/searchResult/CompleteResult";
 import ComRefineList from "../../components/refineList/ComRefineList";
 import SearchRule from "./SearchRule";
-import AuthorSearchResult from "../../components/searchResult/AuthorSearchResult";
+import AuthorList from "../../components/searchResult/AuthorSearchResult";
 import VenueSearchResult from "../../components/searchResult/VenueSearchResult";
 
 export default {
   name: "SearchComplete",
   // eslint-disable-next-line vue/no-unused-components
-  components: {VenueSearchResult, AuthorSearchResult, SearchRule, ComRefineList, CompleteResult},
+  components: {VenueSearchResult, AuthorList, SearchRule, ComRefineList, CompleteResult},
 
   data: function () {
     return {
