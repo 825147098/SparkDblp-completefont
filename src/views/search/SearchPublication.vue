@@ -54,7 +54,6 @@
 </template>
 
 <script>
-import ComRefineList from "../../components/refineList/ComRefineList";
 import PublicationList from "@/components/searchResult/PublicationList";
 import _ from "lodash";
 import PageHeader from "@/views/search/PageHeader";
@@ -76,8 +75,7 @@ let typeMap = new Map([
 ])
 export default {
   name: "SearchPublication",
-  // eslint-disable-next-line vue/no-unused-components
-  components: {PageHeader, PublicationList, ComRefineList, RefineList},
+  components: {PageHeader, PublicationList, RefineList},
 
   data: function () {
     return {

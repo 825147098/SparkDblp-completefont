@@ -24,16 +24,19 @@ export default new Vuex.Store({
             RSQLArray: [],
         },
 
+        authorQueryObj: {
+            queryValue: ''
+        },
         //出版物搜索返回的列表
-        returnList: [],
+        // returnList: [],
         //作者refineList
-        authorRefineList: [],
+        // authorRefineList: [],
         //type refineList
-        typeRefineList: [],
+        // typeRefineList: [],
         //YearRefineList
-        yearRefineList: [],
+        // yearRefineList: [],
         //venueRefineList
-        venueRefineList: [],
+        // venueRefineList: [],
         serchObj: {
             year: '',
             venue: '',
@@ -50,6 +53,9 @@ export default new Vuex.Store({
 
     },
     mutations: {
+        setAuthorQueryObj(state, payload) {
+            state.authorQueryObj = payload
+        },
         setQueryObj(state, payload) {
             state.queryObj = payload
         },

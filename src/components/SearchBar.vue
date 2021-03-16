@@ -88,14 +88,14 @@ export default {
           this.$router.push({path: path});
         }
         if (this.dropDownArray[radio].show === "出版物搜素") this.publicationSearch(input)
-        // if (this.dropDownArray[radio].show === "作者搜素") this.authorSearch(input)
+        if (this.dropDownArray[radio].show === "作者搜素") this.authorSearch(input)
         // if (this.dropDownArray[radio].show === "会议搜素") this.venueSearch(input)
 
         // this.$store.commit("incrementRadio", radio)
       }
     },
     //设置搜索条件
-    publicationSearch(data) {
+    publicationSearch(input) {
       let splitText = (data) => {
         let re = new RegExp(/{.*}/)
         let title = data.replace(re, "")
@@ -104,61 +104,8 @@ export default {
           RSQLArray: []
         }
       };
-      // eslint-disable-next-line no-unused-vars
-/*      let getList = (qObj) => {
-        let typeMap = new Map([
-          ["inproceedings", 'Conference and Workshop Papers'],
-          ["inproceedings", 'Conference and Workshop Papers'],
-          ["conference and workshop", 'Conference and Workshop Papers'],
-          ["book and thesis", 'Book and Theses'],
-          ['series', 'Book and Theses'],
-          ['proceedings', 'Editorshop'],
-          ["informal", 'Informal Publications'],
-          ["incollection", 'Parts in Books or Collections'],
-          ["journals article", 'Journals Article'],
-          ["reference", 'Reference Works'],
-          ["withdrawn", 'Withdrawn Item']
-        ])
-
-        let commitRefineList = (qObj, url, storeF) => {
-          axios.get(this.$store.state.host + url, {
-            params: qObj
-          }).then(res => {
-            let data = res.data;
-            this.$store.commit(storeF, data);
-          }).catch(error => {
-            console.log(error)
-          })
-        }
-        /!* qObj={
-           title:'',
-           filter: ''
-         }*!/
-        axios.get(this.$store.state.host + "/onlyDocs/search/findAllByRSQL", {
-          params: qObj
-        }).then(res => {
-
-          //refineList
-          commitRefineList(qObj, "/onlyDocs/search/findAuthorRefineByRSQL", 'setAuthorRefineList')
-          commitRefineList(qObj, "/onlyDocs/search/findYearRefineByRSQL", 'setYearRefineList')
-          commitRefineList(qObj, "/onlyDocs/search/findPrefix2RefineByRSQL", 'setVenueRefineList')
-          commitRefineList(qObj, "/onlyDocs/search/findTypeRefineByRSQL", 'setTypeRefineList')
-          // getAuthorData(qObj);
-          // getYearData(qObj);
-
-          let list = res.data._embedded.onlyDocs.map(it => {
-            let t = it
-            t.type = typeMap.get(it.type)
-            return t
-          });
-          this.$store.commit("setReturnList", list);
-        }).catch(error => {
-          console.log(error);
-        })
-
-      };*/
-      let qObj = splitText(data)
-      if (qObj.title == '') {
+      let qObj = splitText(input)
+      if (qObj.title === '') {
         this.$message.warning('空白的输入')
       } else {
         this.$store.commit("setQueryObj", qObj);
@@ -168,8 +115,15 @@ export default {
     },
 
     // eslint-disable-next-line no-unused-vars
-    authorSearch(data) {
-
+    authorSearch(input) {
+      if (input === '') {
+        this.$message.warning('空白的输入')
+      } else {
+        let temp = {
+          queryValue: input
+        }
+        this.$store.commit("setAuthorQueryObj", temp);
+      }
     },
 
     // eslint-disable-next-line no-unused-vars
