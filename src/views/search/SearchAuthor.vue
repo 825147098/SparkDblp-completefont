@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import AuthorList from "../../components/searchResult/AuthorSearchResult";
+import AuthorList from "../../components/searchResult/AuthorList";
 import PageHeader from "@/views/search/PageHeader";
 import axios from "axios";
 import _ from "lodash";

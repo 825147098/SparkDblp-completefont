@@ -21,7 +21,7 @@
 import CompleteResult from "../../components/searchResult/CompleteResult";
 import ComRefineList from "../../components/refineList/ComRefineList";
 import SearchRule from "./SearchRule";
-import AuthorList from "../../components/searchResult/AuthorSearchResult";
+import AuthorList from "../../components/searchResult/AuthorList";
 import VenueSearchResult from "../../components/searchResult/VenueSearchResult";
 
 export default {
