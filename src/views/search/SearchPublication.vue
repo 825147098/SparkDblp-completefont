@@ -6,7 +6,7 @@
     <el-container v-loading="loadFlag.publication">
       <!--出版物搜索结果-->
       <el-main>
-        <PublicationList :plist="pubList" :total="total"/>
+        <PublicationList :plist="pubListTemp" :total="total"/>
         <el-button
             v-if="total - size > 0"
             type="text"
@@ -27,21 +27,18 @@
                     :limit-init="10"
                     v-loading="loadFlag.author"
                     :list="authorList"/>
-        <!--类型细化-->
         <RefineList show-name="按照类型细化"
                     :item-click-callback="it=>commitAndRefresh(`type==\'${it._VALUE}\'`)"
                     :item-show-function="it=>`${it.show}(${it.num})`"
                     :limit-init="10"
                     v-loading="loadFlag.type"
                     :list="typeList"/>
-        <!--年份细化-->
         <RefineList show-name="按照年份细化"
                     :item-click-callback="it=>commitAndRefresh(`year==\'${it._VALUE}\'`)"
                     :item-show-function="it=>`${it._VALUE}(${it.num})`"
                     :limit-init="10"
                     v-loading="loadFlag.year"
                     :list="yearList"/>
-        <!--会议细化-->
         <RefineList show-name="按照会议细化"
                     :item-click-callback="it=>commitAndRefresh(`prefix2==\'${it._VALUE}\'`)"
                     :item-show-function="it=>`${it.prefix2 ? it.prefix2 : it._VALUE}(${it.num})`"
@@ -60,19 +57,6 @@ import PageHeader from "@/views/search/PageHeader";
 import RefineList from "@/components/refineListItem/RefineList";
 import axios from "axios";
 
-let typeMap = new Map([
-  ["inproceedings", 'Conference and Workshop Papers'],
-  ["inproceedings", 'Conference and Workshop Papers'],
-  ["conference and workshop", 'Conference and Workshop Papers'],
-  ["book and thesis", 'Book and Theses'],
-  ['series', 'Book and Theses'],
-  ['proceedings', 'Editorshop'],
-  ["informal", 'Informal Publications'],
-  ["incollection", 'Parts in Books or Collections'],
-  ["journals article", 'Journals Article'],
-  ["reference", 'Reference Works'],
-  ["withdrawn", 'Withdrawn Item']
-])
 export default {
   name: "SearchPublication",
   components: {PageHeader, PublicationList, RefineList},
@@ -172,11 +156,12 @@ export default {
 
         this.total = res.data.page.totalElements
         if (_(res.data).has("_embedded.onlyDocs")) {
-          this.pubListTemp = res.data._embedded.onlyDocs.map(it => {
+          this.pubListTemp = res.data._embedded.onlyDocs;
+         /*     .map(it => {
             let t = it
             t.type = typeMap.get(it.type)
             return t
-          });
+          });*/
         } else {
           this.pubListTemp = null;
         }
@@ -199,12 +184,7 @@ export default {
 
         this.loadFlag.publication = false;
         this.total = res.data.page.totalElements
-        this.pubListTemp = res.data._embedded.onlyDocs.map(it => {
-          let t = it
-          t.type = typeMap.get(it.type)
-          return t
-        });
-        console.log(this.pubListTemp)
+        this.pubListTemp = res.data._embedded.onlyDocs;
       }).catch(error => {
         console.log(error);
       })
@@ -273,11 +253,11 @@ export default {
           .sort((l, r) => l.num - r.num)
           .reverse()
     },
-    pubList() {
+/*    pubList() {
       let t = this.pubListTemp;
       //加个负号是为了方便排序，显示的时候记得去掉
       return _.groupBy(t, it => -it.year)
-    }
+    }*/
   },
   watch: {
     '$store.state.queryObj': function (newValue) {

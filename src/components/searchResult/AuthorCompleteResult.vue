@@ -2,248 +2,71 @@
   <!--    人名精确搜素结果-->
   <el-container>
     <el-main style="padding-top: 0; max-width: 850px">
-      <el-collapse v-model="activeName" accordion @change="changeFalg">
-        <el-collapse-item name="1">
-          <template slot="title">
-            [{{ flag }}] 搜索结果
-          </template>
-          <ul v-show="dataFlag"
-              class="putList"
-              v-for="year in yearList" :key="year"
-          >
-            <!--                        年份排序文章列表-->
-            <li class="year">{{ year }}</li>
-            <li v-for="item in pubList[year]" :key="item.title + item.type">
-              <BookAndTheseItem v-if="item.type == 'Book and Theses'"
-                                :inner-data="item"
-              ></BookAndTheseItem>
-              <ConfAndWorkItem v-else-if="item.type == 'Conference and Workshop Papers'"
-                               :inner-data="item"
-              ></ConfAndWorkItem>
-              <EditorShipItem v-else-if="item.type == 'Editorshop'"
-                              :inner-data="item"
-              ></EditorShipItem>
-              <InformalPubItem v-else-if="item.type == 'Informal Publications'"
-                               :inner-data="item"
-              ></InformalPubItem>
-              <PartInBookOrCollItem v-else-if="item.type == 'Parts in Books or Collections'"
-                                    :inner-data="item"
-              ></PartInBookOrCollItem>
-              <JournalItem v-else-if="item.type == 'Journals Article'"
-                           :inner-data="item"
-              ></JournalItem>
-              <ReferenceWorkItem v-else-if="item.type == 'Reference Works'"
-                                 :inner-data="item">
-              </ReferenceWorkItem>
-              <WithdrawnItem v-else-if="item.type == 'Withdrawn Item'"
-                             :inner-data="item">
-              </WithdrawnItem>
-            </li>
-          </ul>
-          <!--                    加载图标-->
-          <ul v-show="loadFlag"
-              class="putList">
-            <li style="color: #409EFF">
-              Loading
-              <el-icon class="el-icon-loading"
-                       style="font-size: 20px "
-              ></el-icon>
-            </li>
-          </ul>
-          <ul v-show="yearList.length == 0 && !loadFlag && dataFlag"
-              class="putList">
-            <li>
-              结果为空
-            </li>
-          </ul>
-        </el-collapse-item>
-      </el-collapse>
+      <PublicationList :plist="authorPublicationList" :total="total"/>
     </el-main>
     <!--        右侧细化列表-->
     <el-aside class="asideCon">
-      <el-collapse v-model="refineActiveName" accordion @change="changeRefineFalg">
-        <el-collapse-item name="1">
-          <template slot="title">
-            [{{ flagRefine }}] 搜索优化列表
-          </template>
-          <!--                    数量统计-->
-          <div class="refine-by"
-               v-show="!loadFlag && dataFlag">
-            <em>
-              <span v-if="filterObj.size == 0 || filterObj.size == waitList.length">显示所有{{ waitList.length }}条记录</span>
-              <span v-else>放大&nbsp;{{ waitList.length }}&nbsp;条记录中的&nbsp;{{ filterObj.size }}&nbsp;条</span>
-            </em>
-          </div>
-          <!--                    输入栏-->
-          <div class="refine-by">
-            <p><b>按搜索词优化</b></p>
-            <el-input size="mini"
-                      v-model="refineInput"
-                      style="width: 180px">
-            </el-input>
-          </div>
-          <!--                    类型-->
-          <el-main style="padding: 0">
-            <div class="refine-by" style="padding: 0">
-              <p><b>
-                按照类型细化
-              </b></p>
-              <ul v-show="!typeLoadFlag">
-                <el-checkbox-group v-model="typeList">
-                  <li v-for="item in typeNameList"
-                      :key="item.type">
-                    <el-checkbox :label="item.label"
-                                 size="mini"
-                                 class="authorButton">
-                                            <span class="checkBox">
-                                                {{ item.type }}(only)
-                                            </span>
-                    </el-checkbox>
-                  </li>
-                </el-checkbox-group>
-              </ul>
-              <ul v-show="!typeLoadFlag">
-                <li>
-                  <el-button size="mini"
-                             class="authorButton"
-                             @click="handleCheckAllChange"
-                             type="text">
-                    全选
-                  </el-button>
-                  <el-divider direction="vertical"></el-divider>
-                  <el-button size="mini"
-                             @click="handleDeleteAllChange"
-                             class="authorButton"
-                             type="text">
-                    取消
-                  </el-button>
-                </li>
-              </ul>
-              <ul v-show="typeLoadFlag">
-                <li>
-                  <el-icon class="el-icon-loading"
-                           style="font-size: 20px "
-                  ></el-icon>
-                </li>
-              </ul>
-              <ul v-show="typeNameList.length == 0 && !typeLoadFlag"
-                  class="putList">
-                <li>
-                  结果为空
-                </li>
-              </ul>
-            </div>
-          </el-main>
-          <!--                    作者-->
-          <el-main style="padding: 0">
-            <div class="refine-by">
-              <p><b>
-                按照协作者细化
-                <el-button
-                    v-show="!autLoadFlag"
-                    class="dialogButton"
-                    @click="openDialog"
-                    type="text">
-                  关系图
-                </el-button>
-              </b></p>
-              <ul v-show="!autLoadFlag">
-                <li v-for="(item,index) in authorList" :key="item._VALUE">
-                  <i :class=item.img
-                     class="icon"
-                     v-show="item.show"></i>
-                  <el-button type="text"
-                             size="small"
-                             @mouseenter.native="mouseAutEnter(index)"
-                             @mouseleave.native="mouseAutLeave(index)"
-                             @click="addAuthorToInput(index)"
-                             :class="['authorButton' ,item.show ? 'buttonSelect' : '']">
-                    {{ item._VALUE }}({{ toThousands(item.num) }})
-                    <span v-show="item.show">✔</span>
-                  </el-button>
-
-                </li>
-              </ul>
-              <ul v-show="autLoadFlag">
-                <li>
-                  <el-icon class="el-icon-loading"
-                           style="font-size: 20px "
-                  ></el-icon>
-                </li>
-              </ul>
-              <ul v-show="!autLoadFlag && autSqlSize - authorList.length > 0">
-                <li>
-                  <el-button
-                      type="text"
-                      @click="getMoreAutData"
-                      class="authorButton"
-                      size="samll">
-                    <em>
-                      {{ autSqlSize - authorList.length }}更多可选项
-                    </em>
-                  </el-button>
-                </li>
-              </ul>
-              <ul v-show="authorList.length == 0 && !autLoadFlag"
-                  class="putList">
-                <li>
-                  结果为空
-                </li>
-              </ul>
-            </div>
-          </el-main>
-          <el-main style="padding: 0">
-            <div class="refine-by">
-              <p><b>
-                按照会议细化
-              </b></p>
-              <ul v-show="!venLoadFlag">
-                <li v-for="(item,index) in venueList" :key="item._VALUE">
-                  <i :class=item.img
-                     class="icon"
-                     v-show="item.show"></i>
-                  <el-button type="text"
-                             size="small"
-                             @mouseenter.native="mouseVenEnter(index)"
-                             @mouseleave.native="mouseVenLeave(index)"
-                             @click="addVenToInput(index)"
-                             :class="['authorButton' ,item.show ? 'buttonSelect' : '']">
-                    {{ item._VALUE }}({{ toThousands(item.num) }})
-                    <span v-show="item.show">✔</span>
-                  </el-button>
-                </li>
-              </ul>
-              <ul v-show="venLoadFlag">
-                <li>
-                  <el-icon class="el-icon-loading"
-                           style="font-size: 20px "
-                  ></el-icon>
-                </li>
-              </ul>
-              <ul v-show="!venLoadFlag && filterObj.venue === ''
-                            && venSqlSize - venueList.length > 0">
-                <li>
-                  <el-button
-                      type="text"
-                      @click="getMoreVenData"
-                      class="authorButton"
-                      size="samll">
-                    <em>
-                      {{ venSqlSize - venueList.length }}更多可选项
-                    </em>
-                  </el-button>
-                </li>
-              </ul>
-              <ul v-show="venueList.length == 0 && !venLoadFlag"
-                  class="putList">
-                <li>
-                  结果为空
-                </li>
-              </ul>
-            </div>
-          </el-main>
-        </el-collapse-item>
-      </el-collapse>
+      <!--                    数量统计-->
+      <!--                    输入栏-->
+      <div class="refine-by">
+        <p><b>按搜索词优化</b></p>
+        <el-input size="mini"
+                  v-model="refineInput"
+                  style="width: 180px">
+        </el-input>
+      </div>
+<!--      <RefineList show-name="已经使用的过滤器"
+                  :item-click-callback="it=>removeFilter(it)"
+                  :item-show-function="it=>it"
+                  :limit-init="30"
+                  :list="RSQLArrayList"/>
+      <RefineList show-name="按照作者细化"
+                  :item-click-callback="it=>commitAndRefresh(`author._VALUE==\'${it._VALUE}\'`)"
+                  :item-show-function="it=>`${it._VALUE}(${it.num})`"
+                  :limit-init="10"
+                  v-loading="loadFlag.author"
+                  :list="authorList"/>
+      <RefineList show-name="按照类型细化"
+                  :item-click-callback="it=>commitAndRefresh(`type==\'${it._VALUE}\'`)"
+                  :item-show-function="it=>`${it.show}(${it.num})`"
+                  :limit-init="10"
+                  v-loading="loadFlag.type"
+                  :list="typeList"/>
+      <RefineList show-name="按照年份细化"
+                  :item-click-callback="it=>commitAndRefresh(`year==\'${it._VALUE}\'`)"
+                  :item-show-function="it=>`${it._VALUE}(${it.num})`"
+                  :limit-init="10"
+                  v-loading="loadFlag.year"
+                  :list="yearList"/>
+      <RefineList show-name="按照会议细化"
+                  :item-click-callback="it=>commitAndRefresh(`prefix2==\'${it._VALUE}\'`)"
+                  :item-show-function="it=>`${it.prefix2 ? it.prefix2 : it._VALUE}(${it.num})`"
+                  :limit-init="10"
+                  v-loading="loadFlag.venue"
+                  :list="venueList"/>   -->
+      <RefineList show-name="已经使用的过滤器"
+                  :item-show-function="it=>it"
+                  :limit-init="30"/>
+      <RefineList show-name="按照作者细化"
+                  :item-show-function="it=>`${it._VALUE}(${it.num})`"
+                  :limit-init="10"
+                  v-loading="loadFlag.author"
+                  :list="authorList"/>
+      <RefineList show-name="按照类型细化"
+                  :item-show-function="it=>`${it.show}(${it.num})`"
+                  :limit-init="10"
+                  v-loading="loadFlag.type"
+                  :list="typeList"/>
+      <RefineList show-name="按照年份细化"
+                  :item-show-function="it=>`${it._VALUE}(${it.num})`"
+                  :limit-init="10"
+                  v-loading="loadFlag.year"
+                  :list="yearList"/>
+      <RefineList show-name="按照会议细化"
+                  :item-show-function="it=>`${it.prefix2 ? it.prefix2 : it._VALUE}(${it.num})`"
+                  :limit-init="10"
+                  v-loading="loadFlag.venue"
+                  :list="venueList"/>
     </el-aside>
     <!--        关系图弹窗-->
     <el-dialog
@@ -259,42 +82,39 @@
 
 <script>
 import axios from 'axios';
-import BookAndTheseItem from "../bookTypeItem/BookAndTheseItem";
-import ConfAndWorkItem from "../bookTypeItem/ConfAndWorkItem";
-import EditorShipItem from "../bookTypeItem/EditorShipItem";
-import InformalPubItem from "../bookTypeItem/InformalPubItem";
-import JournalItem from "../bookTypeItem/JournalItem";
-import PartInBookOrCollItem from "../bookTypeItem/PartInBookOrCollItem";
-import ReferenceWorkItem from "../bookTypeItem/ReferenceWorkItem";
-import WithdrawnItem from "../bookTypeItem/WithdrawnItem";
+import _ from "lodash"
 import {cumulativeStdNormalProbability} from 'simple-statistics'
+import PublicationList from "@/components/searchResult/PublicationList";
 
 export default {
   name: "AuthorCompleteResult",
   components: {
-    WithdrawnItem,
-    ReferenceWorkItem,
-    PartInBookOrCollItem,
-    JournalItem, InformalPubItem, EditorShipItem, ConfAndWorkItem, BookAndTheseItem
+    PublicationList
   },
   data: function () {
     return {
-      //搜索参数
       author: '',
       page: 0,
+      //搜索参数
+      //折叠面板标记
+      //书籍标记
+      //书籍信息
+      authorPublicationList: [],
+      total: 0,
+      loadFlag: {
+        publication: true,
+        author: true,
+        year: true,
+        type: true,
+        venue: true
+      },
       size: '',
       pageDetail: '',
-      //折叠面板标记
       flagRefine: '-',
       refineActiveName: '1',
       flag: '-',
       activeName: '1',
-      //书籍标记
-      loadFlag: true,
       dataFlag: false,
-      //书籍信息
-      pubList: [],
-      waitList: [],
       //过滤结果列表
       filterList: [],
       yearList: [],
@@ -349,62 +169,65 @@ export default {
 
   methods: {
     //数据处理函数
-    getPubData() {
-      axios.get(this.$store.state.host + "/onlyDocs/search/findAllByAuthor__VALUE", {
+    getPubData(name) {
+      axios.get(this.$store.state.host + "/onlyDocs/search/findPageByAuthor__VALUE", {
         params: {
-          author: this.author,
-          size: 300
+          author: name,
+          size: 1000
         }
       }).then(res => {
-        this.waitList = res.data._embedded.onlyDocs;
-        this.filterList = this.waitList;
-        this.pageDetail = res.data.page;
+        if (_(res.data).has("_embedded.onlyDocs")) {
+          this.authorPublicationList = res.data._embedded.onlyDocs
+          this.total = res.data.page.totalElements;
+        }
+        // this.filterList = this.authorPublicationList;
+
         // console.log(this.waitList)
 
-        this.changeType();
-        this.getData()
+        // this.changeType();
+        this.initial()
         this.handleCheckAllChange()
       }).catch(error => {
         console.log(error);
       })
     },
     //列表调用
-    pubSort() {
-      this.groupBy();
-      this.sortYear();
-      this.dataFlag = true
-      this.loadFlag = false
-    },
+    /*    pubSort() {
+          // this.groupBy();
+          // this.sortYear();
+          // this.dataFlag = true
+          // this.loadFlag = false
+        },*/
     //修改折叠面板标记
-    changeFalg() {
-      if (this.flag === '-')
-        this.flag = '+';
-      else
-        this.flag = '-';
-    },
+    /*    changeFalg() {
+          if (this.flag === '-')
+            this.flag = '+';
+          else
+            this.flag = '-';
+        },*/
     //细化列表标记
-    changeRefineFalg() {
-      if (this.flagRefine === '-')
-        this.flagRefine = '+';
-      else
-        this.flagRefine = '-';
-    },
+    /*    changeRefineFalg() {
+          if (this.flagRefine === '-')
+            this.flagRefine = '+';
+          else
+            this.flagRefine = '-';
+        },*/
 
     //type列表处理函数
-    handleCheckAllChange() {
+/*    handleCheckAllChange() {
       this.typeList = (this.typeNameList || []).map(function (item) {
         return item.label;
       })
       // this.setTypeArray()
-    },
+    },*/
     //type列表清空
-    handleDeleteAllChange() {
-      this.typeList = [];
-      // this.setTypeArray()
-    },
+    /*    handleDeleteAllChange() {
+          this.typeList = [];
+          // this.setTypeArray()
+        },*/
     //获取type选项参数
     getTypeData() {
-      let data = this.waitList;
+      let data = this.authorPublicationList;
       let arr = []
       for (let i = 0; i < data.length; i++) {
 
@@ -511,209 +334,49 @@ export default {
       this.autLoadFlag = false;
     },
     //鼠标移入
-    mouseAutEnter(index) {
+    /*mouseAutEnter(index) {
       if (this.authorList[index].img === "el-icon-circle-plus")
         this.authorList[index].show = true;
-    },
+    },*/
     //鼠标移出
-    mouseAutLeave(index) {
+    /*mouseAutLeave(index) {
       if (this.authorList[index].img === "el-icon-circle-plus")
         this.authorList[index].show = false;
-    },
+    },*/
     //作者选中
-    addAuthorToInput(index) {
-      if (this.authorList[index].img === "el-icon-circle-plus") {
-        this.authorList[index].show = true;
-        this.authorList[index].img = "el-icon-remove";
+    /*    addAuthorToInput(index) {
+          if (this.authorList[index].img === "el-icon-circle-plus") {
+            this.authorList[index].show = true;
+            this.authorList[index].img = "el-icon-remove";
 
-        this.filterObj.authors.push(this.authorList[index]._VALUE)
-
-
-      } else {
-        this.authorList[index].show = false;
-        this.authorList[index].img = "el-icon-circle-plus";
-
-        this.filterObj.authors.splice(this.filterObj.authors.indexOf(this.authorList[index]._VALUE), 1)
-
-      }
-
-      this.filterObj.flag = true;
-    },
+            this.filterObj.authors.push(this.authorList[index]._VALUE)
 
 
-    //会议方法
-    getVenueData() {
-      this.venLoadFlag = true;
-      let cont = 0;
-      this.venArrCount = 0;
+          } else {
+            this.authorList[index].show = false;
+            this.authorList[index].img = "el-icon-circle-plus";
 
-      let data = this.filterList;
-      let arr = []
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].journal != null) {
-          arr.push({_VALUE: data[i].journal});
-        } else {
-          arr.push({_VALUE: data[i].booktitle});
-        }
-      }
-      let sort = this.group_signal(arr, "_VALUE");
-      let arrlist = [];
+            this.filterObj.authors.splice(this.filterObj.authors.indexOf(this.authorList[index]._VALUE), 1)
 
-      for (let item in sort) {
-        arrlist.push({venue: item, num: sort[item].length})
-      }
-
-      this.venTestList = arrlist.map(function (item) {
-        return {
-          "_VALUE": item.venue,
-          "img": "el-icon-circle-plus",
-          "index": cont++,
-          "show": false,
-          "num": item.num
-        };
-      })
-
-      this.venTestList = this.venTestList.sort(function (a, b) {
-        return b.num - a.num;
-      })
-
-      for (let i = 0; i < this.venTestList.length; i++) {
-        if (this.filterObj.venue == '')
-          break;
-        else {
-          if (this.filterObj.venue == this.venTestList[i]._VALUE) {
-            this.venTestList[i].show = true;
-            this.venTestList[i].img = "el-icon-remove";
           }
-        }
-      }
 
-      if (this.venArrCount + 10 <= this.venTestList.length) {
-        this.venueList = this.venTestList.slice(this.venArrCount, this.venArrCount + 10);
-        this.venArrCount += 10;
-      } else {
-        this.venueList = this.venTestList.slice(this.venArrCount);
-        this.venArrCount += this.venTestList.length;
-      }
+          this.filterObj.flag = true;
+        },*/
 
-      this.venSqlSize = this.venTestList.length;
-
-
-      this.venNumCount = cont
-      this.venLoadFlag = false;
-    },
-    //会议获得更多
-    getMoreVenData() {
-      this.venLoadFlag = true;
-
-      if (this.venArrCount + 10 < this.venTestList.length) {
-        this.venueList = this.venueList.concat(this.venTestList.slice(this.venArrCount, this.venArrCount + 10));
-        this.venArrCount += 10;
-      } else {
-        this.venueList = this.venTestList;
-        this.venArrCount += this.venTestList.length;
-      }
-      // console.log(this.venTestList)
-      this.venLoadFlag = false;
-    },
-    //会议鼠标移入
-    mouseVenEnter(index) {
-      if (this.venueList[index].img === "el-icon-circle-plus")
-        this.venueList[index].show = true;
-    },
-    //会议鼠标移出
-    mouseVenLeave(index) {
-
-      if (this.venueList[index].img === "el-icon-circle-plus")
-        this.venueList[index].show = false;
-    },
-    //会议选中
-    addVenToInput(index) {
-      if (this.venueList[index].img === "el-icon-circle-plus") {
-        this.venueList[index].show = true;
-        this.venueList[index].img = "el-icon-remove";
-
-        let temp = this.venueList[index];
-        this.filterObj.venue = temp._VALUE
-        this.venueList = []
-        this.venueList.push(temp)
-
-      } else {
-        this.venueList[index].show = false;
-        this.venueList[index].img = "el-icon-circle-plus";
-
-        this.filterObj.venue = '';
-        this.venNumCount = 0;
-        this.venArrCount = 0;
-        this.getVenueData()
-      }
-
-      this.filterObj.flag = true;
-    },
-    //数量格式化
-    toThousands(num) {
-      num = (num || 0).toString();
-      let result = '';
-      while (num.length > 3) {
-        result = ',' + num.slice(-3) + result;
-        num = num.slice(0, num.length - 3);
-      }
-      if (num) {
-        result = num + result;
-      }
-      return result;
-    },
-
-
-    //类型转换处理
-    changeType() {
-      let len = this.waitList.length;
-      for (let i = 0; i < len; i++) {
-        switch (this.waitList[i].type) {
-          case "inproceedings":
-            this.waitList[i].type = 'Conference and Workshop Papers';
-            break;
-          case "book and thesis":
-            this.waitList[i].type = 'Book and Theses';
-            break;
-          case 'series':
-            this.waitList[i].type = 'Book and Theses';
-            break;
-          case 'proceedings':
-            this.waitList[i].type = 'Editorshop';
-            break;
-          case "informal":
-            this.waitList[i].type = 'Informal Publications';
-            break;
-          case "incollection":
-            this.waitList[i].type = 'Parts in Books or Collections';
-            break;
-          case "journals article":
-            this.waitList[i].type = 'Journals Article';
-            break;
-          case  "reference":
-            this.waitList[i].type = 'Reference Works';
-            break;
-          case "withdrawn":
-            this.waitList[i].type = 'Withdrawn Item';
-            break;
-        }
-      }
-    },
     //过滤函数
     listFilter() {
       //会议过滤
       let venArr = [];
       let ven = this.filterObj.venue;
-      let len = this.waitList.length
+      let len = this.authorPublicationList.length
       for (let i = 0; i < len; i++) {
         if (ven === '') {
-          venArr = this.waitList;
+          venArr = this.authorPublicationList;
           break;
         } else {
-          if (ven == this.waitList[i].journal || ven == this.waitList[i].booktitle) {
+          if (ven == this.authorPublicationList[i].journal || ven == this.authorPublicationList[i].booktitle) {
             // console.log(this.waitList[i].booktitle)
-            venArr.push(this.waitList[i])
+            venArr.push(this.authorPublicationList[i])
           }
         }
       }
@@ -778,7 +441,7 @@ export default {
 
 
     //初始化数据
-    getData() {
+    initial() {
       this.dataFlag = false;
       this.loadFlag = true;
 
@@ -1009,15 +672,14 @@ export default {
       if (this.filterObj.flag) {
         this.listFilter();
         this.filterObj.flag = false
-        this.getData()
+        this.initial()
 
       }
 
     },
 
-    name: function () {
-      this.author = this.name;
-      this.getPubData()
+    name: function (newValue) {
+      this.getPubData(newValue)
     }
 
 
@@ -1029,8 +691,8 @@ export default {
 
   mounted() {
     // this.getPubData();
-    this.author = this.name;
-    this.getPubData()
+    console.log(this.name);
+    this.getPubData(this.name);
     // this.setEchartsOption();
   }
 }

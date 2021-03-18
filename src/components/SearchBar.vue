@@ -6,14 +6,15 @@
     <div class="searchCon">
       <div style="justify-items: right">
         <el-dropdown type="primary">
-          <el-button type="info" @click="handleInput(radio,inputData)">
+          <el-button type="info" @click="handleInput(inputData)">
             {{ dropDownArray[radio].show }}<i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item v-for="(it, index) in dropDownArray"
                               :key="index"
                               tag="span">
-              <div @click="handleInput(index,inputData)">
+              <!--              <div @click="handleInput(index,inputData)">-->
+              <div @click="radio=index">
                 {{ it.show }}
               </div>
             </el-dropdown-item>
@@ -21,7 +22,7 @@
         </el-dropdown>
         <!--            搜索栏-->
         <el-input class="searchInput"
-                  @keyup.enter.native="handleInput(radio,inputData)"
+                  @keyup.enter.native="handleInput(inputData)"
                   v-model="inputData"
                   clearable>
         </el-input>
@@ -73,7 +74,7 @@ export default {
     }
   },
   methods: {
-    handleInput(radio, input) {
+    handleInput(input) {
       if (input == '') {
         this.$message.warning('请重新输入')
       } else {
@@ -82,7 +83,7 @@ export default {
          作者搜索 1
          会议搜索 2
         */
-        this.radio = radio;
+        let radio = this.radio
         let path = this.dropDownArray[radio].routerPath
         if (this.$route.path !== path) {
           this.$router.push({path: path});

@@ -4,26 +4,18 @@
     <div v-for="it in authorList"
          :key="it._VALUE"
          style="margin-left: 5%">
-      <el-button type="text" size="medium">
-        <router-link :to="{path:'/resAut',query:{autName:it._VALUE}}"
-                     target="_blank"
-                     class="name">
-          <el-tooltip class="item" effect="dark" :content=it._orcid placement="bottom-end"
-                      v-if="it._orcid != null">
-            <i class="el-icon-user-solid"/>
-          </el-tooltip>
-          {{ it._VALUE }}
-          <!--            <p class="mark" v-html="getMatch(it._VALUE)">{{ getMatch(it._VALUE) }}</p>-->
-        </router-link>
-      </el-button>
+      <AuthorItem :it="it"/>
     </div>
   </div>
 </template>
 
 <script>
 
+import AuthorItem from "@/components/searchResult/AuthorItem";
+
 export default {
   name: "AuthorList",
+  components: {AuthorItem},
   data: function () {
     return {}
   },
@@ -43,7 +35,3 @@ export default {
 }
 </script>
 
-<style scoped>
-@import "../../style/public.css";
-
-</style>

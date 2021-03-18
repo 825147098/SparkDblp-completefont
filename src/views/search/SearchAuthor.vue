@@ -66,7 +66,7 @@ export default {
         } else {
           this.authorListTemp = null;
         }
-        console.log(this.authorListTemp)
+        // console.log(this.authorListTemp)
 
       }).catch(error => {
         console.log(error);
@@ -84,9 +84,7 @@ export default {
     '$store.state.authorQueryObj': function (newValue) {
       this.initialize(newValue)
     },
-    mounted() {
-      this.initialize(this.$store.state.authorQueryObj)
-    }
+
     /*  mounted() {
         if (this.$route.query.autName != null) {
           // this.searchName = this.$route.query.autName;
@@ -101,6 +99,9 @@ export default {
           this.activeShow = true
         }
       }*/
+  },
+  mounted() {
+    this.initialize(this.$store.state.authorQueryObj)
   }
 }
 </script>
